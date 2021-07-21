@@ -5,7 +5,7 @@
         <!-- toolbar -->
         <v-app-bar :color="`${theme} darken-1`" class="v-toolbar--wrapper" app clipped-right flat>
             <v-app-bar class="clip-corner" :color="theme" flat dark>
-                <v-icon class="mr-8">{{ module.icon }}</v-icon>
+                <v-icon class="mr-4">{{ module.icon }}</v-icon>
                 
                 <v-toolbar-title class="text-uppercase">
                     <span class="font-fredoka-one spacing-1">{{ module.name }}</span>
@@ -14,8 +14,12 @@
 
                 <v-spacer></v-spacer>
 
-                <v-btn icon @click="dialogLogout = true" v-if="route.base === 'myaccount-dashboard'">
+                <v-btn icon @click="dialogLogout = true" v-if="module.base && route.base && route.base.includes('dashboard')">
                     <v-icon>power_settings_new</v-icon>
+                </v-btn>
+
+                <v-btn icon @click="attemptExitToApp" v-if="!module.base && route.base && route.base.includes('dashboard')">
+                    <v-icon>exit_to_app</v-icon>
                 </v-btn>
 
                 <template v-else>
@@ -134,7 +138,7 @@ export default {
             module: state => state.module,
             page: state => state.module.page,
             features: state => state.module.page.features,
-            route: state => state.route,
+            route: state => state.route ?? {},
             theme: state => state.theme,
         }),
     },
@@ -144,6 +148,10 @@ export default {
     }),
 
     methods: {
+        attemptExitToApp: function() {
+            this.$router.push({ name: process.env.MIX_PAGE_DASHBOARD });
+        },
+
         attemptSignout: async function() {
             this.dialogLogout = false;
 

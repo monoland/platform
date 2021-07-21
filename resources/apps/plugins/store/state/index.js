@@ -80,7 +80,7 @@ const baseTable = {
 };
 
 const baseModule = {
-    baseModule: false,
+    base: false,
     dataType: null,
     name: null,
     docks: [],

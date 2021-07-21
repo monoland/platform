@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\System\RoleController;
+use App\Http\Controllers\System\UserController;
+use App\Http\Controllers\System\ModuleController;
+use App\Http\Controllers\System\SettingController;
 use App\Http\Controllers\MyAccount\ProfileController;
 use App\Http\Controllers\Account\AccountBaseController;
 use Laravel\Fortify\Http\Controllers\PasswordController;
@@ -41,7 +45,7 @@ Route::prefix('account')->group(function () {
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 });
 
-
+// account
 Route::prefix('account/api')->group(function () {
     Route::get('ping-data', [AccountBaseController::class, 'fetchPingData']);
     Route::post('user-data', [AccountBaseController::class, 'fetchUserData']);
@@ -56,4 +60,21 @@ Route::prefix('account/api')->group(function () {
     Route::post('announcement/{announcement}/restore', [AnnouncementController::class, 'restore']);
     Route::resource('announcement', AnnouncementController::class);
     Route::resource('notification', NotificationController::class);
+});
+
+
+Route::prefix('system/api')->group(function () {
+    Route::delete('role/{role}/destroy', [RoleController::class, 'forceDelete']);
+    Route::post('role/{role}/restore', [RoleController::class, 'restore']);
+    Route::resource('role', RoleController::class);
+
+    Route::delete('module/{module}/destroy', [ModuleController::class, 'forceDelete']);
+    Route::post('module/{module}/restore', [ModuleController::class, 'restore']);
+    Route::resource('module', ModuleController::class);
+
+    Route::delete('user/{user}/destroy', [UserController::class, 'forceDelete']);
+    Route::post('user/{user}/restore', [UserController::class, 'restore']);
+    Route::resource('user', UserController::class);
+
+    Route::get('setting', [SettingController::class, 'index']);
 });

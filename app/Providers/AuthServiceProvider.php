@@ -30,9 +30,9 @@ class AuthServiceProvider extends ServiceProvider
             //     return 'App\\Policies\\MyAccount\\NotificationPolicy';
             // }
 
-            // if ($modelClass === 'App\\Models\\User') {
-            //     return 'App\\Policies\\System\\UserPolicy';
-            // }
+            if ($modelClass === 'App\\Models\\User') {
+                return 'App\\Policies\\System\\UserPolicy';
+            }
 
             return 'App\\Policies\\' . Str::of($modelClass)->after('App\\Models\\') . 'Policy';
         });

@@ -37,6 +37,8 @@
                     
                 >
                     <slot name="form"></slot>
+
+                    <v-overlay z-index="1" color="white" width="100%" height="100%" v-model="fab"></v-overlay>
                 </v-sheet>
             </v-sheet>
         </template>
@@ -98,12 +100,12 @@
                         flat
                     >
                         <slot name="form"></slot>
+
+                        <v-overlay z-index="1" color="white" width="100%" height="100%" v-model="fab"></v-overlay>
                     </v-sheet>
                 </v-sheet>
             </v-fade-transition>
         </template>
-
-        <v-overlay z-index="1" color="white" width="100%" height="100%" v-model="fab"></v-overlay>
 
         <v-fab-transition>
             <v-btn v-if="route.path === 'index' && !page.filter.status && !searchStatus && hasPermission('create')"
@@ -111,6 +113,7 @@
                 key="index"
                 absolute
                 fab dark
+                large
                 style="bottom: 27px; right: 27px;"
                 @click="openPageCreate"
             >
@@ -122,6 +125,7 @@
                 key="create"
                 absolute
                 fab dark
+                large
                 style="bottom: 27px; right: 27px;"
                 @click="postCreate"
             >
@@ -133,6 +137,7 @@
                 key="update"
                 absolute
                 fab dark
+                large
                 style="bottom: 27px; right: 27px;"
                 @click="postUpdate"
             >
@@ -151,6 +156,7 @@
                         :key="route.path"
                         :color="theme"
                         fab dark
+                        large
                     >
                         <v-icon v-if="fab">close</v-icon>
                         <v-icon v-else>layers</v-icon>

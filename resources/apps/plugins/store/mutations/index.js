@@ -297,7 +297,7 @@ const mutations = {
         // init http
         if (state.auth.hasKey('token')) {
             state.http = axios.create({
-                baseURL: state.baseURL, // + '/' + module.path,
+                baseURL: state.baseURL,
                 withCredentials: false,
                 headers: {
                     Authorization: 'Bearer ' + state.auth.getItem('token')
@@ -305,7 +305,7 @@ const mutations = {
             });
         } else {
             state.http = axios.create({
-                baseURL: state.baseURL, // + '/' + module.path,
+                baseURL: state.baseURL,
                 withCredentials: true 
             });
         }
@@ -329,19 +329,11 @@ const mutations = {
             state.confirmation.initialized = true;
         }
 
-        state.module.baseModule = baseModule;
+        state.module.base = baseModule;
         state.module.name = module.name;
         state.module.pages = module.pages;
         
         state.module.docks = [];
-
-        let _modules = state.modules.reduce((result, module) => {
-            if (module.show) {
-                result.push({ ...module, module: true });
-            }
-
-            return result;
-        }, []);
 
         let _docks = module.pages.reduce((result, page) => {
             if (page.dock) {
@@ -350,8 +342,20 @@ const mutations = {
 
             return result;
         }, []);
+
+        let _modules = [];
         
-        state.module.docks = _modules.concat(_docks);
+        if (state.module.base) {
+            _modules = state.modules.reduce((result, module) => {
+                if (module.show) {
+                    result.push({ ...module, module: true });
+                }
+    
+                return result;
+            }, []);
+        }
+        
+        state.module.docks = _docks.concat(_modules);
 
         state.module.sides = module.pages.reduce((result, page) => {
             if (page.side) {
@@ -447,13 +451,19 @@ const mutations = {
 
     PAGE_SELECTED: function(state, selected)
     {
-        if (! selected && state.module.page.layoutDouble) {
+        if (! selected || (Array.isArray(selected) && selected.length === 0)) {
             state.module.page.selected = [];
             state.module.page.selected_index = -1;
 
             // goto index page
-            state.router.push({ name: state.route.base });
+            if (state.module.page.layoutDouble) {
+                state.router.push({ name: state.route.base });
+            }
             
+            return;
+        }
+        
+        if (state.module.page.selected_index > -1) {
             return;
         }
 
