@@ -1,0 +1,149 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyFullModelClass;
+use Illuminate\Http\Request;
+use DummyRootNamespaceHttp\Resources\DummyModuleClass\DummyModelClassResource;
+use DummyRootNamespaceHttp\Resources\DummyModuleClass\DummyModelClassCollection;
+use DummyRootNamespaceHttp\Controllers\Controller;
+
+class DummyClass extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $this->authorize('view', DummyModelClass::class);
+
+        return new DummyModelClassCollection(
+            DummyModelClass::filterOn($request)->paginate($request->itemsPerPage)
+        );
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->authorize('create', DummyModelClass::class);
+
+        $this->validate($request, []);
+
+        return DummyModelClass::storeRecord($request);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function show(DummyModelClass $DummyModelVariable)
+    {
+        $this->authorize('show', $DummyModelVariable);
+
+        return new DummyModelClassResource($DummyModelVariable);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \DummyFullModelClass  $DummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, DummyModelClass $DummyModelVariable)
+    {
+        $this->authorize('update', $DummyModelVariable);
+
+        $this->validate($request, []);
+
+        return DummyModelClass::updateRecord($request, $DummyModelVariable);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \DummyFullModelClass $DummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(DummyModelClass $DummyModelVariable)
+    {
+        $this->authorize('delete', $DummyModelVariable);
+
+        return DummyModelClass::deleteRecord($DummyModelVariable);
+    }
+
+    /**
+     * Restore the specified resource from deleted
+     *
+     * @param \DummyFullModelClass  $DummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(DummyModelClass $DummyModelVariable)
+    {
+        $this->authorize('restore', $DummyModelVariable);
+
+        return DummyModelClass::restoreRecord($DummyModelVariable);
+    }
+
+    /**
+     * Force Delete the specified resource
+     *
+     * @param \DummyFullModelClass $DummyModelVariable
+     * @return \Illuminate\Http\Response
+     */
+    public function forceDelete(DummyModelClass $DummyModelVariable)
+    {
+        $this->authorize('destroy', $DummyModelVariable);
+
+        return DummyModelClass::destroyRecord($DummyModelVariable);
+    }
+
+    /**
+     * Import data to the model
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function import(Request $request)
+    {
+        $this->authorize('import', DummyModelClass::class);
+
+        // 
+    }
+
+    /**
+     * Export data from the model
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function export(Request $request)
+    {
+        $this->authorize('export', DummyModelClass::class);
+
+        // 
+    }
+
+    /**
+     * Print report from the model
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function report(Request $request)
+    {
+        $this->authorize('report', DummyModelClass::class);
+
+        // 
+    }
+}

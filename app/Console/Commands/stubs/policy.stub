@@ -1,0 +1,95 @@
+<?php
+
+namespace DummyNamespace;
+
+use NamespacedDummyUserModel;
+use NamespacedDummyModel;
+use Illuminate\Auth\Access\HandlesAuthorization;
+
+class DummyClass
+{
+    use HandlesAuthorization;
+
+    /**
+     * Determine whether the user can view the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function show(DummyUser $user, DummyModel $dummyModel)
+    {
+        return $user->hasPermission('show-dummyModule-dummyModelSlug');
+    }
+
+    /**
+     * Determine whether the user can view the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function view(DummyUser $user)
+    {
+        return $user->hasPermission('view-dummyModule-dummyModelSlug');
+    }
+
+    /**
+     * Determine whether the user can create DocDummyPluralModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @return mixed
+     */
+    public function create(DummyUser $user)
+    {
+        return $user->hasPermission('create-dummyModule-dummyModelSlug');
+    }
+
+    /**
+     * Determine whether the user can update the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function update(DummyUser $user, DummyModel $dummyModel)
+    {
+        return $user->hasPermission('update-dummyModule-dummyModelSlug');
+    }
+
+    /**
+     * Determine whether the user can delete the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function delete(DummyUser $user, DummyModel $dummyModel)
+    {
+        return $user->hasPermission('delete-dummyModule-dummyModelSlug');
+    }
+
+    /**
+     * Determine whether the user can restore the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function restore(DummyUser $user, DummyModel $dummyModel)
+    {
+        return $user->hasPermission('restore-dummyModule-dummyModelSlug');
+    }
+
+    /**
+     * Determine whether the user can permanently delete the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function destroy(DummyUser $user, DummyModel $dummyModel)
+    {
+        return $user->hasPermission('destroy-dummyModule-dummyModelSlug');
+    }
+}
