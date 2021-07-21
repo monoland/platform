@@ -31,6 +31,8 @@ class ModuleCollection extends ResourceCollection
             return [];
         }
 
+        $currentUser = $request->user();
+
         return [
             'setups' => [
                 /** the page combo */
@@ -41,14 +43,14 @@ class ModuleCollection extends ResourceCollection
                 'mode' => $request->mode,
 
                 /** the page enable fitur */
-                'features' => Cache::rememberForever('features-system-module-' . $request->user()->id, function () use ($request) {
+                'features' => Cache::rememberForever('features-system-module-' . $currentUser->id, function () use ($currentUser) {
                     return [
-                        'export' => $request->user()->hasAnyPermission('export-system-module'),
-                        'filter' => $request->user()->hasAnyPermission('filter-system-module'),
-                        'import' => $request->user()->hasAnyPermission('import-system-module'),
-                        'print' => $request->user()->hasAnyPermission('print-system-module'),
-                        'search' => $request->user()->hasAnyPermission('search-system-module'),
-                        'trashed' => $request->user()->hasAnyPermission('restore-system-module', 'destroy-system-module'),
+                        'export' => $currentUser->hasAnyPermission('export-system-module'),
+                        'filter' => $currentUser->hasAnyPermission('filter-system-module'),
+                        'import' => $currentUser->hasAnyPermission('import-system-module'),
+                        'print' => $currentUser->hasAnyPermission('print-system-module'),
+                        'search' => $currentUser->hasAnyPermission('search-system-module'),
+                        'trashed' => $currentUser->hasAnyPermission('restore-system-module', 'destroy-system-module'),
                     ];
                 }),
 
@@ -77,11 +79,15 @@ class ModuleCollection extends ResourceCollection
                 /** the table header */
                 'headers' => [
                     ['text' => 'Name', 'value' => 'name'],
+                    ['text' => 'Path', 'value' => 'path'],
+                    ['text' => 'Icon', 'value' => 'icon', 'align' => 'center', 'filterable' => false, 'sortable' => false, 'width' => 80],
+                    ['text' => 'Theme', 'value' => 'color', 'align' => 'center', 'filterable' => false, 'sortable' => false, 'width' => 80],
+                    ['text' => 'Visible', 'value' => 'visibility', 'align' => 'center', 'filterable' => false, 'sortable' => false, 'width' => 80],
                     ['text' => 'Updated', 'value' => 'updated_at', 'class' => 'field-datetime'],
                 ],
 
                 /** the page icon */
-                'icon' => $request->user()->getPageIcon('system-module'),
+                'icon' => $currentUser->getPageIcon('system-module'),
 
                 /** the record key */
                 'key' => 'id',
@@ -92,16 +98,20 @@ class ModuleCollection extends ResourceCollection
 
                 /** the page permission */
                 /** ['create' => bool, 'update' => bool, 'delete' => bool, 'restore' => bool, 'destroy' => bool] */
-                'permissions' => $request->user()->getPermissionOnPage('system-module'),
+                'permissions' => $currentUser->hasPermission('create-system-module') ? ['create'] : [],
 
                 /** the page default */
                 'record_base' => [
                     'id' => null,
-                    'name' => null
+                    'name' => null,
+                    'icon' => null,
+                    'color' => null,
+                    'path' => null,
+                    'visibility' => null,
                 ],
 
                 /** the page title */
-                'title' => $request->user()->getPageTitle('system-module'),
+                'title' => $currentUser->getPageTitle('system-module'),
             ]
         ];
     }

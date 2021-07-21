@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\System\PageController;
 use App\Http\Controllers\System\RoleController;
 use App\Http\Controllers\System\UserController;
 use App\Http\Controllers\System\ModuleController;
+use App\Http\Controllers\System\AbilityController;
 use App\Http\Controllers\System\SettingController;
 use App\Http\Controllers\MyAccount\ProfileController;
 use App\Http\Controllers\Account\AccountBaseController;
@@ -71,6 +73,14 @@ Route::prefix('system/api')->group(function () {
     Route::delete('module/{module}/destroy', [ModuleController::class, 'forceDelete']);
     Route::post('module/{module}/restore', [ModuleController::class, 'restore']);
     Route::resource('module', ModuleController::class);
+
+    Route::delete('module/{module}/ability/{ability}/destroy', [AbilityController::class, 'forceDelete']);
+    Route::post('module/{module}/ability/{ability}/restore', [AbilityController::class, 'restore']);
+    Route::resource('module.ability', AbilityController::class);
+
+    Route::delete('module/{module}/page/{page}/destroy', [PageController::class, 'forceDelete']);
+    Route::post('module/{module}/page/{page}/restore', [PageController::class, 'restore']);
+    Route::resource('module.page', PageController::class);
 
     Route::delete('user/{user}/destroy', [UserController::class, 'forceDelete']);
     Route::post('user/{user}/restore', [UserController::class, 'restore']);

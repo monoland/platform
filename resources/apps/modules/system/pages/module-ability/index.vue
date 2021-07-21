@@ -1,7 +1,7 @@
 <template>
     <mono-page-base
-        name="system-module"
-        title="module"
+        name="system-ability"
+        title="ability"
     >
         <mono-page-data>
             <mono-page-table>

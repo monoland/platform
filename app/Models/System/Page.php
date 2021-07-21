@@ -31,6 +31,7 @@ class Page extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         return $this
+            ->withDepth()
             ->withTrashed()
             ->where($field ?? $this->getRouteKeyName(), $value)
             ->first();
@@ -42,6 +43,11 @@ class Page extends Model
     public function permissions()
     {
         return $this->hasMany(Permission::class);
+    }
+
+    public function module()
+    {
+        return $this->belongsTo(Module::class);
     }
 
     /**
@@ -70,9 +76,9 @@ class Page extends Model
         if ($page) {
             return [
                 'icon' => $page->icon,
-                'text' => $page->name,
+                'text' => $page->parent ? $page->parent->name . '/' . $page->name : $page->name,
                 'slug' => $page->slug,
-                'path' => $page->path,
+                'path' => $page->path
             ];
         }
 

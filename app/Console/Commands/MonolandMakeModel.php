@@ -93,6 +93,7 @@ class MonolandMakeModel extends GeneratorCommand
 
         $this->createMigration();
         $this->createResource();
+        $this->createShowResource();
         $this->createCollection();
         $this->createPolicy();
         $this->createController();
@@ -192,6 +193,26 @@ class MonolandMakeModel extends GeneratorCommand
 
         $options = [
             'name' => Str::studly("{$basename}Resource")
+        ];
+
+        if ($this->option('module')) {
+            $options['--module'] = $this->option('module');
+        }
+
+        $this->call('monoland:resource', $options);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    protected function createShowResource()
+    {
+        $basename = Str::studly(class_basename($this->argument('name')));
+
+        $options = [
+            'name' => Str::studly("{$basename}ShowResource")
         ];
 
         if ($this->option('module')) {

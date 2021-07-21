@@ -31,6 +31,8 @@ class AbilityCollection extends ResourceCollection
             return [];
         }
 
+        $currentUser = $request->user();
+
         return [
             'setups' => [
                 /** the page combo */
@@ -41,14 +43,14 @@ class AbilityCollection extends ResourceCollection
                 'mode' => $request->mode,
 
                 /** the page enable fitur */
-                'features' => Cache::rememberForever('features-system-ability-' . $request->user()->id, function () use ($request) {
+                'features' => Cache::rememberForever('features-system-ability-' . $currentUser->id, function () use ($currentUser) {
                     return [
-                        'export' => $request->user()->hasAnyPermission('export-system-ability'),
-                        'filter' => $request->user()->hasAnyPermission('filter-system-ability'),
-                        'import' => $request->user()->hasAnyPermission('import-system-ability'),
-                        'print' => $request->user()->hasAnyPermission('print-system-ability'),
-                        'search' => $request->user()->hasAnyPermission('search-system-ability'),
-                        'trashed' => $request->user()->hasAnyPermission('restore-system-ability', 'destroy-system-ability'),
+                        'export' => $currentUser->hasAnyPermission('export-system-ability'),
+                        'filter' => $currentUser->hasAnyPermission('filter-system-ability'),
+                        'import' => $currentUser->hasAnyPermission('import-system-ability'),
+                        'print' => $currentUser->hasAnyPermission('print-system-ability'),
+                        'search' => $currentUser->hasAnyPermission('search-system-ability'),
+                        'trashed' => $currentUser->hasAnyPermission('restore-system-ability', 'destroy-system-ability'),
                     ];
                 }),
 
@@ -72,16 +74,21 @@ class AbilityCollection extends ResourceCollection
                 'finds' => ['name'],
 
                 /** the page is parent ? */
-                'parent' => true,
+                'parent' => $currentUser->getPageHasParent('system-ability'),
+
+                /** the page parent slug */
+                'parent_path' => $currentUser->getPageParentPath('system-ability'),
 
                 /** the table header */
                 'headers' => [
                     ['text' => 'Name', 'value' => 'name'],
+                    ['text' => 'Module', 'value' => 'module'],
+                    ['text' => 'Role', 'value' => 'role'],
                     ['text' => 'Updated', 'value' => 'updated_at', 'class' => 'field-datetime'],
                 ],
 
                 /** the page icon */
-                'icon' => $request->user()->getPageIcon('system-ability'),
+                'icon' => $currentUser->getPageIcon('system-ability'),
 
                 /** the record key */
                 'key' => 'id',
@@ -92,7 +99,7 @@ class AbilityCollection extends ResourceCollection
 
                 /** the page permission */
                 /** ['create' => bool, 'update' => bool, 'delete' => bool, 'restore' => bool, 'destroy' => bool] */
-                'permissions' => $request->user()->getPermissionOnPage('system-ability'),
+                'permissions' => $currentUser->hasPermission('create-system-ability') ? ['create'] : [],
 
                 /** the page default */
                 'record_base' => [
@@ -101,7 +108,7 @@ class AbilityCollection extends ResourceCollection
                 ],
 
                 /** the page title */
-                'title' => $request->user()->getPageTitle('system-ability'),
+                'title' => $currentUser->getPageTitle('system-ability'),
             ]
         ];
     }

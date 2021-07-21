@@ -4,8 +4,8 @@ namespace App\Http\Controllers\System;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\System\AbilityCollection;
-use App\Http\Resources\System\AbilityResource;
 use App\Models\System\Ability;
+use App\Models\System\Module;
 use Illuminate\Http\Request;
 
 class AbilityController extends Controller
@@ -14,14 +14,15 @@ class AbilityController extends Controller
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\System\Module  $module
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, Module $module)
     {
         $this->authorize('view', Ability::class);
 
         return new AbilityCollection(
-            Ability::filterOn($request)->paginate($request->itemsPerPage)
+            $module->abilities()->with(['module', 'role'])->filterOn($request)->paginate($request->itemsPerPage)
         );
     }
 
@@ -29,38 +30,41 @@ class AbilityController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\System\Module  $module
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Module $module)
     {
         $this->authorize('create', Ability::class);
 
         $this->validate($request, []);
 
-        return Ability::storeRecord($request);
+        return Ability::storeRecord($request, $module);
     }
 
     /**
      * Display the specified resource.
      *
+     * @param  \App\Models\System\Module  $module
      * @param  \App\Models\System\Ability  $ability
      * @return \Illuminate\Http\Response
      */
-    public function show(Ability $ability)
+    public function show(Module $module, Ability $ability)
     {
         $this->authorize('show', $ability);
 
-        return new AbilityResource($ability);
+        //
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\System\Module  $module
      * @param  \App\Models\System\Ability  $ability
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ability $ability)
+    public function update(Request $request, Module $module, Ability $ability)
     {
         $this->authorize('update', $ability);
 
@@ -72,10 +76,11 @@ class AbilityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\System\Ability $ability
+     * @param  \App\Models\System\Module  $module
+     * @param  \App\Models\System\Ability  $ability
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Ability $ability)
+    public function destroy(Module $module, Ability $ability)
     {
         $this->authorize('delete', $ability);
 
@@ -88,9 +93,9 @@ class AbilityController extends Controller
      * @param \App\Models\System\Ability  $ability
      * @return \Illuminate\Http\Response
      */
-    public function restore(Ability $ability)
+    public function restore(Module $module, Ability $ability)
     {
-        $this->authorize('restore', Ability::class);
+        $this->authorize('restore', $ability);
 
         return Ability::restoreRecord($ability);
     }
@@ -101,9 +106,9 @@ class AbilityController extends Controller
      * @param \App\Models\System\Ability $ability
      * @return \Illuminate\Http\Response
      */
-    public function forceDelete(Ability $ability)
+    public function forceDelete(Module $module, Ability $ability)
     {
-        $this->authorize('destroy', Ability::class);
+        $this->authorize('destroy', $ability);
 
         return Ability::destroyRecord($ability);
     }
@@ -112,9 +117,10 @@ class AbilityController extends Controller
      * Import data to the model
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\System\Module  $module
      * @return \Illuminate\Http\Response
      */
-    public function import(Request $request)
+    public function import(Request $request, Module $module)
     {
         $this->authorize('import', Ability::class);
 
@@ -125,9 +131,10 @@ class AbilityController extends Controller
      * Export data from the model
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\System\Module  $module
      * @return \Illuminate\Http\Response
      */
-    public function export(Request $request)
+    public function export(Request $request, Module $module)
     {
         $this->authorize('export', Ability::class);
 
@@ -138,9 +145,10 @@ class AbilityController extends Controller
      * Print report from the model
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\System\Module  $module
      * @return \Illuminate\Http\Response
      */
-    public function report(Request $request)
+    public function report(Request $request, Module $module)
     {
         $this->authorize('report', Ability::class);
 

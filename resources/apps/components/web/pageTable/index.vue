@@ -30,8 +30,61 @@
             ></v-simple-checkbox>
         </template>
 
-        <template v-for="column in page.headers" #[`item.${column.value}`]="{ item, index }">
-            <slot :name="`item.${column.value}`" :item="item" :index="index">
+        <!-- <template v-slot:[`item.name`]="{ item }">
+            <div class="d-flex align-center" :class="item.nest_deep > 0 ? 'fill-height' : ''">
+                <template v-if="item.nest_deep !== -1">
+                    <div class="v-treeview-node__level d-flex align-center fill-height" v-for="(itm, idx) in item.nest_deep" :key="idx">
+                        <template v-if="itm < item.nest_deep">
+                            <v-divider vertical></v-divider>
+                        </template>
+                        
+                        <template v-if="itm === item.nest_deep">
+                            <v-divider vertical></v-divider>
+                            <v-divider class="mr-1"></v-divider>
+                        </template>
+                    </div>
+                </template>
+                <v-avatar size="24" :color="theme" v-if="Object.prototype.hasOwnProperty.call(item, 'avatar')">
+                    <span class="white--text">{{ item.avatar }}</span>
+                </v-avatar>
+                <span>{{ item.name }}</span>
+            </div>
+        </template> -->
+
+        <template v-for="(column, columnIndex) in page.headers" #[`item.${column.value}`]="{ item, index }">
+            <!-- icon -->
+            <v-icon v-if="column.value === 'icon'" :key="columnIndex">
+                {{ item.icon }}
+            </v-icon>
+
+            <!-- color -->
+            <v-icon v-else-if="column.value === 'color'" :key="columnIndex" :color="item.color">gradient</v-icon>
+
+            <!-- visibility -->
+            <v-icon v-else-if="column.value === 'visibility'" :key="columnIndex">
+                {{ item.visibility === true ? 'visibility' : 'visibility_off' }}
+            </v-icon>
+
+            <!-- has nested -->
+            <template v-else-if="column.value === 'name' && ('nest_deep' in item)">
+                <div class="d-flex align-center" :class="item.nest_deep > 0 ? 'fill-height' : ''" :key="columnIndex">
+                    <template v-if="item.nest_deep !== -1">
+                        <div class="v-treeview-node__level d-flex align-center fill-height" v-for="(itm, idx) in item.nest_deep" :key="idx">
+                            <template v-if="itm < item.nest_deep">
+                                <v-divider vertical></v-divider>
+                            </template>
+                            
+                            <template v-if="itm === item.nest_deep">
+                                <v-divider vertical></v-divider>
+                                <v-divider class="mr-1"></v-divider>
+                            </template>
+                        </div>
+                    </template>
+                    <span class="flex-grow-1">{{ item.name }}</span>
+                </div>
+            </template>
+
+            <slot :name="`item.${column.value}`" :item="item" :index="index" v-else>
                 <span v-html="item[column.value]" :key="index" />
             </slot>
         </template>

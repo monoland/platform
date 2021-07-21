@@ -99,6 +99,12 @@ class User extends Authenticatable
         return $this->hasMany(License::class);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $slug
+     * @return string
+     */
     private function licenseOnModule($slug): string
     {
         $user = Cache::rememberForever($slug . '-ability-' . $this->id, function () use ($slug) {
@@ -107,9 +113,14 @@ class User extends Authenticatable
             }])->first();
         });
 
-        return $user->ability->slug;
+        return optional($user->ability)->slug;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
     private function permissions(): array
     {
         return Cache::rememberForever('user_' . $this->id . '_permissions', function () {
@@ -123,11 +134,23 @@ class User extends Authenticatable
         });
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $permission
+     * @return boolean
+     */
     public function hasPermission($permission): bool
     {
         return in_array($permission, $this->permissions());
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] ...$permissions
+     * @return boolean
+     */
     public function hasAnyPermission(...$permissions): bool
     {
         $allpermissions = $this->permissions();
@@ -140,19 +163,27 @@ class User extends Authenticatable
 
         return false;
     }
-
-    public function getPermissionOnPage($module)
+    
+    /**
+     * Undocumented function
+     *
+     * @param [type] $slug
+     * @return array
+     */
+    public function getPagePermission($slug): array
     {
         $permissions = [];
 
-        $page = Page::firstWhere('slug', $module);
+        $page = Cache::rememberForever('page-' . $slug, function () use ($slug) {
+            return Page::firstWhere('slug', $slug);
+        });
 
         if ($page) {
             $allpermissions = $this->permissions();
 
             foreach ($page->permissions()->pluck('slug') as $permission) {
                 if (in_array($permission, $allpermissions)) {
-                    array_push($permissions, str_replace('-' . $module, '', $permission));
+                    array_push($permissions, str_replace('-' . $slug, '', $permission));
                 }
             }
         }
@@ -160,14 +191,32 @@ class User extends Authenticatable
         return $permissions;
     }
 
-    public function getPageIcon($slug)
+    /**
+     * Undocumented function
+     *
+     * @param [type] $slug
+     * @return string
+     */
+    public function getPageIcon($slug): string
     {
-        return optional(Page::firstWhere('slug', $slug))->icon;
+        $page = Cache::rememberForever('page-' . $slug, function () use ($slug) {
+            return Page::firstWhere('slug', $slug);
+        });
+
+        return optional($page)->icon;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $slug
+     * @return array
+     */
     public function getPageLink($slug): array
     {
-        $page = Page::firstWhere('slug', $slug);
+        $page = Cache::rememberForever('page-' . $slug, function () use ($slug) {
+            return Page::firstWhere('slug', $slug);
+        });
 
         if ($page) {
             return [
@@ -182,14 +231,64 @@ class User extends Authenticatable
         return [];
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $slug
+     * @return boolean
+     */
+    public function getPageHasParent($slug): bool
+    {
+        $page = Cache::rememberForever('page-' . $slug, function () use ($slug) {
+            return Page::firstWhere('slug', $slug);
+        });
+
+        return optional($page)->parent_id === null;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $slug
+     * @return string
+     */
+    public function getPageParentPath($slug): string
+    {
+        $page = Cache::rememberForever('page-' . $slug, function () use ($slug) {
+            return Page::firstWhere('slug', $slug);
+        });
+
+        $parent = optional($page->parent)->slug;
+
+        return $parent;
+    }
+    
+    /**
+     * Undocumented function
+     *
+     * @param [type] $slug
+     * @return string
+     */
+    public function getPageTitle($slug): string
+    {
+        $page = Cache::rememberForever('page-' . $slug, function () use ($slug) {
+            return Page::firstWhere('slug', $slug);
+        });
+
+        $parent = optional($page->parent)->name;
+
+        return $parent ? $parent . '-' . optional($page)->name : optional($page)->name;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $path
+     * @return string
+     */
     protected function createMethodName($path):string
     {
         return Str::of($path)->replace('-', '_')->__toString();
-    }
-
-    public function getPageTitle($slug)
-    {
-        return optional(Page::firstWhere('slug', $slug))->name;
     }
 
     /**

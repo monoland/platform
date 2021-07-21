@@ -30,6 +30,7 @@ class Module extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         return $this
+            ->with(['abilities', 'abilities.module', 'abilities.role', 'pages'])
             ->withTrashed()
             ->where($field ?? $this->getRouteKeyName(), $value)
             ->first();
@@ -38,7 +39,15 @@ class Module extends Model
     /**
      * The model relationsship
      */
+    public function abilities()
+    {
+        return $this->hasMany(Ability::class);
+    }
 
+    public function pages()
+    {
+        return $this->hasMany(Page::class)->orderBy('_lft');
+    }
 
     /**
      * scope for model-combo

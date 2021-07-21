@@ -98,7 +98,7 @@
 
                 <template v-if="page.mode === 'default'">
                     <div class="d-flex relative align-center" v-for="(link, linkIndex) in page.links" :key="linkIndex">
-                        <div class="caption text-capitalize absolute line-height-1 blue white--text px-2 py-1 rounded" style="right: 52px;">{{ link.path }}</div>
+                        <div class="caption text-capitalize absolute line-height-1 blue white--text px-2 py-1 rounded" style="right: 52px;">{{ link.text }}</div>
                         
                         <v-btn
                             color="blue" 

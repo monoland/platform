@@ -1,21 +1,13 @@
 let buildRequestURI = function({ module, route }) {
     let _path = module.page.path;
 
-    if (typeof route.params === 'object' && 
-        Object.keys(route.params).length > 0
-    ) {
+    if (typeof route.params === 'object' && Object.keys(route.params).length > 0) {
         for (let keys = Object.keys(route.params), i = 0, end = keys.length; i < end; i++) {
             let key = keys[i];
             let value = route.params[key];
 
-            if ((i + 1 ) < end) {
-                if (_path.includes(`${key}/:${key}/`)) {
-                    _path = _path.replace(`${key}/:${key}/`, '');
-                }
-            } else {
-                if (_path.includes(`:${key}`)) {
-                    _path = _path.replace(`:${key}`, value)
-                }
+            if (_path.includes(`${key}/:${key}/`)) {
+                _path = _path.replace(`${key}/:${key}/`, `${key}/${value}/`);
             }
         }
     }
@@ -144,7 +136,10 @@ const actions = {
             method: 'get',
 
             params:() => {
-                return { params: { mode: state.module.page.mode }}
+                return { params: { 
+                    mode: state.module.page.mode,
+                    action: state.route.path
+                }}
             },
             
             completed:({ response }) => {

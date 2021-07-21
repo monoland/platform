@@ -2,11 +2,13 @@
 
 namespace App\Models\System;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use App\Http\Resources\System\RoleResource;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends Model
 {
@@ -29,6 +31,7 @@ class Role extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         return $this
+            ->with(['abilities', 'abilities.module', 'abilities.role'])
             ->withTrashed()
             ->where($field ?? $this->getRouteKeyName(), $value)
             ->first();
@@ -37,7 +40,10 @@ class Role extends Model
     /**
      * The model relationsship
      */
-
+    public function abilities()
+    {
+        return $this->hasMany(Ability::class);
+    }
 
     /**
      * scope for model-combo
@@ -114,12 +120,13 @@ class Role extends Model
 
         try {
             $model = new static;
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->name);
             $model->save();
 
             DB::commit();
 
-            // return new RoleResource($model);
+            return new RoleResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -142,12 +149,13 @@ class Role extends Model
         DB::beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->name);
             $model->save();
 
             DB::commit();
 
-            // return new RoleResource($model);
+            return new RoleResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 

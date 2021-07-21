@@ -49,7 +49,7 @@
                         min-height="calc(100vh - 152px)"
                         flat tile
                     >
-                        <div class="d-flex relative flex-grow-1">
+                        <div class="relative flex-column flex-grow-1 width-100">
                             <slot></slot>
                         </div>
                     </v-sheet>

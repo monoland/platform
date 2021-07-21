@@ -266,6 +266,10 @@
     }
 }
 
+.v-treeview-node__level {
+    min-width: 24px
+}
+        
 .truncate-overflow {
     --lh: 1.375rem;
     --max-lines: 2;

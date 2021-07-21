@@ -20,6 +20,7 @@ const basePage = {
     links: [],
     mode: 'default',
     parent: true,
+    parent_path: null,
     prefix: null,
     path: null,
     permissions: [],

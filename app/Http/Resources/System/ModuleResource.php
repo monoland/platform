@@ -16,15 +16,14 @@ class ModuleResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'icon' => $this->icon,
             'name' => $this->name,
-
-            // activate this when use nested table
-            // visit https://github.com/lazychaser/laravel-nestedset for detail
-            // 'nest_deep' => $this->depth,
-            // 'nest_leaf' => $this->isLeaf(),
-            // 'nest_next' => $this->nextSiblings()->count() > 0,
-            // 'nest_prev' => $this->prevSiblings()->count() > 0,
-            
+            'slug' => $this->slug,
+            'color' => $this->color,
+            'path' => $this->path,
+            'visibility' => $this->visibility,
+            'abilities' => AbilityResource::collection($this->whenLoaded('abilities')),
+            'pages' => PageResource::collection($this->whenLoaded('pages')),
             'updated_at' => (string) $this->updated_at,
         ];
     }

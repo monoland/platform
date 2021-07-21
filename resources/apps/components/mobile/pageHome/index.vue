@@ -22,37 +22,43 @@
                         </div>
                     </v-responsive>
                 </div>
-                
-                <div class="relative py-4 clip-corner" :class="`${theme} lighten-4`">
-                    <div class="row justify-center px-2 no-gutters align-start">
-                        <template v-if="docks.length <= 0">
-                            <div class="text-center pt-1 pb-4">
-                                <div class="overline line-height-1 grey--text">anda belum memiliki module yang teregistrasi.</div>
-                            </div>
-                        </template>
 
-                        <template v-for="(page, index) in docks">
-                            <v-col cols="3" :key="`page-${index}`">
-                                <v-card 
-                                    :color="`${theme} lighten-5`" 
-                                    class="d-flex flex-column clip-corner ma-2 elevation-0 rounded-lg" 
-                                    height="100"
-                                    @click="page.module ? onModuleClick : onPageClick"
-                                >
-                                    <v-responsive class="white" height="65">
-                                        <div class="d-flex align-center justify-center height-100">
-                                            <v-icon :color="`${theme} lighten-1`" x-large>{{ page.icon }}</v-icon>
-                                        </div>
-                                    </v-responsive>
-                                    
-                                    <div class="d-flex align-center justify-center height-100">
-                                        <div class="text-caption font-weight-medium text-truncate line-height-1" :class="`${theme}--text`">{{ page.name }}</div>
-                                    </div>
-                                </v-card>
-                            </v-col>
-                        </template>
-                    </div>
-                </div>
+                <template v-if="docks.length <= 0">
+                    <v-sheet :color="theme">
+                        <v-toolbar class="clip-corner" :color="`${theme} lighten-4`">
+                            <v-toolbar-title class="overline text-center grey--text width-100">anda tidak memiliki halaman lain.</v-toolbar-title>
+                        </v-toolbar>
+                    </v-sheet>
+                </template>
+                
+                <template v-else>
+                    <v-sheet :color="theme">
+                        <v-sheet class="clip-corner" :color="`${theme} lighten-4`">
+                            <div class="row justify-center no-gutters align-start">
+                                <template v-for="(page, index) in docks">
+                                    <v-col cols="3" :key="`page-${index}`">
+                                        <v-card 
+                                            :color="`${theme} lighten-5`" 
+                                            class="d-flex flex-column clip-corner ma-2 elevation-0 rounded-lg" 
+                                            height="100"
+                                            @click="page.module ? openModule(page) : openPage(page)"
+                                        >
+                                            <v-responsive class="white" height="65">
+                                                <div class="d-flex align-center justify-center height-100">
+                                                    <v-icon :color="`${theme} lighten-1`" x-large>{{ page.icon }}</v-icon>
+                                                </div>
+                                            </v-responsive>
+                                            
+                                            <div class="d-flex align-center justify-center height-100">
+                                                <div class="text-caption font-weight-medium text-truncate line-height-1" :class="`${theme}--text`">{{ page.name }}</div>
+                                            </div>
+                                        </v-card>
+                                    </v-col>
+                                </template>
+                            </div>
+                        </v-sheet>
+                    </v-sheet>
+                </template>
 
                 <div class="relative flex-grow-1" :class="`${theme} lighten-4`">
                     <div class="relative d-flex flex-column height-100">
@@ -123,6 +129,16 @@ export default {
     created() {
         this.profile = this.$store.state.auth.getItem('profile');
         this.setting = this.$store.state.auth.getItem('appsInfo');
+    },
+
+    methods: {
+        openModule: function(module) {
+            this.$router.push({ name: module.slug + '-dashboard' });
+        },
+
+        openPage: function(page) {
+
+        }
     }
 }
 </script>

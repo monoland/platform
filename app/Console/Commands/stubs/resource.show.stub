@@ -1,0 +1,33 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class DummyClass extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        $currentUser = $request->user();
+
+        return [
+            'record' => new ResourceClass($this),
+            
+            'features' => [
+                'delete' => $currentUser->hasAnyPermission('delete-ModuleName-ResourceName'),
+                'destroy' => $currentUser->hasAnyPermission('destroy-ModuleName-ResourceName'),
+                'print' => $currentUser->hasAnyPermission('print-ModuleName-ResourceName'),
+                'restore' => $currentUser->hasAnyPermission('restore-ModuleName-ResourceName'),
+                'update' => $currentUser->hasAnyPermission('update-ModuleName-ResourceName'),
+            ],
+
+            'links' => [],
+        ];
+    }
+}

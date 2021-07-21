@@ -15,7 +15,7 @@
             
             <v-toolbar-title class="text-uppercase text-subtitle-1">
                 <span class="overline" v-if="page.filter.status">filter </span>
-                <span class="overline">{{ page.title }}</span>
+                <span class="overline">{{ page.title }}-{{ route.path }}</span>
                 <span class="overline" v-if="! page.filter.status && page.mode === 'trashed'"> - trashed</span>
             </v-toolbar-title>
             

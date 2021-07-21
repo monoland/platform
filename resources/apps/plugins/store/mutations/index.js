@@ -164,7 +164,7 @@ const mutations = {
         }
 
         if (['index', 'create'].indexOf(state.route.path) > -1) {
-            state.route.params = {};
+            state.route.params = route.params;
             state.module.page.selected = [];
             state.module.page.selected_index = -1;
             state.module.record = JSON.parse(JSON.stringify(state.module.page.record_base));
@@ -544,6 +544,9 @@ const mutations = {
             // set page parent
             state.module.page.parent = setups.parent;
 
+            // set page parent path
+            state.module.page.parent_path = setups.parent_path;
+
             // set page recordBase
             state.module.page.record_base = setups.record_base;
 
@@ -634,6 +637,8 @@ const mutations = {
             if (_recordIndex < 0) {
                 return;
             }
+
+            state.module.record = record;
             
             Object.keys(record).forEach((key) => {
                 state.module.records[_recordIndex][key] = record[key];

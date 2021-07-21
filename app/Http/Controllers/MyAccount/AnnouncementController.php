@@ -5,9 +5,8 @@ namespace App\Http\Controllers\MyAccount;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\MyAccount\Announcement;
-use App\Http\Resources\MyAccount\AnnouncementShow;
-use App\Http\Resources\MyAccount\AnnouncementResource;
 use App\Http\Resources\MyAccount\AnnouncementCollection;
+use App\Http\Resources\MyAccount\AnnouncementShowResource;
 
 class AnnouncementController extends Controller
 {
@@ -55,7 +54,7 @@ class AnnouncementController extends Controller
             $this->authorize('restore', $announcement);
         }
 
-        return new AnnouncementShow($announcement);
+        return new AnnouncementShowResource($announcement);
     }
 
     /**

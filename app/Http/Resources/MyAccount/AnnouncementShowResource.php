@@ -5,7 +5,7 @@ namespace App\Http\Resources\MyAccount;
 use App\Models\System\Page;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AnnouncementShow extends JsonResource
+class AnnouncementShowResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

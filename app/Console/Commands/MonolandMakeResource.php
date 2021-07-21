@@ -38,7 +38,11 @@ class MonolandMakeResource extends GeneratorCommand
     {
         return $this->isCollection() ?
             $this->resolveStubPath('/stubs/resource.collection.stub') :
-            $this->resolveStubPath('/stubs/resource.stub');
+            (
+                $this->isShowResource() ?
+                $this->resolveStubPath('/stubs/resource.show.stub') :
+                $this->resolveStubPath('/stubs/resource.stub')
+            );
     }
 
     /**
@@ -71,6 +75,15 @@ class MonolandMakeResource extends GeneratorCommand
             $searches['ClassName'] = Str::of($this->argument('name'))->before('Collection')->ucfirst();
             $searches['ResourceClass'] = Str::of($this->argument('name'))->before('Collection')->append('Resource');
             $searches['ResourceName'] = $this->studlyToSlug(Str::of($this->argument('name'))->before('Collection'), '-');
+
+            if ($this->option('module')) {
+                $searches['ModuleName'] = Str::of($this->option('module'))->lower();
+            }
+        }
+
+        if ($this->isShowResource()) {
+            $searches['ResourceClass'] = Str::of($this->argument('name'))->before('ShowResource')->append('Resource');
+            $searches['ResourceName'] = $this->studlyToSlug(Str::of($this->argument('name'))->before('ShowResource'), '-');
 
             if ($this->option('module')) {
                 $searches['ModuleName'] = Str::of($this->option('module'))->lower();
@@ -118,6 +131,16 @@ class MonolandMakeResource extends GeneratorCommand
     protected function isCollection()
     {
         return $this->option('collection') || Str::endsWith($this->argument('name'), 'Collection');
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
+    protected function isShowResource()
+    {
+        return Str::endsWith($this->argument('name'), 'ShowResource');
     }
 
     /**

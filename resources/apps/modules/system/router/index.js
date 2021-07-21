@@ -45,6 +45,66 @@ const route = {
 		},
 
 		{
+			path: 'module/:module/ability',
+			component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-ability'),
+			children: [
+				{
+					path: '',
+					name: 'system-ability',
+					component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-ability/crud/index'),
+				},
+
+				{
+					path: 'create',
+					name: 'system-ability-create',
+					component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-ability/crud/create')
+				},
+
+				{
+					path: ':ability',
+					name: 'system-ability-show',
+					component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-ability/crud/show')
+				},
+				
+				{
+					path: ':ability/edit',
+					name: 'system-ability-edit',
+					component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-ability/crud/create')
+				}
+			]
+		},
+
+		{
+			path: 'module/:module/page',
+			component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-page'),
+			children: [
+				{
+					path: '',
+					name: 'system-page',
+					component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-page/crud/index'),
+				},
+
+				{
+					path: 'create',
+					name: 'system-page-create',
+					component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-page/crud/create')
+				},
+
+				{
+					path: ':page',
+					name: 'system-page-show',
+					component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-page/crud/show')
+				},
+				
+				{
+					path: ':page/edit',
+					name: 'system-page-edit',
+					component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-page/crud/create')
+				}
+			]
+		},
+
+		{
 			path: 'role',
 			component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/role'),
 			children: [

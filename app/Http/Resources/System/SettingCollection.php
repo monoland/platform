@@ -31,6 +31,8 @@ class SettingCollection extends ResourceCollection
             return [];
         }
 
+        $currentUser = $request->user();
+
         return [
             'setups' => [
                 /** the page combo */
@@ -41,14 +43,14 @@ class SettingCollection extends ResourceCollection
                 'mode' => $request->mode,
 
                 /** the page enable fitur */
-                'features' => Cache::rememberForever('features-system-setting-' . $request->user()->id, function () use ($request) {
+                'features' => Cache::rememberForever('features-system-setting-' . $currentUser->id, function () use ($currentUser) {
                     return [
-                        'export' => $request->user()->hasAnyPermission('export-system-setting'),
-                        'filter' => $request->user()->hasAnyPermission('filter-system-setting'),
-                        'import' => $request->user()->hasAnyPermission('import-system-setting'),
-                        'print' => $request->user()->hasAnyPermission('print-system-setting'),
-                        'search' => $request->user()->hasAnyPermission('search-system-setting'),
-                        'trashed' => $request->user()->hasAnyPermission('restore-system-setting', 'destroy-system-setting'),
+                        'export' => $currentUser->hasAnyPermission('export-system-setting'),
+                        'filter' => $currentUser->hasAnyPermission('filter-system-setting'),
+                        'import' => $currentUser->hasAnyPermission('import-system-setting'),
+                        'print' => $currentUser->hasAnyPermission('print-system-setting'),
+                        'search' => $currentUser->hasAnyPermission('search-system-setting'),
+                        'trashed' => $currentUser->hasAnyPermission('restore-system-setting', 'destroy-system-setting'),
                     ];
                 }),
 
@@ -81,7 +83,7 @@ class SettingCollection extends ResourceCollection
                 ],
 
                 /** the page icon */
-                'icon' => $request->user()->getPageIcon('system-setting'),
+                'icon' => $currentUser->getPageIcon('system-setting'),
 
                 /** the record key */
                 'key' => 'id',
@@ -92,7 +94,7 @@ class SettingCollection extends ResourceCollection
 
                 /** the page permission */
                 /** ['create' => bool, 'update' => bool, 'delete' => bool, 'restore' => bool, 'destroy' => bool] */
-                'permissions' => $request->user()->getPermissionOnPage('system-setting'),
+                'permissions' => $currentUser->hasPermission('create-system-setting') ? ['create'] : [],
 
                 /** the page default */
                 'record_base' => [
@@ -101,7 +103,7 @@ class SettingCollection extends ResourceCollection
                 ],
 
                 /** the page title */
-                'title' => $request->user()->getPageTitle('system-setting'),
+                'title' => $currentUser->getPageTitle('system-setting'),
             ]
         ];
     }

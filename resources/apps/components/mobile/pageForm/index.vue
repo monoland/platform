@@ -14,19 +14,21 @@
                 :flat="!page.filter.status"
                 class="z-index-1"
             >
-                <v-btn icon disabled v-if="page.layoutSingle"></v-btn>
+                <v-btn icon disabled></v-btn>
+                
+                <!-- <v-btn icon disabled v-if="page.layoutSingle"></v-btn>
                 
                 <v-btn v-else
                     icon 
                     @click="$store.commit('PAGE_ACTION', { name: 'index' })"
                 >
                     <v-icon>arrow_back</v-icon>
-                </v-btn>
+                </v-btn> -->
 
                 <v-spacer></v-spacer>
                 
                 <v-toolbar-title class="text-uppercase text-subtitle-1">
-                    <span class="overline">{{ page.title }}</span>
+                    <span class="overline">{{ page.title }}-{{ route.path }}</span>
                 </v-toolbar-title>
                 
                 <v-spacer></v-spacer>
@@ -67,7 +69,7 @@
                         min-height="calc(100vh - 168px)"
                         flat tile
                     >
-                        <div class="d-flex relative flex-grow-1">
+                        <div class="d-flex flex-column relative flex-grow-1">
                             <slot></slot>
                         </div>
                     </v-sheet>

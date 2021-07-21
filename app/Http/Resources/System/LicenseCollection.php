@@ -31,6 +31,8 @@ class LicenseCollection extends ResourceCollection
             return [];
         }
 
+        $currentUser = $request->user();
+
         return [
             'setups' => [
                 /** the page combo */
@@ -41,14 +43,14 @@ class LicenseCollection extends ResourceCollection
                 'mode' => $request->mode,
 
                 /** the page enable fitur */
-                'features' => Cache::rememberForever('features-system-license-' . $request->user()->id, function () use ($request) {
+                'features' => Cache::rememberForever('features-system-license-' . $currentUser->id, function () use ($currentUser) {
                     return [
-                        'export' => $request->user()->hasAnyPermission('export-system-license'),
-                        'filter' => $request->user()->hasAnyPermission('filter-system-license'),
-                        'import' => $request->user()->hasAnyPermission('import-system-license'),
-                        'print' => $request->user()->hasAnyPermission('print-system-license'),
-                        'search' => $request->user()->hasAnyPermission('search-system-license'),
-                        'trashed' => $request->user()->hasAnyPermission('restore-system-license', 'destroy-system-license'),
+                        'export' => $currentUser->hasAnyPermission('export-system-license'),
+                        'filter' => $currentUser->hasAnyPermission('filter-system-license'),
+                        'import' => $currentUser->hasAnyPermission('import-system-license'),
+                        'print' => $currentUser->hasAnyPermission('print-system-license'),
+                        'search' => $currentUser->hasAnyPermission('search-system-license'),
+                        'trashed' => $currentUser->hasAnyPermission('restore-system-license', 'destroy-system-license'),
                     ];
                 }),
 
@@ -81,7 +83,7 @@ class LicenseCollection extends ResourceCollection
                 ],
 
                 /** the page icon */
-                'icon' => $request->user()->getPageIcon('system-license'),
+                'icon' => $currentUser->getPageIcon('system-license'),
 
                 /** the record key */
                 'key' => 'id',
@@ -92,7 +94,7 @@ class LicenseCollection extends ResourceCollection
 
                 /** the page permission */
                 /** ['create' => bool, 'update' => bool, 'delete' => bool, 'restore' => bool, 'destroy' => bool] */
-                'permissions' => $request->user()->getPermissionOnPage('system-license'),
+                'permissions' => $currentUser->hasPermission('create-system-license') ? ['create'] : [],
 
                 /** the page default */
                 'record_base' => [
@@ -101,7 +103,7 @@ class LicenseCollection extends ResourceCollection
                 ],
 
                 /** the page title */
-                'title' => $request->user()->getPageTitle('system-license'),
+                'title' => $currentUser->getPageTitle('system-license'),
             ]
         ];
     }

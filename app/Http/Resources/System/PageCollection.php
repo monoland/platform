@@ -31,6 +31,8 @@ class PageCollection extends ResourceCollection
             return [];
         }
 
+        $currentUser = $request->user();
+
         return [
             'setups' => [
                 /** the page combo */
@@ -41,14 +43,14 @@ class PageCollection extends ResourceCollection
                 'mode' => $request->mode,
 
                 /** the page enable fitur */
-                'features' => Cache::rememberForever('features-system-page-' . $request->user()->id, function () use ($request) {
+                'features' => Cache::rememberForever('features-system-page-' . $currentUser->id, function () use ($currentUser) {
                     return [
-                        'export' => $request->user()->hasAnyPermission('export-system-page'),
-                        'filter' => $request->user()->hasAnyPermission('filter-system-page'),
-                        'import' => $request->user()->hasAnyPermission('import-system-page'),
-                        'print' => $request->user()->hasAnyPermission('print-system-page'),
-                        'search' => $request->user()->hasAnyPermission('search-system-page'),
-                        'trashed' => $request->user()->hasAnyPermission('restore-system-page', 'destroy-system-page'),
+                        'export' => $currentUser->hasAnyPermission('export-system-page'),
+                        'filter' => $currentUser->hasAnyPermission('filter-system-page'),
+                        'import' => $currentUser->hasAnyPermission('import-system-page'),
+                        'print' => $currentUser->hasAnyPermission('print-system-page'),
+                        'search' => $currentUser->hasAnyPermission('search-system-page'),
+                        'trashed' => $currentUser->hasAnyPermission('restore-system-page', 'destroy-system-page'),
                     ];
                 }),
 
@@ -72,16 +74,23 @@ class PageCollection extends ResourceCollection
                 'finds' => ['name'],
 
                 /** the page is parent ? */
-                'parent' => true,
+                'parent' => $currentUser->getPageHasParent('system-page'),
+
+                /** the page parent slug */
+                'parent_path' => $currentUser->getPageParentPath('system-page'),
 
                 /** the table header */
                 'headers' => [
+                    ['text' => 'Icon', 'value' => 'icon', 'align' => 'center', 'filterable' => false, 'sortable' => false, 'width' => 80],
                     ['text' => 'Name', 'value' => 'name'],
+                    ['text' => 'Slug', 'value' => 'slug'],
+                    ['text' => 'Prefix', 'value' => 'prefix'],
+                    ['text' => 'Path', 'value' => 'path'],
                     ['text' => 'Updated', 'value' => 'updated_at', 'class' => 'field-datetime'],
                 ],
 
                 /** the page icon */
-                'icon' => $request->user()->getPageIcon('system-page'),
+                'icon' => $currentUser->getPageIcon('system-page'),
 
                 /** the record key */
                 'key' => 'id',
@@ -92,7 +101,7 @@ class PageCollection extends ResourceCollection
 
                 /** the page permission */
                 /** ['create' => bool, 'update' => bool, 'delete' => bool, 'restore' => bool, 'destroy' => bool] */
-                'permissions' => $request->user()->getPermissionOnPage('system-page'),
+                'permissions' => $currentUser->hasPermission('create-system-page') ? ['create'] : [],
 
                 /** the page default */
                 'record_base' => [
@@ -101,7 +110,7 @@ class PageCollection extends ResourceCollection
                 ],
 
                 /** the page title */
-                'title' => $request->user()->getPageTitle('system-page'),
+                'title' => $currentUser->getPageTitle('system-page'),
             ]
         ];
     }

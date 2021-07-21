@@ -17,6 +17,8 @@ class AbilityResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'module' => $this->module->name,
+            'role' => $this->role->name,
 
             // activate this when use nested table
             // visit https://github.com/lazychaser/laravel-nestedset for detail

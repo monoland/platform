@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\System;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\System\RoleCollection;
-use App\Http\Resources\System\RoleResource;
 use App\Models\System\Role;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\System\RoleResource;
+use App\Http\Resources\System\RoleCollection;
+use App\Http\Resources\System\RoleShowResource;
 
 class RoleController extends Controller
 {
@@ -50,7 +51,7 @@ class RoleController extends Controller
     {
         $this->authorize('show', $role);
 
-        return new RoleResource($role);
+        return new RoleShowResource($role);
     }
 
     /**

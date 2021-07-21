@@ -31,6 +31,8 @@ class PermissionCollection extends ResourceCollection
             return [];
         }
 
+        $currentUser = $request->user();
+
         return [
             'setups' => [
                 /** the page combo */
@@ -41,14 +43,14 @@ class PermissionCollection extends ResourceCollection
                 'mode' => $request->mode,
 
                 /** the page enable fitur */
-                'features' => Cache::rememberForever('features-system-permission-' . $request->user()->id, function () use ($request) {
+                'features' => Cache::rememberForever('features-system-permission-' . $currentUser->id, function () use ($currentUser) {
                     return [
-                        'export' => $request->user()->hasAnyPermission('export-system-permission'),
-                        'filter' => $request->user()->hasAnyPermission('filter-system-permission'),
-                        'import' => $request->user()->hasAnyPermission('import-system-permission'),
-                        'print' => $request->user()->hasAnyPermission('print-system-permission'),
-                        'search' => $request->user()->hasAnyPermission('search-system-permission'),
-                        'trashed' => $request->user()->hasAnyPermission('restore-system-permission', 'destroy-system-permission'),
+                        'export' => $currentUser->hasAnyPermission('export-system-permission'),
+                        'filter' => $currentUser->hasAnyPermission('filter-system-permission'),
+                        'import' => $currentUser->hasAnyPermission('import-system-permission'),
+                        'print' => $currentUser->hasAnyPermission('print-system-permission'),
+                        'search' => $currentUser->hasAnyPermission('search-system-permission'),
+                        'trashed' => $currentUser->hasAnyPermission('restore-system-permission', 'destroy-system-permission'),
                     ];
                 }),
 
@@ -81,7 +83,7 @@ class PermissionCollection extends ResourceCollection
                 ],
 
                 /** the page icon */
-                'icon' => $request->user()->getPageIcon('system-permission'),
+                'icon' => $currentUser->getPageIcon('system-permission'),
 
                 /** the record key */
                 'key' => 'id',
@@ -92,7 +94,7 @@ class PermissionCollection extends ResourceCollection
 
                 /** the page permission */
                 /** ['create' => bool, 'update' => bool, 'delete' => bool, 'restore' => bool, 'destroy' => bool] */
-                'permissions' => $request->user()->getPermissionOnPage('system-permission'),
+                'permissions' => $currentUser->hasPermission('create-system-permission') ? ['create'] : [],
 
                 /** the page default */
                 'record_base' => [
@@ -101,7 +103,7 @@ class PermissionCollection extends ResourceCollection
                 ],
 
                 /** the page title */
-                'title' => $request->user()->getPageTitle('system-permission'),
+                'title' => $currentUser->getPageTitle('system-permission'),
             ]
         ];
     }

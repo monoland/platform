@@ -22,7 +22,7 @@ class PageController extends Controller
         $this->authorize('view', Page::class);
 
         return new PageCollection(
-            $module->pages()->filterOn($request)->paginate($request->itemsPerPage)
+            $module->pages()->withDepth()->filterOn($request)->paginate($request->itemsPerPage)
         );
     }
 

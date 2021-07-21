@@ -29,6 +29,7 @@ class Ability extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         return $this
+            ->with(['module', 'role'])
             ->withTrashed()
             ->where($field ?? $this->getRouteKeyName(), $value)
             ->first();
@@ -41,6 +42,11 @@ class Ability extends Model
     public function module()
     {
         return $this->belongsTo(Module::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 
     public function pages()

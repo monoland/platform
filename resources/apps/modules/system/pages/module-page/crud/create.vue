@@ -3,11 +3,7 @@
         <v-card-text>
             <v-row no-gutters>
                 <v-col cols="12">
-                    <v-text-field
-                        autocomplete="off"
-                        label="Name"
-                        v-model="record.name"
-                    ></v-text-field>
+                    
                 </v-col>
             </v-row>
         </v-card-text>

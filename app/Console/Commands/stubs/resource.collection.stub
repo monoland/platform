@@ -74,7 +74,10 @@ class DummyClass extends ResourceCollection
                 'finds' => ['name'],
 
                 /** the page is parent ? */
-                'parent' => true,
+                'parent' => $currentUser->getPageHasParent('ModuleName-ResourceName'),
+
+                /** the page parent slug */
+                'parent_path' => $currentUser->getPageParentPath('ModuleName-ResourceName'),
 
                 /** the table header */
                 'headers' => [

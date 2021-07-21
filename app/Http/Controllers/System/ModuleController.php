@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\System;
 
+use Illuminate\Http\Request;
+use App\Models\System\Module;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\System\ModuleCollection;
-use App\Http\Resources\System\ModuleResource;
-use App\Models\System\Module;
-use Illuminate\Http\Request;
+use App\Http\Resources\System\ModuleShowResource;
 
 class ModuleController extends Controller
 {
@@ -50,7 +50,7 @@ class ModuleController extends Controller
     {
         $this->authorize('show', $module);
 
-        return new ModuleResource($module);
+        return new ModuleShowResource($module);
     }
 
     /**

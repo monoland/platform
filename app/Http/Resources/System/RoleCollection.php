@@ -31,6 +31,8 @@ class RoleCollection extends ResourceCollection
             return [];
         }
 
+        $currentUser = $request->user();
+
         return [
             'setups' => [
                 /** the page combo */
@@ -41,14 +43,14 @@ class RoleCollection extends ResourceCollection
                 'mode' => $request->mode,
 
                 /** the page enable fitur */
-                'features' => Cache::rememberForever('features-system-role-' . $request->user()->id, function () use ($request) {
+                'features' => Cache::rememberForever('features-system-role-' . $currentUser->id, function () use ($currentUser) {
                     return [
-                        'export' => $request->user()->hasAnyPermission('export-system-role'),
-                        'filter' => $request->user()->hasAnyPermission('filter-system-role'),
-                        'import' => $request->user()->hasAnyPermission('import-system-role'),
-                        'print' => $request->user()->hasAnyPermission('print-system-role'),
-                        'search' => $request->user()->hasAnyPermission('search-system-role'),
-                        'trashed' => $request->user()->hasAnyPermission('restore-system-role', 'destroy-system-role'),
+                        'export' => $currentUser->hasAnyPermission('export-system-role'),
+                        'filter' => $currentUser->hasAnyPermission('filter-system-role'),
+                        'import' => $currentUser->hasAnyPermission('import-system-role'),
+                        'print' => $currentUser->hasAnyPermission('print-system-role'),
+                        'search' => $currentUser->hasAnyPermission('search-system-role'),
+                        'trashed' => $currentUser->hasAnyPermission('restore-system-role', 'destroy-system-role'),
                     ];
                 }),
 
@@ -81,7 +83,7 @@ class RoleCollection extends ResourceCollection
                 ],
 
                 /** the page icon */
-                'icon' => $request->user()->getPageIcon('system-role'),
+                'icon' => $currentUser->getPageIcon('system-role'),
 
                 /** the record key */
                 'key' => 'id',
@@ -92,7 +94,7 @@ class RoleCollection extends ResourceCollection
 
                 /** the page permission */
                 /** ['create' => bool, 'update' => bool, 'delete' => bool, 'restore' => bool, 'destroy' => bool] */
-                'permissions' => $request->user()->getPermissionOnPage('system-role'),
+                'permissions' => $currentUser->hasPermission('create-system-role') ? ['create'] : [],
 
                 /** the page default */
                 'record_base' => [
@@ -101,7 +103,7 @@ class RoleCollection extends ResourceCollection
                 ],
 
                 /** the page title */
-                'title' => $request->user()->getPageTitle('system-role'),
+                'title' => $currentUser->getPageTitle('system-role'),
             ]
         ];
     }
