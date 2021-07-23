@@ -37,6 +37,7 @@ class MonolandMakeMigration extends Command
     protected $modules = [
         'system', //done
         'account', //done
+        'reference', //done
     ];
 
     /**

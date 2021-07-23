@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $superadmin->attachAbilities(
             'myaccount-superadmin',
             'system-superadmin',
+            'reference-superadmin',
         );
     }
 }

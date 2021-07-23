@@ -10,14 +10,16 @@
 
         <template v-else>
             <v-sheet :color="theme">
-                <v-sheet class="clip-corner" :color="`${theme} lighten-4`">
+                <v-sheet class="clip-corner px-8 py-2" :color="`${theme} lighten-4`">
                     <div class="row justify-center no-gutters align-start">
                         <template v-for="(page, index) in docks">
-                            <v-col cols="1" :key="`page-${index}`">
-                                <v-card 
+                            <v-col cols="1" :key="`page-${index}`" v-if="index < 11">
+                                <v-sheet 
                                     :color="`${theme} lighten-5`" 
-                                    class="d-flex flex-column clip-corner ma-2 elevation-0 rounded-lg" 
+                                    class="d-flex flex-column clip-corner ma-2 elevation-0 overflow-hidden" 
                                     height="100"
+                                    rounded="lg"
+                                    style="cursor: pointer;"
                                     @click="page.module ? openModule(page) : openPage(page)"
                                 >
                                     <v-responsive class="white" height="65">
@@ -26,14 +28,61 @@
                                         </div>
                                     </v-responsive>
                                     
-                                    <div class="d-flex align-center justify-center height-100">
+                                    <div class="d-flex align-center justify-center height-100 px-2">
                                         <div class="text-caption font-weight-medium text-truncate line-height-1" :class="`${theme}--text`">{{ page.name }}</div>
                                     </div>
-                                </v-card>
+                                </v-sheet>
                             </v-col>
                         </template>
+
+                        <v-col cols="1" v-if="docks.length > 11">
+                            <v-sheet 
+                                class="d-flex flex-column clip-corner ma-2 elevation-0 overflow-hidden" 
+                                height="100"
+                                rounded="lg"
+                                style="cursor: pointer;"
+                                @click="expand = !expand"
+                            >
+                                <v-responsive :class="`${theme} lighten-4`" height="100%">
+                                    <div class="d-flex align-center justify-center height-100">
+                                        <v-icon :color="theme" large>unfold_more</v-icon>
+                                    </div>
+                                </v-responsive>
+                            </v-sheet>
+                        </v-col>
                     </div>
                 </v-sheet>
+
+                <v-expand-transition>
+                    <v-sheet :color="`${theme} lighten-4`" v-show="expand">
+                        <div class="relative px-8 py-2">
+                            <div class="row justify-center no-gutters align-start">
+                                <template v-for="(page, index) in docks">
+                                    <v-col cols="1" :key="`page-${index}`" v-if="index > 11">
+                                        <v-sheet 
+                                            :color="`${theme} lighten-5`" 
+                                            class="d-flex flex-column clip-corner ma-2 elevation-0 overflow-hidden" 
+                                            height="100"
+                                            rounded="lg"
+                                            style="cursor: pointer;"
+                                            @click="page.module ? openModule(page) : openPage(page)"
+                                        >
+                                            <v-responsive class="white" height="65">
+                                                <div class="d-flex align-center justify-center height-100">
+                                                    <v-icon :color="`${theme} lighten-1`" x-large>{{ page.icon }}</v-icon>
+                                                </div>
+                                            </v-responsive>
+                                            
+                                            <div class="d-flex align-center justify-center height-100 px-2">
+                                                <div class="text-caption font-weight-medium text-truncate line-height-1" :class="`${theme}--text`">{{ page.name }}</div>
+                                            </div>
+                                        </v-sheet>
+                                    </v-col>
+                                </template>
+                            </div>
+                        </div>
+                    </v-sheet>
+                </v-expand-transition>
             </v-sheet>
         </template>
 
@@ -87,6 +136,10 @@ export default {
             return this.$store.state.theme;
         }
     },
+
+    data:() => ({
+        expand: false
+    }),
 
     methods: {
         openModule: function(module) {
