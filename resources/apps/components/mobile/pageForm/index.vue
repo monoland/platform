@@ -9,60 +9,31 @@
         </div>
 
         <template v-else>
-            <v-toolbar 
-                :color="`${theme} lighten-4`"  
-                :flat="!page.filter.status"
-                class="z-index-1"
-            >
-                <v-btn icon disabled></v-btn>
-                
-                <v-spacer></v-spacer>
-                
-                <v-toolbar-title class="text-uppercase text-subtitle-1">
-                    <span class="overline">{{ page.title }}-{{ route.path }}</span>
-                </v-toolbar-title>
-                
-                <v-spacer></v-spacer>
-
-                <v-btn icon v-if="route.path === 'create'" @click="postCreate">
-                    <v-icon>outbox</v-icon>
-                </v-btn>
-
-                <v-btn icon v-else-if="route.path === 'edit'" @click="postUpdate">
-                    <v-icon>outbox</v-icon>
-                </v-btn>
-
-                <v-btn icon disabled v-else></v-btn>
-            </v-toolbar>
-
             <v-sheet
                 class="clip-corner"
-                :color="`${theme} lighten-5`"
-                height="calc(100vh - 168px)" 
+                color="grey lighten-3"
+                height="calc(100vh - 112px)" 
                 width="100%"
             >
                 <div v-show="showShadow" 
                     v-scroll:#form-mobile-content="onFormMobileContentScroll"  
                     class="absolute v-sheet--shadow-content z-index-1" 
-                    :style="`top: 47px;`"
+                    style="top: -4px;"
                 ></div>
 
                 <v-responsive
                     id="form-mobile-content"
                     class="overflow-y-auto"
-                    height="calc(100vh - 168px)"
+                    height="calc(100vh - 112px)"
                 >
                     <v-sheet 
-                        :color="color"
-                        class="d-flex mx-auto flex-column" 
-                        :elevation="elevation"
+                        width="100vw"
                         :max-width="maxWidth"
-                        min-height="calc(100vh - 168px)"
+                        class="d-flex mx-auto flex-column" 
+                        min-height="calc(100vh - 112px)"
                         flat tile
                     >
-                        <div class="d-flex flex-column relative flex-grow-1">
-                            <slot></slot>
-                        </div>
+                        <slot></slot>
                     </v-sheet>
                 </v-responsive>
             </v-sheet>
@@ -117,17 +88,17 @@ export default {
             return this.$store.state.module.page.features.indexOf(permission) !== -1;
         },
 
-        postCreate: function() {
-            this.$store.dispatch('create_record').then(({ commit }) => {
-                commit('PAGE_ACTION', { name: 'index' });
-            });
-        },
+        // postCreate: function() {
+        //     this.$store.dispatch('create_record').then(({ commit }) => {
+        //         commit('PAGE_ACTION', { name: 'index' });
+        //     });
+        // },
 
-        postUpdate: function() {
-            this.$store.dispatch('update_record').then(({ commit }) => {
-                commit('PAGE_ACTION', { name: 'index' });
-            });
-        },
+        // postUpdate: function() {
+        //     this.$store.dispatch('update_record').then(({ commit }) => {
+        //         commit('PAGE_ACTION', { name: 'index' });
+        //     });
+        // },
     }
 }
 </script>

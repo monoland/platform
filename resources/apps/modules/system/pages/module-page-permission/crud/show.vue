@@ -3,10 +3,10 @@
         :click-link="bindClickLink"
         refetch-data
     >
-        <v-sheet class="mt-6 overflow-hidden" rounded="lg">
+        <v-sheet class="overflow-hidden" rounded="lg">
             <div class="px-4 pt-4 text-h6">Permission information</div>
         
-            <v-simple-table class="mt-2">
+            <v-simple-table class="mt-2 v-data-table--nohover">
                 <template v-slot:default>
                     <tbody>
                         <tr>

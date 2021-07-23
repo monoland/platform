@@ -120,30 +120,6 @@
                 <v-icon>add</v-icon>
             </v-btn>
 
-            <v-btn v-if="route.path === 'create' && hasPermission('create')"
-                :color="theme"
-                key="create"
-                absolute
-                fab dark
-                large
-                style="bottom: 27px; right: 27px;"
-                @click="postCreate"
-            >
-                <v-icon>outbox</v-icon>
-            </v-btn>
-
-            <v-btn v-if="route.path === 'edit' && hasPermission('update')"
-                :color="theme"
-                key="update"
-                absolute
-                fab dark
-                large
-                style="bottom: 27px; right: 27px;"
-                @click="postUpdate"
-            >
-                <v-icon>outbox</v-icon>
-            </v-btn>
-
             <v-speed-dial v-if="route.path === 'show' && hasPermission('show')"
                 v-model="fab"
                 absolute
@@ -328,18 +304,6 @@ export default {
         postDelete: function() {
             this.$store.dispatch('delete_record').then(({ commit }) => {
                 this.dialog_delete = false;
-                commit('PAGE_ACTION', { name: 'index' });
-            });
-        },
-
-        postCreate: function() {
-            this.$store.dispatch('create_record').then(({ commit }) => {
-                commit('PAGE_ACTION', { name: 'index' });
-            });
-        },
-
-        postUpdate: function() {
-            this.$store.dispatch('update_record').then(({ commit }) => {
                 commit('PAGE_ACTION', { name: 'index' });
             });
         },

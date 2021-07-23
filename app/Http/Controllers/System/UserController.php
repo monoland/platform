@@ -5,8 +5,8 @@ namespace App\Http\Controllers\System;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\System\UserResource;
 use App\Http\Resources\System\UserCollection;
+use App\Http\Resources\System\UserShowResource;
 
 class UserController extends Controller
 {
@@ -50,7 +50,7 @@ class UserController extends Controller
     {
         $this->authorize('show', $user);
 
-        return new UserResource($user);
+        return new UserShowResource($user);
     }
 
     /**

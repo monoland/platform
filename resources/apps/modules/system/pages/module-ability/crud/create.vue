@@ -1,6 +1,6 @@
 <template>
     <mono-page-form>
-        <v-sheet class="my-6 overflow-hidden" rounded="lg">
+        <v-sheet class="overflow-hidden" rounded="lg">
             <div class="px-4 pt-4 text-h6">Create new ability</div>
             
             <v-card-text>

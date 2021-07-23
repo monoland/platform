@@ -17,6 +17,9 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'email' => $this->email,
+
+            'licenses' => LicenseResource::collection($this->whenLoaded('licenses')),
 
             // activate this when use nested table
             // visit https://github.com/lazychaser/laravel-nestedset for detail

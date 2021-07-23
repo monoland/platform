@@ -41,7 +41,19 @@
                         <v-icon>search</v-icon>
                     </v-btn>
 
-                    <v-btn icon disabled v-else></v-btn>
+                    <template v-else>
+                        <template v-if="['create', 'edit'].indexOf(route.path) > -1">
+                            <v-btn icon v-if="route.path === 'create'" @click="postCreate">
+                                <v-icon>outbox</v-icon>
+                            </v-btn>
+
+                            <v-btn icon v-else-if="route.path === 'edit'" @click="postUpdate">
+                                <v-icon>outbox</v-icon>
+                            </v-btn>
+                        </template>
+
+                        <v-btn icon disabled v-else></v-btn>
+                    </template>
                 </template>
             </v-app-bar>
 
@@ -149,6 +161,18 @@ export default {
 
         hasPermission: function(permission) {
             return this.features.indexOf(permission) > -1;
+        },
+
+        postCreate: function() {
+            this.$store.dispatch('create_record').then(({ commit }) => {
+                commit('PAGE_ACTION', { name: 'index' });
+            });
+        },
+
+        postUpdate: function() {
+            this.$store.dispatch('update_record').then(({ commit }) => {
+                commit('PAGE_ACTION', { name: 'index' });
+            });
         }
     }
 };

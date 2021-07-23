@@ -3,10 +3,10 @@
         :click-link="bindClickLink"
         refetch-data
     >
-        <v-sheet class="mt-8 overflow-hidden" rounded="lg">
+        <v-sheet class="overflow-hidden" rounded="lg">
             <div class="px-4 pt-4 text-h6">Module</div>
             
-            <v-simple-table class="mt-2">
+            <v-simple-table class="mt-2 v-data-table--nohover">
                 <template v-slot:default>
                     <tbody>
                         <tr>
@@ -41,7 +41,7 @@
         <v-sheet class="mt-6 overflow-hidden" rounded="lg">
             <div class="px-4 pt-4 text-h6">Module Ability</div>
 
-            <v-simple-table class="mt-2">
+            <v-simple-table class="mt-2 v-data-table--nohover">
                 <template v-slot:default>
                     <thead>
                         <tr>
@@ -60,10 +60,10 @@
             </v-simple-table>
         </v-sheet>
 
-        <v-sheet class="my-6 overflow-hidden" rounded="lg">
+        <v-sheet class="mt-6 overflow-hidden" rounded="lg">
             <div class="px-4 pt-4 text-h6">Module Pages</div>
             
-            <v-simple-table class="mt-2">
+            <v-simple-table class="mt-2 v-data-table--nohover">
                 <template v-slot:default>
                     <thead>
                         <tr>

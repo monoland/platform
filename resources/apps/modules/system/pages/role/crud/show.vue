@@ -3,10 +3,10 @@
         :click-link="bindClickLink"
         refetch-data
     >
-        <v-sheet class="mt-8 overflow-hidden" rounded="lg">
+        <v-sheet class="overflow-hidden" rounded="lg">
             <div class="px-4 pt-4 text-h6">Role</div>
             
-            <v-simple-table class="mt-2">
+            <v-simple-table class="mt-2 v-data-table--nohover">
                 <template v-slot:default>
                     <tbody>
                         <tr>
@@ -21,7 +21,7 @@
         <v-sheet class="mt-6 overflow-hidden" rounded="lg">
             <div class="px-4 pt-4 text-h6">Role has abilities</div>
 
-            <v-simple-table class="mt-2">
+            <v-simple-table class="mt-2 v-data-table--nohover">
                 <template v-slot:default>
                     <thead>
                         <tr>

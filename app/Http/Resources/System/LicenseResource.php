@@ -17,6 +17,10 @@ class LicenseResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'module' => $this->module->slug,
+            'module_id' => $this->module->id,
+            'ability' => $this->ability->name,
+            'ability_id' => $this->ability->id,
 
             // activate this when use nested table
             // visit https://github.com/lazychaser/laravel-nestedset for detail

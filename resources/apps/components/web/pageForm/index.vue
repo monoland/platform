@@ -11,7 +11,7 @@
         <template v-else>
             <v-sheet
                 class="relative clip-corner overflow-hidden"
-                :color="`grey lighten-3`"
+                color="grey lighten-3"
                 height="calc(100vh - 88px)"
                 width="100%"
             >
@@ -33,7 +33,9 @@
                         min-height="calc(100vh - 152px)"
                         flat tile
                     >
-                        <slot></slot>
+                        <div class="relative my-6">
+                            <slot></slot>
+                        </div>
                     </v-sheet>
                 </v-responsive>
             </v-sheet>
