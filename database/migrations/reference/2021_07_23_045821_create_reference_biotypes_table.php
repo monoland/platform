@@ -15,6 +15,9 @@ class CreateReferenceBiotypesTable extends Migration
     {
         Schema::create('reference_biotypes', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

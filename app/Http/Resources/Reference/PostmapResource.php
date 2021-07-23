@@ -4,7 +4,7 @@ namespace App\Http\Resources\Reference;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SectionRoomResource extends JsonResource
+class PostmapResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

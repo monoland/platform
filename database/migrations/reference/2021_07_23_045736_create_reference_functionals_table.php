@@ -15,6 +15,19 @@ class CreateReferenceFunctionalsTable extends Migration
     {
         Schema::create('reference_functionals', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->string('nickname');
+            $table->foreignId('sector_id');
+            $table->foreignId('postype_id')->nullable();
+            $table->foreignId('grade_id');
+            $table->foreignId('expertise_id')->nullable();
+            $table->unsignedSmallInteger('job_class')->nullable();
+            $table->unsignedSmallInteger('age_limit')->nullable();
+            $table->string('reff')->nullable()->index();
+            $table->string('maps')->nullable()->index();
+            $table->string('sapk')->nullable()->index();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -15,6 +15,12 @@ class CreateReferenceDistrictsTable extends Migration
     {
         Schema::create('reference_districts', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->string('reff')->index();
+            $table->foreignId('regency_id');
+            $table->foreignId('province_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

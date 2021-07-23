@@ -15,6 +15,10 @@ class CreateReferencePostypesTable extends Migration
     {
         Schema::create('reference_postypes', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->foreignId('spot_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

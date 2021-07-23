@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReferenceGradesTable extends Migration
+class CreateReferenceSectionmapsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateReferenceGradesTable extends Migration
      */
     public function up()
     {
-        Schema::create('reference_grades', function (Blueprint $table) {
+        Schema::create('reference_sectionmaps', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
             $table->string('slug')->unique();
-            $table->string('alias')->nullable();
-            $table->foreignId('level_id');
-            $table->foreignId('postype_id')->nullable();
-            $table->nestedSet();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -33,6 +29,6 @@ class CreateReferenceGradesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reference_grades');
+        Schema::dropIfExists('reference_sectionmaps');
     }
 }

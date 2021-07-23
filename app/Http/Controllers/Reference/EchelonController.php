@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Reference;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Reference\EchelonCollection;
-use App\Http\Resources\Reference\EchelonResource;
 use App\Models\Reference\Echelon;
+use App\Models\Reference\Echelonmap;
 use Illuminate\Http\Request;
 
 class EchelonController extends Controller
@@ -14,14 +14,15 @@ class EchelonController extends Controller
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Reference\Echelonmap  $echelonmap
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, Echelonmap $echelonmap)
     {
         $this->authorize('view', Echelon::class);
 
         return new EchelonCollection(
-            Echelon::filterOn($request)->paginate($request->itemsPerPage)
+            $echelonmap->echelons()->filterOn($request)->paginate($request->itemsPerPage)
         );
     }
 
@@ -29,38 +30,41 @@ class EchelonController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Reference\Echelonmap  $echelonmap
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Echelonmap $echelonmap)
     {
         $this->authorize('create', Echelon::class);
 
         $this->validate($request, []);
 
-        return Echelon::storeRecord($request);
+        return Echelon::storeRecord($request, $echelonmap);
     }
 
     /**
      * Display the specified resource.
      *
+     * @param  \App\Models\Reference\Echelonmap  $echelonmap
      * @param  \App\Models\Reference\Echelon  $echelon
      * @return \Illuminate\Http\Response
      */
-    public function show(Echelon $echelon)
+    public function show(Echelonmap $echelonmap, Echelon $echelon)
     {
         $this->authorize('show', $echelon);
 
-        return new EchelonResource($echelon);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Reference\Echelonmap  $echelonmap
      * @param  \App\Models\Reference\Echelon  $echelon
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Echelon $echelon)
+    public function update(Request $request, Echelonmap $echelonmap, Echelon $echelon)
     {
         $this->authorize('update', $echelon);
 
@@ -72,10 +76,11 @@ class EchelonController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Reference\Echelon $echelon
+     * @param  \App\Models\Reference\Echelonmap  $echelonmap
+     * @param  \App\Models\Reference\Echelon  $echelon
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Echelon $echelon)
+    public function destroy(Echelonmap $echelonmap, Echelon $echelon)
     {
         $this->authorize('delete', $echelon);
 
@@ -88,7 +93,7 @@ class EchelonController extends Controller
      * @param \App\Models\Reference\Echelon  $echelon
      * @return \Illuminate\Http\Response
      */
-    public function restore(Echelon $echelon)
+    public function restore(Echelonmap $echelonmap, Echelon $echelon)
     {
         $this->authorize('restore', $echelon);
 
@@ -101,7 +106,7 @@ class EchelonController extends Controller
      * @param \App\Models\Reference\Echelon $echelon
      * @return \Illuminate\Http\Response
      */
-    public function forceDelete(Echelon $echelon)
+    public function forceDelete(Echelonmap $echelonmap, Echelon $echelon)
     {
         $this->authorize('destroy', $echelon);
 
@@ -112,9 +117,10 @@ class EchelonController extends Controller
      * Import data to the model
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Reference\Echelonmap  $echelonmap
      * @return \Illuminate\Http\Response
      */
-    public function import(Request $request)
+    public function import(Request $request, Echelonmap $echelonmap)
     {
         $this->authorize('import', Echelon::class);
 
@@ -125,9 +131,10 @@ class EchelonController extends Controller
      * Export data from the model
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Reference\Echelonmap  $echelonmap
      * @return \Illuminate\Http\Response
      */
-    public function export(Request $request)
+    public function export(Request $request, Echelonmap $echelonmap)
     {
         $this->authorize('export', Echelon::class);
 
@@ -138,9 +145,10 @@ class EchelonController extends Controller
      * Print report from the model
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Reference\Echelonmap  $echelonmap
      * @return \Illuminate\Http\Response
      */
-    public function report(Request $request)
+    public function report(Request $request, Echelonmap $echelonmap)
     {
         $this->authorize('report', Echelon::class);
 

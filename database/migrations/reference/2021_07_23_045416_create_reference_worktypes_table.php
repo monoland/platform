@@ -15,6 +15,11 @@ class CreateReferenceWorktypesTable extends Migration
     {
         Schema::create('reference_worktypes', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->string('reff')->nullable()->index();
+            $table->nestedSet();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

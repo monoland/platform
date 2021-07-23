@@ -15,6 +15,15 @@ class CreateReferenceVillagesTable extends Migration
     {
         Schema::create('reference_villages', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->string('reff')->index();
+            $table->unsignedSmallInteger('grade');
+            $table->unsignedInteger('postcode')->nullable();
+            $table->foreignId('district_id');
+            $table->foreignId('regency_id');
+            $table->foreignId('province_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

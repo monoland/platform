@@ -15,6 +15,10 @@ class CreateReferenceSectorsTable extends Migration
     {
         Schema::create('reference_sectors', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->string('reff')->nullable()->index();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

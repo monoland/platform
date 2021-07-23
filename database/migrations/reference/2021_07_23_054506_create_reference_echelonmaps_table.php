@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReferenceSectionRoomsTable extends Migration
+class CreateReferenceEchelonmapsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateReferenceSectionRoomsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reference_section_rooms', function (Blueprint $table) {
+        Schema::create('reference_echelonmaps', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateReferenceSectionRoomsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reference_section_rooms');
+        Schema::dropIfExists('reference_echelonmaps');
     }
 }

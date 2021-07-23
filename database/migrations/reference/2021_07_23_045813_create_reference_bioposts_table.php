@@ -15,6 +15,10 @@ class CreateReferenceBiopostsTable extends Migration
     {
         Schema::create('reference_bioposts', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->string('reff')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

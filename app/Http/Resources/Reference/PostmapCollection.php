@@ -5,7 +5,7 @@ namespace App\Http\Resources\Reference;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Cache;
 
-class SectionRoomCollection extends ResourceCollection
+class PostmapCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,7 +15,7 @@ class SectionRoomCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return SectionRoomResource::collection($this->collection);
+        return PostmapResource::collection($this->collection);
     }
 
     /**
@@ -43,14 +43,14 @@ class SectionRoomCollection extends ResourceCollection
                 'mode' => $request->mode,
 
                 /** the page enable fitur */
-                'features' => Cache::rememberForever('features-reference-section-room-' . $currentUser->id, function () use ($currentUser) {
+                'features' => Cache::rememberForever('features-reference-postmap-' . $currentUser->id, function () use ($currentUser) {
                     return [
-                        'export' => $currentUser->hasAnyPermission('export-reference-section-room'),
-                        'filter' => $currentUser->hasAnyPermission('filter-reference-section-room'),
-                        'import' => $currentUser->hasAnyPermission('import-reference-section-room'),
-                        'print' => $currentUser->hasAnyPermission('print-reference-section-room'),
-                        'search' => $currentUser->hasAnyPermission('search-reference-section-room'),
-                        'trashed' => $currentUser->hasAnyPermission('restore-reference-section-room', 'destroy-reference-section-room'),
+                        'export' => $currentUser->hasAnyPermission('export-reference-postmap'),
+                        'filter' => $currentUser->hasAnyPermission('filter-reference-postmap'),
+                        'import' => $currentUser->hasAnyPermission('import-reference-postmap'),
+                        'print' => $currentUser->hasAnyPermission('print-reference-postmap'),
+                        'search' => $currentUser->hasAnyPermission('search-reference-postmap'),
+                        'trashed' => $currentUser->hasAnyPermission('restore-reference-postmap', 'destroy-reference-postmap'),
                     ];
                 }),
 
@@ -74,10 +74,10 @@ class SectionRoomCollection extends ResourceCollection
                 'finds' => ['name'],
 
                 /** the page is parent ? */
-                'parent' => $currentUser->getPageHasParent('reference-section-room'),
+                'parent' => $currentUser->getPageHasParent('reference-postmap'),
 
                 /** the page parent slug */
-                'parent_path' => $currentUser->getPageParentPath('reference-section-room'),
+                'parent_path' => $currentUser->getPageParentPath('reference-postmap'),
 
                 /** the table header */
                 'headers' => [
@@ -86,7 +86,7 @@ class SectionRoomCollection extends ResourceCollection
                 ],
 
                 /** the page icon */
-                'icon' => $currentUser->getPageIcon('reference-section-room'),
+                'icon' => $currentUser->getPageIcon('reference-postmap'),
 
                 /** the record key */
                 'key' => 'id',
@@ -97,7 +97,7 @@ class SectionRoomCollection extends ResourceCollection
 
                 /** the page permission */
                 /** ['create'] */
-                'permissions' => $currentUser->hasPermission('create-reference-section-room') ? ['create'] : [],
+                'permissions' => $currentUser->hasPermission('create-reference-postmap') ? ['create'] : [],
 
                 /** the page default */
                 'record_base' => [
@@ -106,7 +106,7 @@ class SectionRoomCollection extends ResourceCollection
                 ],
 
                 /** the page title */
-                'title' => $currentUser->getPageTitle('reference-section-room'),
+                'title' => $currentUser->getPageTitle('reference-postmap'),
             ]
         ];
     }

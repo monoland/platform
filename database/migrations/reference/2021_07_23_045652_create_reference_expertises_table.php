@@ -15,6 +15,11 @@ class CreateReferenceExpertisesTable extends Migration
     {
         Schema::create('reference_expertises', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->string('reff')->nullable()->index();
+            $table->foreignId('sector_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

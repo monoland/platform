@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReferenceEchelonRoomsTable extends Migration
+class CreateReferencePostmapsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateReferenceEchelonRoomsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reference_echelon_rooms', function (Blueprint $table) {
+        Schema::create('reference_postmaps', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateReferenceEchelonRoomsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reference_echelon_rooms');
+        Schema::dropIfExists('reference_postmaps');
     }
 }

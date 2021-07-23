@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class EchelonRoom extends Model
+class Sectionmap extends Model
 {
     use SoftDeletes;
 
@@ -17,7 +17,7 @@ class EchelonRoom extends Model
      *
      * @var string
      */
-    protected $table = 'reference_echelon_rooms';
+    protected $table = 'reference_sectionmaps';
 
     /**
      * Retrieve the model for a bound value.
@@ -119,7 +119,7 @@ class EchelonRoom extends Model
 
             DB::commit();
 
-            // return new EchelonRoomResource($model);
+            // return new SectionmapResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -147,7 +147,7 @@ class EchelonRoom extends Model
 
             DB::commit();
 
-            // return new EchelonRoomResource($model);
+            // return new SectionmapResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 

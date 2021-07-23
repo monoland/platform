@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Reference;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Reference\SectionCollection;
-use App\Http\Resources\Reference\SectionResource;
 use App\Models\Reference\Section;
+use App\Models\Reference\Sectionmap;
 use Illuminate\Http\Request;
 
 class SectionController extends Controller
@@ -14,14 +14,15 @@ class SectionController extends Controller
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Reference\Sectionmap  $sectionmap
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, Sectionmap $sectionmap)
     {
         $this->authorize('view', Section::class);
 
         return new SectionCollection(
-            Section::filterOn($request)->paginate($request->itemsPerPage)
+            $sectionmap->sections()->filterOn($request)->paginate($request->itemsPerPage)
         );
     }
 
@@ -29,38 +30,41 @@ class SectionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Reference\Sectionmap  $sectionmap
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Sectionmap $sectionmap)
     {
         $this->authorize('create', Section::class);
 
         $this->validate($request, []);
 
-        return Section::storeRecord($request);
+        return Section::storeRecord($request, $sectionmap);
     }
 
     /**
      * Display the specified resource.
      *
+     * @param  \App\Models\Reference\Sectionmap  $sectionmap
      * @param  \App\Models\Reference\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function show(Section $section)
+    public function show(Sectionmap $sectionmap, Section $section)
     {
         $this->authorize('show', $section);
 
-        return new SectionResource($section);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Reference\Sectionmap  $sectionmap
      * @param  \App\Models\Reference\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Section $section)
+    public function update(Request $request, Sectionmap $sectionmap, Section $section)
     {
         $this->authorize('update', $section);
 
@@ -72,10 +76,11 @@ class SectionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Reference\Section $section
+     * @param  \App\Models\Reference\Sectionmap  $sectionmap
+     * @param  \App\Models\Reference\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Section $section)
+    public function destroy(Sectionmap $sectionmap, Section $section)
     {
         $this->authorize('delete', $section);
 
@@ -88,7 +93,7 @@ class SectionController extends Controller
      * @param \App\Models\Reference\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function restore(Section $section)
+    public function restore(Sectionmap $sectionmap, Section $section)
     {
         $this->authorize('restore', $section);
 
@@ -101,7 +106,7 @@ class SectionController extends Controller
      * @param \App\Models\Reference\Section $section
      * @return \Illuminate\Http\Response
      */
-    public function forceDelete(Section $section)
+    public function forceDelete(Sectionmap $sectionmap, Section $section)
     {
         $this->authorize('destroy', $section);
 
@@ -112,9 +117,10 @@ class SectionController extends Controller
      * Import data to the model
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Reference\Sectionmap  $sectionmap
      * @return \Illuminate\Http\Response
      */
-    public function import(Request $request)
+    public function import(Request $request, Sectionmap $sectionmap)
     {
         $this->authorize('import', Section::class);
 
@@ -125,9 +131,10 @@ class SectionController extends Controller
      * Export data from the model
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Reference\Sectionmap  $sectionmap
      * @return \Illuminate\Http\Response
      */
-    public function export(Request $request)
+    public function export(Request $request, Sectionmap $sectionmap)
     {
         $this->authorize('export', Section::class);
 
@@ -138,9 +145,10 @@ class SectionController extends Controller
      * Print report from the model
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Reference\Sectionmap  $sectionmap
      * @return \Illuminate\Http\Response
      */
-    public function report(Request $request)
+    public function report(Request $request, Sectionmap $sectionmap)
     {
         $this->authorize('report', Section::class);
 

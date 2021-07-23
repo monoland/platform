@@ -15,6 +15,11 @@ class CreateReferenceRegenciesTable extends Migration
     {
         Schema::create('reference_regencies', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->string('reff')->index();
+            $table->foreignId('province_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -15,6 +15,9 @@ class CreateReferenceSpotsTable extends Migration
     {
         Schema::create('reference_spots', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

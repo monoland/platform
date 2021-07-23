@@ -15,6 +15,12 @@ class CreateReferenceSectionsTable extends Migration
     {
         Schema::create('reference_sections', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->string('rank');
+            $table->string('reff')->index();
+            $table->foreignId('sectionmap_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

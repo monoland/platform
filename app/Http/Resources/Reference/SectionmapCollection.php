@@ -5,7 +5,7 @@ namespace App\Http\Resources\Reference;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Cache;
 
-class EchelonRoomCollection extends ResourceCollection
+class SectionmapCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,7 +15,7 @@ class EchelonRoomCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return EchelonRoomResource::collection($this->collection);
+        return SectionmapResource::collection($this->collection);
     }
 
     /**
@@ -43,14 +43,14 @@ class EchelonRoomCollection extends ResourceCollection
                 'mode' => $request->mode,
 
                 /** the page enable fitur */
-                'features' => Cache::rememberForever('features-reference-echelon-room-' . $currentUser->id, function () use ($currentUser) {
+                'features' => Cache::rememberForever('features-reference-sectionmap-' . $currentUser->id, function () use ($currentUser) {
                     return [
-                        'export' => $currentUser->hasAnyPermission('export-reference-echelon-room'),
-                        'filter' => $currentUser->hasAnyPermission('filter-reference-echelon-room'),
-                        'import' => $currentUser->hasAnyPermission('import-reference-echelon-room'),
-                        'print' => $currentUser->hasAnyPermission('print-reference-echelon-room'),
-                        'search' => $currentUser->hasAnyPermission('search-reference-echelon-room'),
-                        'trashed' => $currentUser->hasAnyPermission('restore-reference-echelon-room', 'destroy-reference-echelon-room'),
+                        'export' => $currentUser->hasAnyPermission('export-reference-sectionmap'),
+                        'filter' => $currentUser->hasAnyPermission('filter-reference-sectionmap'),
+                        'import' => $currentUser->hasAnyPermission('import-reference-sectionmap'),
+                        'print' => $currentUser->hasAnyPermission('print-reference-sectionmap'),
+                        'search' => $currentUser->hasAnyPermission('search-reference-sectionmap'),
+                        'trashed' => $currentUser->hasAnyPermission('restore-reference-sectionmap', 'destroy-reference-sectionmap'),
                     ];
                 }),
 
@@ -74,10 +74,10 @@ class EchelonRoomCollection extends ResourceCollection
                 'finds' => ['name'],
 
                 /** the page is parent ? */
-                'parent' => $currentUser->getPageHasParent('reference-echelon-room'),
+                'parent' => $currentUser->getPageHasParent('reference-sectionmap'),
 
                 /** the page parent slug */
-                'parent_path' => $currentUser->getPageParentPath('reference-echelon-room'),
+                'parent_path' => $currentUser->getPageParentPath('reference-sectionmap'),
 
                 /** the table header */
                 'headers' => [
@@ -86,7 +86,7 @@ class EchelonRoomCollection extends ResourceCollection
                 ],
 
                 /** the page icon */
-                'icon' => $currentUser->getPageIcon('reference-echelon-room'),
+                'icon' => $currentUser->getPageIcon('reference-sectionmap'),
 
                 /** the record key */
                 'key' => 'id',
@@ -97,7 +97,7 @@ class EchelonRoomCollection extends ResourceCollection
 
                 /** the page permission */
                 /** ['create'] */
-                'permissions' => $currentUser->hasPermission('create-reference-echelon-room') ? ['create'] : [],
+                'permissions' => $currentUser->hasPermission('create-reference-sectionmap') ? ['create'] : [],
 
                 /** the page default */
                 'record_base' => [
@@ -106,7 +106,7 @@ class EchelonRoomCollection extends ResourceCollection
                 ],
 
                 /** the page title */
-                'title' => $currentUser->getPageTitle('reference-echelon-room'),
+                'title' => $currentUser->getPageTitle('reference-sectionmap'),
             ]
         ];
     }
