@@ -16,15 +16,6 @@
             >
                 <v-btn icon disabled></v-btn>
                 
-                <!-- <v-btn icon disabled v-if="page.layoutSingle"></v-btn>
-                
-                <v-btn v-else
-                    icon 
-                    @click="$store.commit('PAGE_ACTION', { name: 'index' })"
-                >
-                    <v-icon>arrow_back</v-icon>
-                </v-btn> -->
-
                 <v-spacer></v-spacer>
                 
                 <v-toolbar-title class="text-uppercase text-subtitle-1">
@@ -50,14 +41,14 @@
                 height="calc(100vh - 168px)" 
                 width="100%"
             >
-                <div v-show="shadow" 
-                    v-scroll:#form-content="onFormContentScroll"  
+                <div v-show="showShadow" 
+                    v-scroll:#form-mobile-content="onFormMobileContentScroll"  
                     class="absolute v-sheet--shadow-content z-index-1" 
                     :style="`top: 47px;`"
                 ></div>
 
                 <v-responsive
-                    id="form-content"
+                    id="form-mobile-content"
                     class="overflow-y-auto"
                     height="calc(100vh - 168px)"
                 >
@@ -106,7 +97,7 @@ export default {
     },
 
     data:() => ({
-        shadow: false
+        showShadow: false
     }),
 
     computed: {
@@ -118,8 +109,8 @@ export default {
     },
 
     methods: {
-        onFormContentScroll: function(e) {
-            this.shadow = e.target.scrollTop > 15;
+        onFormMobileContentScroll: function(e) {
+            this.showShadow = e.target.scrollTop > 15;
         },
 
         hasPermission: function(permission) {

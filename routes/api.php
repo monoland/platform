@@ -8,6 +8,7 @@ use App\Http\Controllers\System\ModuleController;
 use App\Http\Controllers\System\AbilityController;
 use App\Http\Controllers\System\SettingController;
 use App\Http\Controllers\MyAccount\ProfileController;
+use App\Http\Controllers\System\PermissionController;
 use App\Http\Controllers\Account\AccountBaseController;
 use Laravel\Fortify\Http\Controllers\PasswordController;
 use App\Http\Controllers\MyAccount\AnnouncementController;
@@ -80,7 +81,12 @@ Route::prefix('system/api')->group(function () {
 
     Route::delete('module/{module}/page/{page}/destroy', [PageController::class, 'forceDelete']);
     Route::post('module/{module}/page/{page}/restore', [PageController::class, 'restore']);
+    Route::get('module/{module}/page/combo', [PageController::class, 'combo']);
     Route::resource('module.page', PageController::class);
+
+    Route::delete('page/{page}/permission/{permission}/destroy', [PermissionController::class, 'forceDelete']);
+    Route::post('page/{page}/permission/{permission}/restore', [PermissionController::class, 'restore']);
+    Route::resource('page.permission', PermissionController::class);
 
     Route::delete('user/{user}/destroy', [UserController::class, 'forceDelete']);
     Route::post('user/{user}/restore', [UserController::class, 'restore']);

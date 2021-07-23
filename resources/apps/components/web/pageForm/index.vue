@@ -9,49 +9,31 @@
         </div>
 
         <template v-else>
-            <v-toolbar 
-                :color="`${theme} lighten-4`"  
-                :flat="!page.filter.status"
-                class="z-index-1"
-            >
-                <v-btn icon disabled></v-btn>
-
-                <v-spacer></v-spacer>
-                
-                <v-toolbar-title class="text-uppercase text-subtitle-1">
-                    <span class="overline">{{ page.title }}</span>
-                </v-toolbar-title>
-                
-                <v-spacer></v-spacer>
-
-                <v-btn icon disabled v-if="page.layoutSingle"></v-btn>
-
-                <v-btn icon v-else @click="$store.commit('PAGE_ACTION', { name: 'index' })">
-                    <v-icon>close</v-icon>
-                </v-btn>
-            </v-toolbar>
-
             <v-sheet
-                class="clip-corner"
-                :color="`${theme} lighten-5`"
-                height="calc(100vh - 152px)" 
+                class="relative clip-corner overflow-hidden"
+                :color="`grey lighten-3`"
+                height="calc(100vh - 88px)"
                 width="100%"
             >
+                <div v-show="showShadow" 
+                    v-scroll:#form-web-content="onFormWebContentScroll"  
+                    class="absolute v-sheet--shadow-content z-index-1" 
+                    style="top: -4px;"
+                ></div>
+
                 <v-responsive
-                    class="overflow-y-auto"
-                    height="calc(100vh - 152px)"
+                    id="form-web-content"
+                    class="relative overflow-y-auto z-index-0"
+                    height="calc(100vh - 88px)"
                 >
                     <v-sheet 
-                        :color="color"
-                        class="d-flex mx-auto flex-column" 
-                        :elevation="elevation"
+                        :width="maxWidth"
                         :max-width="maxWidth"
+                        class="d-flex mx-auto flex-column transparent"
                         min-height="calc(100vh - 152px)"
                         flat tile
                     >
-                        <div class="relative flex-column flex-grow-1 width-100">
-                            <slot></slot>
-                        </div>
+                        <slot></slot>
                     </v-sheet>
                 </v-responsive>
             </v-sheet>
@@ -69,16 +51,6 @@ export default {
             default: false
         },
 
-        color: {
-            type: String,
-            default: 'white'
-        },
-
-        elevation: {
-            type: Number | String,
-            default: 2
-        },
-
         maxWidth: {
             type: String,
             default: '560'
@@ -93,10 +65,18 @@ export default {
         })
     },
 
+    data:() => ({
+        showShadow: false,
+    }),
+
     methods: {
         hasPermission: function(permission) {
             return this.$store.state.module.page.features.indexOf(permission) !== -1;
         },
+
+        onFormWebContentScroll: function(e) {
+            this.showShadow = e.target.scrollTop > 15;
+        }
     }
 }
 </script>

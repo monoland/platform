@@ -78,9 +78,9 @@ class ModuleCollection extends ResourceCollection
 
                 /** the table header */
                 'headers' => [
+                    ['text' => 'Icon', 'value' => 'icon', 'align' => 'center', 'filterable' => false, 'sortable' => false, 'width' => 80],
                     ['text' => 'Name', 'value' => 'name'],
                     ['text' => 'Path', 'value' => 'path'],
-                    ['text' => 'Icon', 'value' => 'icon', 'align' => 'center', 'filterable' => false, 'sortable' => false, 'width' => 80],
                     ['text' => 'Theme', 'value' => 'color', 'align' => 'center', 'filterable' => false, 'sortable' => false, 'width' => 80],
                     ['text' => 'Visible', 'value' => 'visibility', 'align' => 'center', 'filterable' => false, 'sortable' => false, 'width' => 80],
                     ['text' => 'Updated', 'value' => 'updated_at', 'class' => 'field-datetime'],
@@ -108,6 +108,7 @@ class ModuleCollection extends ResourceCollection
                     'color' => null,
                     'path' => null,
                     'visibility' => null,
+                    'describe' => null,
                 ],
 
                 /** the page title */

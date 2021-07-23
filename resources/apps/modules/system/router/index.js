@@ -105,6 +105,36 @@ const route = {
 		},
 
 		{
+			path: 'module/:module/page/:page/permission',
+			component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-page-permission'),
+			children: [
+				{
+					path: '',
+					name: 'system-permission',
+					component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-page-permission/crud/index'),
+				},
+
+				{
+					path: 'create',
+					name: 'system-permission-create',
+					component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-page-permission/crud/create')
+				},
+
+				{
+					path: ':permission',
+					name: 'system-permission-show',
+					component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-page-permission/crud/show')
+				},
+				
+				{
+					path: ':permission/edit',
+					name: 'system-permission-edit',
+					component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/module-page-permission/crud/create')
+				}
+			]
+		},
+
+		{
 			path: 'role',
 			component: () => import(/* webpackChunkName: "system-module" */ '@modules/system/pages/role'),
 			children: [

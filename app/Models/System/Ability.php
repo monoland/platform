@@ -29,7 +29,11 @@ class Ability extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         return $this
-            ->with(['module', 'role'])
+            ->with([
+                'module', 'role',
+                'pages', 'pages.permissions', 'pages.permissions.module', 'pages.permissions.page',
+                'permissions', 'permissions.module', 'permissions.page'
+            ])
             ->withTrashed()
             ->where($field ?? $this->getRouteKeyName(), $value)
             ->first();
@@ -61,7 +65,8 @@ class Ability extends Model
     {
         return $this
             ->belongsToMany(Permission::class, 'system_abilities_permissions')
-            ->withPivot('page_id', 'role', 'slug');
+            ->withPivot('page_id', 'role', 'slug')
+            ->orderByPivot('slug');
     }
 
 

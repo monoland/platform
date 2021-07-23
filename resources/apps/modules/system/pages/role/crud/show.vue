@@ -3,40 +3,42 @@
         :click-link="bindClickLink"
         refetch-data
     >
-        <div class="px-4 pt-5">
-            <v-row class="pb-1 pt-3 mt-1" no-gutters>
-                <v-col class="grey--text" cols="3">Name</v-col>
-                <v-col class="text-end" cols="9">{{ record.name }}</v-col>
-            </v-row>
+        <v-sheet class="mt-8 overflow-hidden" rounded="lg">
+            <div class="px-4 pt-4 text-h6">Role</div>
+            
+            <v-simple-table class="mt-2">
+                <template v-slot:default>
+                    <tbody>
+                        <tr>
+                            <td class="overline grey--text text--darken-1">name</td>
+                            <td class="text-right">{{ record.name }}</td>
+                        </tr>
+                    </tbody>
+                </template>
+            </v-simple-table>
+        </v-sheet>
 
-            <v-divider></v-divider>
+        <v-sheet class="mt-6 overflow-hidden" rounded="lg">
+            <div class="px-4 pt-4 text-h6">Role has abilities</div>
 
-            <v-row class="pb-1 pt-8 mt-1" no-gutters>
-                <v-col cols="12"><div class="overline">abilities</div></v-col>
-            </v-row>
-        </div>
+            <v-simple-table class="mt-2">
+                <template v-slot:default>
+                    <thead>
+                        <tr>
+                            <th class="text-left">Name</th>
+                            <th class="text-right">Module</th>
+                        </tr>
+                    </thead>
 
-        <v-row no-gutters>
-            <v-col cols="12">
-                <v-simple-table dense>
-                    <template v-slot:default>
-                        <thead>
-                            <tr>
-                                <th class="grey--text">Name</th>
-                                <th class="text-right">Module</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr v-for="(ability, abilityIndex) in record.abilities" :key="abilityIndex">
-                                <td class="grey--text">{{ ability.name }}</td>
-                                <td class="text-right">{{ ability.module }}</td>
-                            </tr>
-                        </tbody>
-                    </template>
-                </v-simple-table>
-            </v-col>
-        </v-row>
+                    <tbody>
+                        <tr v-for="(ability, abilityIndex) in record.abilities" :key="abilityIndex">
+                            <td class="grey--text text--darken-1 overline">{{ ability.name }}</td>
+                            <td class="text-right">{{ ability.module }}</td>
+                        </tr>
+                    </tbody>
+                </template>
+            </v-simple-table>
+        </v-sheet>
     </mono-page-form>
 </template>
 

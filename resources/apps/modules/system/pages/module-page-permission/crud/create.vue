@@ -1,7 +1,7 @@
 <template>
     <mono-page-form>
         <v-sheet class="my-6 overflow-hidden" rounded="lg">
-            <div class="px-4 pt-4 text-h6">Create new role</div>
+            <div class="px-4 pt-4 text-h6">Create new permission</div>
 
             <v-card-text>
                 <v-row no-gutters>
@@ -19,11 +19,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
     computed: {
-        record: function() {
-            return this.$store.state.module.record;
-        }
-    }
+        ...mapState({
+            record: state => state.module.record,
+        })
+    },
 }
 </script>

@@ -5,11 +5,19 @@
         <!-- toolbar -->
         <v-app-bar :color="`${theme} darken-1`" class="v-toolbar--wrapper" app clipped-right flat>
             <v-app-bar class="clip-corner" :color="theme" flat dark>
-                <v-icon class="mr-3" v-if="page.parent">{{ module.icon }}</v-icon>
-                
-                <v-btn icon v-else @click="backToParent">
-                    <v-icon>arrow_back</v-icon>
-                </v-btn>
+                <template v-if="['create', 'edit', 'show'].indexOf(route.path) > -1">
+                    <v-btn icon @click="$store.commit('PAGE_ACTION', { name: 'index' })">
+                        <v-icon>arrow_back</v-icon>
+                    </v-btn>
+                </template>
+
+                <template v-else>
+                    <v-icon class="mr-3" v-if="page.parent">{{ module.icon }}</v-icon>
+                    
+                    <v-btn icon v-else @click="backToParent">
+                        <v-icon>arrow_back</v-icon>
+                    </v-btn>
+                </template>
 
                 <v-spacer></v-spacer>
                 

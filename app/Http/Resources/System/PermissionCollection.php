@@ -74,11 +74,17 @@ class PermissionCollection extends ResourceCollection
                 'finds' => ['name'],
 
                 /** the page is parent ? */
-                'parent' => true,
+                'parent' => $currentUser->getPageHasParent('system-permission'),
+
+                /** the page parent slug */
+                'parent_path' => $currentUser->getPageParentPath('system-permission'),
 
                 /** the table header */
                 'headers' => [
                     ['text' => 'Name', 'value' => 'name'],
+                    ['text' => 'Slug', 'value' => 'slug'],
+                    ['text' => 'Page', 'value' => 'page'],
+                    ['text' => 'Module', 'value' => 'module'],
                     ['text' => 'Updated', 'value' => 'updated_at', 'class' => 'field-datetime'],
                 ],
 

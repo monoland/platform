@@ -2,11 +2,13 @@
 
 namespace App\Models\System;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Http\Resources\System\ModuleResource;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Module extends Model
@@ -124,12 +126,18 @@ class Module extends Model
 
         try {
             $model = new static;
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->slug);
+            $model->path = Str::slug($request->path);
+            $model->icon = $request->icon;
+            $model->color = $request->color;
+            $model->visibility = $request->visibility;
+            $model->describe = $request->describe;
             $model->save();
 
             DB::commit();
 
-            // return new ModuleResource($model);
+            return new ModuleResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -152,12 +160,18 @@ class Module extends Model
         DB::beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->slug);
+            $model->path = Str::slug($request->path);
+            $model->icon = $request->icon;
+            $model->color = $request->color;
+            $model->visibility = $request->visibility;
+            $model->describe = $request->describe;
             $model->save();
 
             DB::commit();
 
-            // return new ModuleResource($model);
+            return new ModuleResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 

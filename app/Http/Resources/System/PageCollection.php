@@ -106,7 +106,14 @@ class PageCollection extends ResourceCollection
                 /** the page default */
                 'record_base' => [
                     'id' => null,
-                    'name' => null
+                    'name' => null,
+                    'icon' => null,
+                    'prefix' => null,
+                    'path' => null,
+                    'describe' => null,
+                    'side' => false,
+                    'dock' => false,
+                    'parent_id' => null,
                 ],
 
                 /** the page title */

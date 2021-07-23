@@ -2,11 +2,13 @@
 
 namespace App\Models\System;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Resources\System\PermissionResource;
 
 class Permission extends Model
 {
@@ -29,6 +31,7 @@ class Permission extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         return $this
+            ->with(['module', 'page'])
             ->withTrashed()
             ->where($field ?? $this->getRouteKeyName(), $value)
             ->first();
@@ -38,6 +41,15 @@ class Permission extends Model
      * The model relationsship
      */
 
+    public function module()
+    {
+        return $this->belongsTo(Module::class);
+    }
+
+    public function page()
+    {
+        return $this->belongsTo(Page::class);
+    }
 
     /**
      * scope for model-combo
@@ -108,18 +120,20 @@ class Permission extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, Page $parent)
     {
         DB::beginTransaction();
 
         try {
             $model = new static;
-            // ...
-            $model->save();
+            $model->name = $request->name;
+            $model->slug = Str::slug($parent->slug . '-' . $request->name);
+            $model->module_id = $parent->module_id;
+            $parent->permissions()->save($model);
 
             DB::commit();
 
-            // return new PermissionResource($model);
+            return new PermissionResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -137,17 +151,19 @@ class Permission extends Model
      * @param [type] $model
      * @return void
      */
-    public static function updateRecord(Request $request, $model)
+    public static function updateRecord(Request $request, Permission $model, Page $parent)
     {
         DB::beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($parent->slug . '-' . $request->name);
+            $model->module_id = $parent->module_id;
             $model->save();
 
             DB::commit();
 
-            // return new PermissionResource($model);
+            return new PermissionResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 

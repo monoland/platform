@@ -3,96 +3,84 @@
         :click-link="bindClickLink"
         refetch-data
     >
-        <div class="px-4 pt-5">
-            <v-row class="pb-1 pt-3 mt-1" no-gutters>
-                <v-col class="grey--text" cols="3">Name</v-col>
-                <v-col class="text-end" cols="9">{{ record.name }}</v-col>
-            </v-row>
+        <v-sheet class="mt-8 overflow-hidden" rounded="lg">
+            <div class="px-4 pt-4 text-h6">Module</div>
+            
+            <v-simple-table class="mt-2">
+                <template v-slot:default>
+                    <tbody>
+                        <tr>
+                            <td class="overline grey--text text--darken-1">name</td>
+                            <td class="text-right">{{ record.name }}</td>
+                        </tr>
 
-            <v-divider></v-divider>
+                        <tr>
+                            <td class="overline grey--text text--darken-1">slug</td>
+                            <td class="text-right">{{ record.slug }}</td>
+                        </tr>
 
-            <v-row class="pb-1 pt-3 mt-1" no-gutters>
-                <v-col class="grey--text" cols="3">Slug</v-col>
-                <v-col class="text-end" cols="9">{{ record.slug }}</v-col>
-            </v-row>
+                        <tr>
+                            <td class="overline grey--text text--darken-1">path</td>
+                            <td class="text-right">{{ record.path }}</td>
+                        </tr>
 
-            <v-divider></v-divider>
+                        <tr>
+                            <td class="overline grey--text text--darken-1">icon</td>
+                            <td class="text-right">{{ record.icon }}</td>
+                        </tr>
 
-            <v-row class="pb-1 pt-3 mt-1" no-gutters>
-                <v-col class="grey--text" cols="3">Path</v-col>
-                <v-col class="text-end" cols="9">{{ record.path }}</v-col>
-            </v-row>
+                        <tr>
+                            <td class="overline grey--text text--darken-1">visibility</td>
+                            <td class="text-right">{{ record.visibility }}</td>
+                        </tr>
+                    </tbody>
+                </template>
+            </v-simple-table>
+        </v-sheet>
 
-            <v-divider></v-divider>
+        <v-sheet class="mt-6 overflow-hidden" rounded="lg">
+            <div class="px-4 pt-4 text-h6">Module Ability</div>
 
-            <v-row class="pb-1 pt-3 mt-1" no-gutters>
-                <v-col class="grey--text" cols="3">Icon</v-col>
-                <v-col class="text-end" cols="9">{{ record.icon }}</v-col>
-            </v-row>
+            <v-simple-table class="mt-2">
+                <template v-slot:default>
+                    <thead>
+                        <tr>
+                            <th class="text-left">Name</th>
+                            <th class="text-right">Role</th>
+                        </tr>
+                    </thead>
 
-            <v-divider></v-divider>
+                    <tbody>
+                        <tr v-for="(ability, abilityIndex) in record.abilities" :key="abilityIndex">
+                            <td class="overline grey--text text--darken-1">{{ ability.name }}</td>
+                            <td class="text-right">{{ ability.role }}</td>
+                        </tr>
+                    </tbody>
+                </template>
+            </v-simple-table>
+        </v-sheet>
 
-            <v-row class="pb-1 pt-3 mt-1" no-gutters>
-                <v-col class="grey--text" cols="3">Visibility</v-col>
-                <v-col class="text-end" cols="9">{{ record.visibility }}</v-col>
-            </v-row>
+        <v-sheet class="my-6 overflow-hidden" rounded="lg">
+            <div class="px-4 pt-4 text-h6">Module Pages</div>
+            
+            <v-simple-table class="mt-2">
+                <template v-slot:default>
+                    <thead>
+                        <tr>
+                            <th class="text-left">Name</th>
+                            <th class="text-right">Path</th>
+                        </tr>
+                    </thead>
 
-            <v-divider></v-divider>
-
-            <v-row class="pb-1 pt-8 mt-1" no-gutters>
-                <v-col cols="12"><div class="overline">abilities</div></v-col>
-            </v-row>
-        </div>
-
-        <v-row no-gutters>
-            <v-col cols="12">
-                <v-simple-table dense>
-                    <template v-slot:default>
-                        <thead>
-                            <tr>
-                                <th class="grey--text">Name</th>
-                                <th class="text-right">Role</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr v-for="(ability, abilityIndex) in record.abilities" :key="abilityIndex">
-                                <td class="grey--text">{{ ability.name }}</td>
-                                <td class="text-right">{{ ability.role }}</td>
-                            </tr>
-                        </tbody>
-                    </template>
-                </v-simple-table>
-            </v-col>
-        </v-row>
-
-        <div class="px-4">
-            <v-row class="pb-1 pt-8 mt-1" no-gutters>
-                <v-col cols="12"><div class="overline">pages</div></v-col>
-            </v-row>
-        </div>
-
-        <v-row no-gutters>
-            <v-col cols="12">
-                <v-simple-table dense>
-                    <template v-slot:default>
-                        <thead>
-                            <tr>
-                                <th class="grey--text">Name</th>
-                                <th class="text-right">Path</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr v-for="(page, pageIndex) in record.pages" :key="pageIndex">
-                                <td class="grey--text">{{ page.name }}</td>
-                                <td class="text-right">{{ page.path }}</td>
-                            </tr>
-                        </tbody>
-                    </template>
-                </v-simple-table>
-            </v-col>
-        </v-row>
+                    <tbody>
+                        <tr v-for="(page, pageIndex) in record.pages" :key="pageIndex">
+                            <td class="overline grey--text text--darken-1">{{ page.name }}</td>
+                            <td class="text-right">{{ page.path }}</td>
+                        </tr>
+                    </tbody>
+                </template>
+            </v-simple-table>
+        </v-sheet>
     </mono-page-form>
 </template>
 

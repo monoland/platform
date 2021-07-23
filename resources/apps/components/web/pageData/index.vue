@@ -38,7 +38,7 @@
                     <slot></slot>
                 </v-responsive>
 
-                <v-overlay absolute :value="page.filter.status"></v-overlay>
+                <v-overlay absolute color="grey" :value="page.filter.status"></v-overlay>
             </v-sheet>
 
             <v-expand-x-transition>

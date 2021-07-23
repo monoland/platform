@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\System;
 
+use Illuminate\Http\Request;
+use App\Models\System\Module;
+use App\Models\System\Ability;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\System\AbilityCollection;
-use App\Models\System\Ability;
-use App\Models\System\Module;
-use Illuminate\Http\Request;
+use App\Http\Resources\System\AbilityShowResource;
 
 class AbilityController extends Controller
 {
@@ -53,7 +54,7 @@ class AbilityController extends Controller
     {
         $this->authorize('show', $ability);
 
-        //
+        return new AbilityShowResource($ability);
     }
 
     /**

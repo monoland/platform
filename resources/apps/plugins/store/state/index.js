@@ -1,7 +1,7 @@
 import Auth from '@plugins/auth';
 
 const basePage = {
-    combo: {},
+    combos: {},
     features: [],
     finds: [],
     filter: {

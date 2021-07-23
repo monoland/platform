@@ -504,7 +504,7 @@ const mutations = {
 
         if (setups && Object.keys(setups).length > 0) {
             // set page combo
-            state.module.page.combo = setups.combo;
+            state.module.page.combos = Array.isArray(setups.combos) ? {} : setups.combos;
 
             // set page features
             Object.keys(setups.features).forEach(key => {

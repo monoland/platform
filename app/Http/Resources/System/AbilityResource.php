@@ -17,9 +17,16 @@ class AbilityResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'slug' => $this->slug,
             'module' => $this->module->name,
             'role' => $this->role->name,
+            
+            'pages' => PageResource::collection($this->whenLoaded('pages')),
 
+            $this->mergeWhen($this->whenLoaded('permissions'), [
+                'permissions' => $this->permissions()->pluck('system_abilities_permissions.slug')
+            ]),
+            
             // activate this when use nested table
             // visit https://github.com/lazychaser/laravel-nestedset for detail
             // 'nest_deep' => $this->depth,

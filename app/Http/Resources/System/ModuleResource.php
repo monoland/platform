@@ -22,6 +22,7 @@ class ModuleResource extends JsonResource
             'color' => $this->color,
             'path' => $this->path,
             'visibility' => $this->visibility,
+            'describe' => $this->describe,
             'abilities' => AbilityResource::collection($this->whenLoaded('abilities')),
             'pages' => PageResource::collection($this->whenLoaded('pages')),
             'updated_at' => (string) $this->updated_at,

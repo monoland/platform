@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\System;
 
+use App\Models\System\Page;
+use Illuminate\Http\Request;
+use App\Models\System\Permission;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\System\PermissionCollection;
-use App\Models\System\Page;
-use App\Models\System\Permission;
-use Illuminate\Http\Request;
+use App\Http\Resources\System\PermissionShowResource;
 
 class PermissionController extends Controller
 {
@@ -22,7 +23,7 @@ class PermissionController extends Controller
         $this->authorize('view', Permission::class);
 
         return new PermissionCollection(
-            $page->permissions()->filterOn($request)->paginate($request->itemsPerPage)
+            $page->permissions()->with(['module', 'page'])->filterOn($request)->paginate($request->itemsPerPage)
         );
     }
 
@@ -53,7 +54,7 @@ class PermissionController extends Controller
     {
         $this->authorize('show', $permission);
 
-        //
+        return new PermissionShowResource($permission);
     }
 
     /**
@@ -70,7 +71,7 @@ class PermissionController extends Controller
 
         $this->validate($request, []);
 
-        return Permission::updateRecord($request, $permission);
+        return Permission::updateRecord($request, $permission, $page);
     }
 
     /**

@@ -1,10 +1,18 @@
 let buildRequestURI = function({ module, route }) {
     let _path = module.page.path;
+    let _expl = _path.split('/').length;
 
     if (typeof route.params === 'object' && Object.keys(route.params).length > 0) {
         for (let keys = Object.keys(route.params), i = 0, end = keys.length; i < end; i++) {
             let key = keys[i];
             let value = route.params[key];
+
+            if (_expl && _expl > 3 && _path.includes(`${key}/:${key}/`)) {
+                _path = _path.replace(`${key}/:${key}/`, ``);
+                _expl = _path.split('/').length;
+
+                continue;
+            }
 
             if (_path.includes(`${key}/:${key}/`)) {
                 _path = _path.replace(`${key}/:${key}/`, `${key}/${value}/`);
@@ -105,6 +113,27 @@ const actions = {
         } finally {
             commit('APPS_LOADING', false);
         }
+    },
+
+    custom_request: function({ commit, dispatch, state }, { prefix, method, params, completed })
+    {
+        if (! params) {
+            params = {};
+        }
+        
+        return dispatch('mono_request', {
+            url: buildRequestURI(state) + prefix,
+            
+            method: method,
+
+            params,
+
+            completed:({ response }) => {
+                if (completed && typeof completed === 'function') {
+                    completed({ commit, state, response });
+                }
+            }
+        });
     },
 
     fetch_records: function({ commit, dispatch, state }, {reset, completed})

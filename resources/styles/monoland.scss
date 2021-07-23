@@ -285,9 +285,17 @@
     }
 }
 
-.v-data-table-header {
-    .field-datetime {
-        width: 165px;
+.v-data-table {
+    border-radius: 0;
+
+    &-header {
+        .field-datetime {
+            width: 165px;
+        }
+    }
+
+    tr:hover:not(.v-table__expanded__content) {
+        background: transparent !important;
     }
 }
 
@@ -348,6 +356,10 @@
 }
 
 .v-sheet {
+    .overflow-hidden {
+        overflow: hidden !important;
+    }
+
     .v-icon.v-icon {
         transform: rotate(0deg) !important;
     }
@@ -381,7 +393,7 @@
 
     &--shadow-content {
         box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
-        height: 9px;
+        height: 4px;
         left: 0;
         top: 0;
         bottom: 0;

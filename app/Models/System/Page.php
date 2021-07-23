@@ -8,6 +8,7 @@ use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Http\Resources\System\PageResource;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Page extends Model
@@ -31,6 +32,7 @@ class Page extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         return $this
+            ->with(['permissions', 'permissions.module', 'permissions.page', 'module'])
             ->withDepth()
             ->withTrashed()
             ->where($field ?? $this->getRouteKeyName(), $value)
@@ -42,7 +44,7 @@ class Page extends Model
      */
     public function permissions()
     {
-        return $this->hasMany(Permission::class);
+        return $this->hasMany(Permission::class)->orderBy('slug');
     }
 
     public function module()
@@ -141,18 +143,27 @@ class Page extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, Module $parent)
     {
         DB::beginTransaction();
 
         try {
             $model = new static;
-            // ...
-            $model->save();
+            $model->name = $request->name;
+            $model->slug = Str::slug($parent->slug . '-' . $request->name);
+            $model->icon = $request->icon;
+            $model->prefix = $request->prefix;
+            $model->path = $request->path;
+            $model->describe = $request->describe;
+            $model->side = $request->side;
+            $model->dock = $request->dock;
+            $model->parent_id = $request->parent_id;
+            
+            $parent->pages()->save($model);
 
             DB::commit();
 
-            // return new PageResource($model);
+            return new PageResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -170,17 +181,25 @@ class Page extends Model
      * @param [type] $model
      * @return void
      */
-    public static function updateRecord(Request $request, $model)
+    public static function updateRecord(Request $request, Page $model, Module $parent)
     {
         DB::beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($parent->slug . '-' . $request->name);
+            $model->icon = $request->icon;
+            $model->prefix = $request->prefix;
+            $model->path = $request->path;
+            $model->describe = $request->describe;
+            $model->side = $request->side;
+            $model->dock = $request->dock;
+            $model->parent_id = $request->parent_id;
             $model->save();
 
             DB::commit();
 
-            // return new PageResource($model);
+            return new PageResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 

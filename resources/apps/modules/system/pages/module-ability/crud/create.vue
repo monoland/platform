@@ -1,12 +1,16 @@
 <template>
     <mono-page-form>
-        <v-card-text>
-            <v-row no-gutters>
-                <v-col cols="12">
-                    
-                </v-col>
-            </v-row>
-        </v-card-text>
+        <v-sheet class="my-6 overflow-hidden" rounded="lg">
+            <div class="px-4 pt-4 text-h6">Create new ability</div>
+            
+            <v-card-text>
+                <v-row no-gutters>
+                    <v-col cols="12">
+                        
+                    </v-col>
+                </v-row>
+            </v-card-text>
+        </v-sheet>
     </mono-page-form>
 </template>
 

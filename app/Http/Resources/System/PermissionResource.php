@@ -17,6 +17,9 @@ class PermissionResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'slug' => $this->slug,
+            'module' => $this->module->slug,
+            'page' => $this->page->slug,
 
             // activate this when use nested table
             // visit https://github.com/lazychaser/laravel-nestedset for detail

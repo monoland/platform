@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\System;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\System\PageCollection;
-use App\Models\System\Module;
 use App\Models\System\Page;
 use Illuminate\Http\Request;
+use App\Models\System\Module;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\System\PageCollection;
+use App\Http\Resources\System\PageShowResource;
 
 class PageController extends Controller
 {
@@ -53,7 +54,7 @@ class PageController extends Controller
     {
         $this->authorize('show', $page);
 
-        //
+        return new PageShowResource($page);
     }
 
     /**
@@ -70,7 +71,7 @@ class PageController extends Controller
 
         $this->validate($request, []);
 
-        return Page::updateRecord($request, $page);
+        return Page::updateRecord($request, $page, $module);
     }
 
     /**
@@ -153,5 +154,14 @@ class PageController extends Controller
         $this->authorize('report', Page::class);
 
         //
+    }
+
+    public function combo(Request $request, Module $module)
+    {
+        return response()->json([
+            'combos' => [
+                'parents' => $module->pages()->fetchCombo()
+            ]
+        ]);
     }
 }

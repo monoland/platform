@@ -21,6 +21,10 @@ class PageResource extends JsonResource
             'path' => $this->path,
             'prefix' => $this->prefix,
             'slug' => $this->slug,
+            'dock' => $this->dock,
+            'side' => $this->side,
+            'parent_id' => $this->parent_id,
+            'permissions' => PermissionResource::collection($this->whenLoaded('permissions')),
 
             // activate this when use nested table
             // visit https://github.com/lazychaser/laravel-nestedset for detail

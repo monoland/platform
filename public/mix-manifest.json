@@ -4,9 +4,9 @@
     "/scripts/defaultComponents.js": "/scripts/defaultComponents.js",
     "/scripts/account-module.js": "/scripts/account-module.js",
     "/scripts/myaccount-module.js": "/scripts/myaccount-module.js",
+    "/scripts/system-module.js": "/scripts/system-module.js",
     "/scripts/monolandComponents.js": "/scripts/monolandComponents.js",
     "/styles/vuetify.min.css": "/styles/vuetify.min.css",
     "/styles/monoland.css": "/styles/monoland.css",
-    "/scripts/vendor.js": "/scripts/vendor.js",
-    "/scripts/system-module.js": "/scripts/system-module.js"
+    "/scripts/vendor.js": "/scripts/vendor.js"
 }
