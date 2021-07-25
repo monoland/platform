@@ -33,30 +33,77 @@
                 
                 <template v-else>
                     <v-sheet :color="theme">
-                        <v-sheet class="clip-corner" :color="`${theme} lighten-4`">
+                        <v-sheet class="clip-corner px-4 py-2" :color="`${theme} lighten-4`">
                             <div class="row justify-center no-gutters align-start">
                                 <template v-for="(page, index) in docks">
-                                    <v-col cols="3" :key="`page-${index}`">
+                                    <v-col cols="3" :key="`page-${index}`" v-if="index < 3">
                                         <v-card 
                                             :color="`${theme} lighten-5`" 
-                                            class="d-flex flex-column clip-corner ma-2 elevation-0 rounded-lg" 
-                                            height="100"
+                                            class="d-flex flex-column ma-2 elevation-0" 
+                                            min-height="84"
+                                            rounded="lg"
                                             @click="page.module ? openModule(page) : openPage(page)"
                                         >
-                                            <v-responsive class="white" height="65">
+                                            <v-responsive class="white" height="56">
                                                 <div class="d-flex align-center justify-center height-100">
                                                     <v-icon :color="`${theme} lighten-1`" x-large>{{ page.icon }}</v-icon>
                                                 </div>
                                             </v-responsive>
                                             
-                                            <div class="d-flex align-center justify-center height-100">
-                                                <div class="text-caption font-weight-medium text-truncate line-height-1" :class="`${theme}--text`">{{ page.name }}</div>
+                                            <div class="d-flex align-center justify-center height-100 px-1 py-2">
+                                                <div class="text-caption font-weight-medium text-center line-height-1-point-2 width-100" :class="`${theme}--text`">{{ page.name }}</div>
                                             </div>
                                         </v-card>
                                     </v-col>
                                 </template>
+
+                                <v-col cols="3" v-if="docks.length > 3">
+                                    <v-sheet 
+                                        class="d-flex flex-column ma-2 elevation-0 overflow-hidden" 
+                                        height="84"
+                                        rounded="lg"
+                                        style="cursor: pointer;"
+                                        @click="expand = !expand"
+                                    >
+                                        <v-responsive :class="`${theme} lighten-5`" height="100%">
+                                            <div class="d-flex align-center justify-center height-100">
+                                                <v-icon :color="theme">unfold_more</v-icon>
+                                            </div>
+                                        </v-responsive>
+                                    </v-sheet>
+                                </v-col>
                             </div>
                         </v-sheet>
+
+                        <v-expand-transition>
+                            <v-sheet :color="`${theme} lighten-4`" v-show="expand">
+                                <div class="relative px-4 py-2">
+                                    <div class="row justify-center no-gutters align-start">
+                                        <template v-for="(page, index) in docks">
+                                            <v-col cols="3" :key="`page-${index}`" v-if="index >= 3">
+                                                <v-card 
+                                                    :color="`${theme} lighten-5`" 
+                                                    class="d-flex flex-column ma-2 elevation-0" 
+                                                    min-height="84"
+                                                    rounded="lg"
+                                                    @click="page.module ? openModule(page) : openPage(page)"
+                                                >
+                                                    <v-responsive class="white" height="56">
+                                                        <div class="d-flex align-center justify-center height-100">
+                                                            <v-icon :color="`${theme} lighten-1`" x-large>{{ page.icon }}</v-icon>
+                                                        </div>
+                                                    </v-responsive>
+                                                    
+                                                    <div class="d-flex align-center justify-center height-100 px-1 py-2">
+                                                        <div class="text-caption font-weight-medium text-center line-height-1-point-2 width-100" :class="`${theme}--text`">{{ page.name }}</div>
+                                                    </div>
+                                                </v-card>
+                                            </v-col>
+                                        </template>
+                                    </div>
+                                </div>
+                            </v-sheet>
+                        </v-expand-transition>
                     </v-sheet>
                 </template>
 
@@ -89,6 +136,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
     props: {
         title: {
@@ -98,37 +147,46 @@ export default {
     },
 
     computed: {
-        docks: function() 
-        {
-            if ('docks' in this.$store.state.module) {
-                return this.$store.state.module.docks;
-            }
+        ...mapState({
+            docks: state => state.module.docks ?? [],
+            module: state => state.module,
+            page: state => state.module.page,
+            theme: state => state.theme,
+            profile: state => state.auth.getItem('profile') ?? {},
+            setting: state => state.auth.getItem('appsInfo') ?? {},
+        }),
+
+        // docks: function() 
+        // {
+        //     if ('docks' in this.$store.state.module) {
+        //         return this.$store.state.module.docks;
+        //     }
             
-            return [];
-        },
+        //     return [];
+        // },
 
-        module: function() {
-            return this.$store.state.module;
-        },
+        // module: function() {
+        //     return this.$store.state.module;
+        // },
 
-        page: function() {
-            return this.$store.state.module.page;
-        },
+        // page: function() {
+        //     return this.$store.state.module.page;
+        // },
 
-        theme: function() {
-            return this.$store.state.theme;
-        }
+        // theme: function() {
+        //     return this.$store.state.theme;
+        // }
     },
 
     data:() => ({
-        dialogLogout: false,
-        profile: {},
-        setting: {},
+        // profile: {},
+        // setting: {},
+        expand: false
     }),
 
     created() {
-        this.profile = this.$store.state.auth.getItem('profile');
-        this.setting = this.$store.state.auth.getItem('appsInfo');
+        // this.profile = this.$store.state.auth.getItem('profile');
+        // this.setting = this.$store.state.auth.getItem('appsInfo');
     },
 
     methods: {

@@ -21,7 +21,7 @@
                 
                 <v-toolbar-title class="text-uppercase pl-0">
                     <span class="font-fredoka-one spacing-1">{{ module.name }}</span>
-                    <span class="font-weight-light">{{ page.title }}</span>
+                    <span class="font-weight-light">{{ page.title && page.title.toLowerCase() === 'beranda' ? '' : page.title }}</span>
                 </v-toolbar-title>
 
                 <v-spacer></v-spacer>

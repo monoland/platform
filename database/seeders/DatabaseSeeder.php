@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
             'myaccount-superadmin',
             'system-superadmin',
             'reference-superadmin',
+            'myprofile-superadmin',
+            'myhistory-superadmin',
         );
     }
 }

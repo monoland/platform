@@ -17,7 +17,7 @@
                                 <v-sheet 
                                     :color="`${theme} lighten-5`" 
                                     class="d-flex flex-column clip-corner ma-2 elevation-0 overflow-hidden" 
-                                    height="100"
+                                    min-height="100"
                                     rounded="lg"
                                     style="cursor: pointer;"
                                     @click="page.module ? openModule(page) : openPage(page)"
@@ -28,8 +28,8 @@
                                         </div>
                                     </v-responsive>
                                     
-                                    <div class="d-flex align-center justify-center height-100 px-2">
-                                        <div class="text-caption font-weight-medium text-truncate line-height-1" :class="`${theme}--text`">{{ page.name }}</div>
+                                    <div class="d-flex align-center justify-center height-100 px-2 py-2">
+                                        <div class="text-caption font-weight-medium text-center line-height-1-point-2 width-100" :class="`${theme}--text`">{{ page.name }}</div>
                                     </div>
                                 </v-sheet>
                             </v-col>
@@ -38,7 +38,7 @@
                         <v-col cols="1" v-if="docks.length > 11">
                             <v-sheet 
                                 class="d-flex flex-column clip-corner ma-2 elevation-0 overflow-hidden" 
-                                height="100"
+                                min-height="100"
                                 rounded="lg"
                                 style="cursor: pointer;"
                                 @click="expand = !expand"
@@ -58,11 +58,11 @@
                         <div class="relative px-8 py-2">
                             <div class="row justify-center no-gutters align-start">
                                 <template v-for="(page, index) in docks">
-                                    <v-col cols="1" :key="`page-${index}`" v-if="index > 11">
+                                    <v-col cols="1" :key="`page-${index}`" v-if="index >= 11">
                                         <v-sheet 
                                             :color="`${theme} lighten-5`" 
                                             class="d-flex flex-column clip-corner ma-2 elevation-0 overflow-hidden" 
-                                            height="100"
+                                            min-height="100"
                                             rounded="lg"
                                             style="cursor: pointer;"
                                             @click="page.module ? openModule(page) : openPage(page)"
@@ -73,8 +73,8 @@
                                                 </div>
                                             </v-responsive>
                                             
-                                            <div class="d-flex align-center justify-center height-100 px-2">
-                                                <div class="text-caption font-weight-medium text-truncate line-height-1" :class="`${theme}--text`">{{ page.name }}</div>
+                                            <div class="d-flex align-center justify-center height-100 px-2 py-2">
+                                                <div class="text-caption font-weight-medium text-center line-height-1-point-2 width-100" :class="`${theme}--text`">{{ page.name }}</div>
                                             </div>
                                         </v-sheet>
                                     </v-col>
