@@ -39,7 +39,10 @@
                 </template>
 
                 <template v-else>
-                    <v-btn icon v-if="hasPermission('search')" @click="page.search.status = true">
+                    <v-btn v-if="route.path === 'index' && hasPermission('search')" 
+                        icon
+                        @click="page.search.status = true"
+                    >
                         <v-icon>search</v-icon>
                     </v-btn>
 

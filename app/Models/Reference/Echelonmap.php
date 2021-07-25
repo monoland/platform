@@ -2,11 +2,13 @@
 
 namespace App\Models\Reference;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Resources\Reference\EchelonmapResource;
 
 class Echelonmap extends Model
 {
@@ -38,6 +40,10 @@ class Echelonmap extends Model
      * The model relationsship
      */
 
+    public function echelons()
+    {
+        return $this->hasMany(Echelon::class);
+    }
 
     /**
      * scope for model-combo
@@ -114,12 +120,13 @@ class Echelonmap extends Model
 
         try {
             $model = new static;
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->name);
             $model->save();
 
             DB::commit();
 
-            // return new EchelonmapResource($model);
+            return new EchelonmapResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -142,12 +149,13 @@ class Echelonmap extends Model
         DB::beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->name);
             $model->save();
 
             DB::commit();
 
-            // return new EchelonmapResource($model);
+            return new EchelonmapResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 

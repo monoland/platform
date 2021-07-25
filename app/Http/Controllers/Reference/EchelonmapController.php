@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Reference;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Reference\EchelonmapCollection;
-use App\Http\Resources\Reference\EchelonmapResource;
-use App\Models\Reference\Echelonmap;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Reference\Echelonmap;
+use App\Http\Resources\Reference\EchelonmapCollection;
+use App\Http\Resources\Reference\EchelonmapShowResource;
 
 class EchelonmapController extends Controller
 {
@@ -50,7 +50,7 @@ class EchelonmapController extends Controller
     {
         $this->authorize('show', $echelonmap);
 
-        return new EchelonmapResource($echelonmap);
+        return new EchelonmapShowResource($echelonmap);
     }
 
     /**
@@ -118,7 +118,7 @@ class EchelonmapController extends Controller
     {
         $this->authorize('import', Echelonmap::class);
 
-        // 
+        //
     }
 
     /**
@@ -131,7 +131,7 @@ class EchelonmapController extends Controller
     {
         $this->authorize('export', Echelonmap::class);
 
-        // 
+        //
     }
 
     /**
@@ -144,6 +144,6 @@ class EchelonmapController extends Controller
     {
         $this->authorize('report', Echelonmap::class);
 
-        // 
+        //
     }
 }

@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
         App\Providers\FortifyServiceProvider::class,
+        App\Providers\WebsocketServiceProvider::class,
         
         /*
          * Application Service Providers...

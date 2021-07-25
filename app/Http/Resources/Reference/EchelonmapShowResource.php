@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Reference;
 
+use App\Models\System\Page;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class EchelonmapShowResource extends JsonResource
@@ -27,7 +28,9 @@ class EchelonmapShowResource extends JsonResource
                 'update' => $currentUser->hasAnyPermission('update-reference-echelonmap'),
             ],
 
-            'links' => [],
+            'links' => [
+                Page::createLink('reference-echelon'),
+            ],
         ];
     }
 }

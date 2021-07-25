@@ -7,9 +7,12 @@ use App\Http\Controllers\System\UserController;
 use App\Http\Controllers\System\ModuleController;
 use App\Http\Controllers\System\AbilityController;
 use App\Http\Controllers\System\SettingController;
+use App\Http\Controllers\Reference\FaithController;
 use App\Http\Controllers\MyAccount\ProfileController;
+use App\Http\Controllers\Reference\EchelonController;
 use App\Http\Controllers\System\PermissionController;
 use App\Http\Controllers\Account\AccountBaseController;
+use App\Http\Controllers\Reference\EchelonmapController;
 use Laravel\Fortify\Http\Controllers\PasswordController;
 use App\Http\Controllers\MyAccount\AnnouncementController;
 use App\Http\Controllers\MyAccount\NotificationController;
@@ -93,4 +96,18 @@ Route::prefix('system/api')->group(function () {
     Route::resource('user', UserController::class);
 
     Route::get('setting', [SettingController::class, 'index']);
+});
+
+Route::prefix('reference/api')->group(function () {
+    Route::delete('faith/{faith}/destroy', [FaithController::class, 'forceDelete']);
+    Route::post('faith/{faith}/restore', [FaithController::class, 'restore']);
+    Route::resource('faith', FaithController::class);
+
+    Route::delete('echelonmap/{echelonmap}/destroy', [EchelonmapController::class, 'forceDelete']);
+    Route::post('echelonmap/{echelonmap}/restore', [EchelonmapController::class, 'restore']);
+    Route::resource('echelonmap', EchelonmapController::class);
+
+    Route::delete('echelonmap/{echelonmap}/echelon/{echelon}/destroy', [EchelonController::class, 'forceDelete']);
+    Route::post('echelonmap/{echelonmap}/echelon/{echelon}/restore', [EchelonController::class, 'restore']);
+    Route::resource('echelonmap.echelon', EchelonController::class);
 });

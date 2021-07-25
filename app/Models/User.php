@@ -269,7 +269,7 @@ class User extends Authenticatable
      * @param [type] $slug
      * @return string
      */
-    public function getPageParentPath($slug): string
+    public function getPageParentPath($slug): string | null
     {
         $page = Cache::rememberForever('page-' . $slug, function () use ($slug) {
             return Page::firstWhere('slug', $slug);
