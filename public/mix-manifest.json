@@ -4,13 +4,12 @@
     "/scripts/basic-components.js": "/scripts/basic-components.js",
     "/scripts/account-module.js": "/scripts/account-module.js",
     "/scripts/myaccount-module.js": "/scripts/myaccount-module.js",
+    "/scripts/myhistory-module.js": "/scripts/myhistory-module.js",
+    "/scripts/myprofile-module.js": "/scripts/myprofile-module.js",
     "/scripts/reference-module.js": "/scripts/reference-module.js",
     "/scripts/system-module.js": "/scripts/system-module.js",
     "/scripts/desktop-components.js": "/scripts/desktop-components.js",
     "/scripts/mobile-components.js": "/scripts/mobile-components.js",
     "/styles/monoland.css": "/styles/monoland.css",
-    "/scripts/vendor.css": "/scripts/vendor.css",
-    "/scripts/vendor.js": "/scripts/vendor.js",
-    "/scripts/myprofile-module.js": "/scripts/myprofile-module.js",
-    "/scripts/myhistory-module.js": "/scripts/myhistory-module.js"
+    "/scripts/vendor.js": "/scripts/vendor.js"
 }

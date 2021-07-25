@@ -16,7 +16,8 @@
                             <v-col cols="1" :key="`page-${index}`" v-if="index < 11">
                                 <v-sheet 
                                     :color="`${theme} lighten-5`" 
-                                    class="d-flex flex-column clip-corner ma-2 elevation-0 overflow-hidden" 
+                                    class="d-flex flex-column ma-2 overflow-hidden" 
+                                    elevation="1"
                                     min-height="100"
                                     rounded="lg"
                                     style="cursor: pointer;"
@@ -24,7 +25,7 @@
                                 >
                                     <v-responsive class="white" height="65">
                                         <div class="d-flex align-center justify-center height-100">
-                                            <v-icon :color="`${theme} lighten-1`" x-large>{{ page.icon }}</v-icon>
+                                            <v-icon :color="`${page.color ? page.color : theme} lighten-1`" x-large>{{ page.icon }}</v-icon>
                                         </div>
                                     </v-responsive>
                                     
@@ -61,7 +62,8 @@
                                     <v-col cols="1" :key="`page-${index}`" v-if="index >= 11">
                                         <v-sheet 
                                             :color="`${theme} lighten-5`" 
-                                            class="d-flex flex-column clip-corner ma-2 elevation-0 overflow-hidden" 
+                                            class="d-flex flex-column ma-2 overflow-hidden" 
+                                            elevation="1"
                                             min-height="100"
                                             rounded="lg"
                                             style="cursor: pointer;"
@@ -69,7 +71,7 @@
                                         >
                                             <v-responsive class="white" height="65">
                                                 <div class="d-flex align-center justify-center height-100">
-                                                    <v-icon :color="`${theme} lighten-1`" x-large>{{ page.icon }}</v-icon>
+                                                    <v-icon :color="`${page.color ? page.color : theme} lighten-1`" x-large>{{ page.icon }}</v-icon>
                                                 </div>
                                             </v-responsive>
                                             
@@ -147,7 +149,7 @@ export default {
         },
 
         openPage: function(page) {
-
+            this.$router.push({ name: page.slug });
         }
     }
 }

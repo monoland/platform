@@ -15,10 +15,11 @@ mix.webpackConfig({
 });
 
 mix.js('resources/apps/monoland.js', 'public/scripts')
-    .vuetify('vuetify-loader', {
+    .vuetify({
         extract: '[name].css'
     })
     .vue()
+    .sourceMaps()
     .sass('resources/styles/monoland.scss', 'public/styles')
     .extract([
         'axios', 'debounce', 'pdfjs-dist', 'vue', 'vue-router', 'vuetify', 'vuex'

@@ -27,8 +27,8 @@
                     height="calc(100vh - 88px)"
                 >
                     <v-sheet 
-                        :width="maxWidth"
-                        :max-width="maxWidth"
+                        :width="desktopWidth"
+                        :max-width="desktopWidth"
                         class="d-flex mx-auto flex-column transparent"
                         min-height="calc(100vh - 152px)"
                         flat tile
@@ -53,7 +53,7 @@ export default {
             default: false
         },
 
-        maxWidth: {
+        desktopWidth: {
             type: String,
             default: '560'
         }

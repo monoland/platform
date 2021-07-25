@@ -411,6 +411,10 @@
     bottom: 32px !important;
 }
 
+.v-stepper__step {
+    padding: 0 24px;
+}
+
 .v-toolbar {
     &--collapse {
         .v-toolbar__content > .v-btn.v-btn--icon:first-child {

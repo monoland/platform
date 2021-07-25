@@ -27,8 +27,8 @@
                     height="calc(100vh - 112px)"
                 >
                     <v-sheet 
-                        width="100vw"
-                        :max-width="maxWidth"
+                        :width="mobileWidth"
+                        :max-width="mobileWidth"
                         class="d-flex mx-auto flex-column" 
                         min-height="calc(100vh - 112px)"
                         flat tile
@@ -61,9 +61,9 @@ export default {
             default: 2
         },
 
-        maxWidth: {
+        mobileWidth: {
             type: String,
-            default: '560'
+            default: '100vw'
         }
     },
 

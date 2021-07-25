@@ -3,6 +3,8 @@
         :blank="blank"
         :color="color"
         :elevation="elevation"
+        :desktop-width="desktopWidth"
+        :mobile-width="mobileWidth"
     >
         <slot></slot>
     </page-form>
@@ -47,6 +49,16 @@ export default {
             type: Boolean,
             default: false
         },
+
+        desktopWidth: {
+            type: String,
+            default: '560'
+        },
+
+        mobileWidth: {
+            type: String,
+            default: '100vw'
+        }
     },
 
     watch: {

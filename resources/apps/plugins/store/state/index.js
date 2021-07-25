@@ -91,6 +91,7 @@ const baseModule = {
     pages: [],
     record: {},
     records: [],
+    slug: null,
     table: JSON.parse(JSON.stringify(baseTable)),
 };
 
@@ -154,7 +155,12 @@ const state = {
         offline: false
     },
 
-    theme: process.env.MIX_PAGE_THEME
+    theme: process.env.MIX_PAGE_THEME,
+
+    upload: {
+        mime: 'application/pdf',
+        max: 1024
+    }
 }
 
 export default state;

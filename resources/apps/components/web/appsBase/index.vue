@@ -12,7 +12,16 @@
                 </template>
 
                 <template v-else>
-                    <v-icon class="mr-3" v-if="page.parent">{{ module.icon }}</v-icon>
+                    <v-icon v-if="page.parent && (route.name && route.name.includes('dashboard'))"
+                        class="mr-3"
+                    >{{ module.icon }}</v-icon>
+
+                    <v-btn v-else-if="page.parent && ! (route.name && route.name.includes('dashboard'))"
+                        icon
+                        @click="backToDashboard"
+                    >
+                        <v-icon>arrow_back</v-icon>
+                    </v-btn>
                     
                     <v-btn icon v-else @click="backToParent">
                         <v-icon>arrow_back</v-icon>
@@ -197,6 +206,10 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        backToDashboard: function() {
+            this.$router.push({ name: this.module.slug + '-dashboard' });
         },
 
         backToParent: function() {

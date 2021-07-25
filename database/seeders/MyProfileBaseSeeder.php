@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Imports\System\BaseImport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class HistoryBaseSeeder extends Seeder
+class MyProfileBaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +17,7 @@ class HistoryBaseSeeder extends Seeder
     {
         Excel::import(
             new BaseImport(),
-            database_path('excels'.DIRECTORY_SEPARATOR.'myhistory'.DIRECTORY_SEPARATOR.'base-seeder.xlsx')
+            database_path('excels'.DIRECTORY_SEPARATOR.'myprofile'.DIRECTORY_SEPARATOR.'base-seeder.xlsx')
         );
     }
 }

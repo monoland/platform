@@ -38,8 +38,8 @@ class MonolandMakeMigration extends Command
         'system', //done
         'account', //done
         'reference', //done
-        'profile', //done
-        'history', //done
+        'myprofile', //done
+        'myhistory', //done
     ];
 
     /**

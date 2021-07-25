@@ -332,6 +332,7 @@ const mutations = {
         state.module.base = baseModule;
         state.module.name = module.name;
         state.module.pages = module.pages;
+        state.module.slug = module.slug;
         
         state.module.docks = [];
 
