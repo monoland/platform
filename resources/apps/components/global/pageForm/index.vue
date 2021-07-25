@@ -15,10 +15,10 @@ export default {
     components: {
         'page-form': () => {
             if (window.breakpoint === 'desktop') {
-                return import(/* webpackChunkName: "monolandComponents" */ '@components/web/pageForm');
+                return import(/* webpackChunkName: "desktop-components" */ '@components/web/pageForm');
             }
 
-            return import(/* webpackChunkName: "monolandComponents" */ '@components/mobile/pageForm');
+            return import(/* webpackChunkName: "mobile-components" */ '@components/mobile/pageForm');
         }
     },
 

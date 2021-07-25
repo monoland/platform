@@ -13,10 +13,10 @@ export default {
     components: {
         'page-home': () => {
             if (window.breakpoint === 'desktop') {
-                return import(/* webpackChunkName: "monolandComponents" */ '@components/web/pageHome');
+                return import(/* webpackChunkName: "desktop-components" */ '@components/web/pageHome');
             }
 
-            return import(/* webpackChunkName: "monolandComponents" */ '@components/mobile/pageHome');
+            return import(/* webpackChunkName: "mobile-components" */ '@components/mobile/pageHome');
         }
     },
 

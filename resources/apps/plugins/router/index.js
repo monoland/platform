@@ -12,7 +12,7 @@ let routes = [];
 routes.push({ 
     path: '/', 
     name: 'default-landing', 
-    component: () => import(/* webpackChunkName: "defaultComponents" */ '@pages/landing') 
+    component: () => import(/* webpackChunkName: "basic-components" */ '@pages/landing') 
 });
 
 /**
@@ -38,7 +38,7 @@ routemaps.keys().forEach((path) => {
 routes.push({ 
     path: '*',
     name: 'default-fallback',  
-    component: () => import(/* webpackChunkName: "defaultComponents" */ '@pages/fallback') 
+    component: () => import(/* webpackChunkName: "basic-components" */ '@pages/fallback') 
 });
 
 /**

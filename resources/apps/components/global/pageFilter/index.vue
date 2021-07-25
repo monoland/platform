@@ -13,10 +13,10 @@ export default {
     components: {
         'page-filter': () => {
             if (window.breakpoint === 'desktop') {
-                return import(/* webpackChunkName: "monolandComponents" */ '@components/web/pageFilter');
+                return import(/* webpackChunkName: "desktop-components" */ '@components/web/pageFilter');
             }
 
-            return import(/* webpackChunkName: "monolandComponents" */ '@components/mobile/pageFilter');
+            return import(/* webpackChunkName: "mobile-components" */ '@components/mobile/pageFilter');
         }
     },
 

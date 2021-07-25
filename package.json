@@ -1,9 +1,10 @@
 {
     "private": true,
     "scripts": {
+        "clean": "del-cli public/styles/*.css --force && del-cli public/scripts/*.js --force && del-cli public/mix-manifest.json",
         "dev": "npm run development",
         "development": "mix",
-        "watch": "mix watch",
+        "watch": "yarn clean && mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
@@ -11,6 +12,7 @@
     },
     "devDependencies": {
         "deepmerge": "^4.2.2",
+        "del-cli": "^4.0.1",
         "laravel-echo": "^1.11.0",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
@@ -20,7 +22,9 @@
         "sass": "^1.35.2",
         "sass-loader": "^12.1.0",
         "vue-loader": "^15.9.6",
-        "vue-template-compiler": "^2.6.12"
+        "vue-template-compiler": "^2.6.12",
+        "vuetify-loader": "^1.7.2",
+        "vuetifyjs-mix-extension": "^0.0.20"
     },
     "dependencies": {
         "@tiptap/core": "^2.0.0-beta.86",

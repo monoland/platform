@@ -39,10 +39,10 @@ export default {
     components: {
         'apps-landing': () => {
             if (window.breakpoint === 'desktop') {
-                return import(/* webpackChunkName: "monolandComponents" */ '@components/web/appsLanding');
+                return import(/* webpackChunkName: "desktop-components" */ '@components/web/appsLanding');
             }
 
-            return import(/* webpackChunkName: "monolandComponents" */ '@components/mobile/appsLanding');
+            return import(/* webpackChunkName: "mobile-components" */ '@components/mobile/appsLanding');
         }
     },
 

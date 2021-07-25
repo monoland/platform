@@ -9,10 +9,10 @@ export default {
     components: {
         'page-search': () => {
             if (window.breakpoint === 'desktop') {
-                return import(/* webpackChunkName: "monolandComponents" */ '@components/web/pageSearch');
+                return import(/* webpackChunkName: "desktop-components" */ '@components/web/pageSearch');
             }
 
-            return import(/* webpackChunkName: "monolandComponents" */ '@components/mobile/pageSearch');
+            return import(/* webpackChunkName: "mobile-components" */ '@components/mobile/pageSearch');
         }
     },
 

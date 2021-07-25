@@ -22,7 +22,7 @@
 
         <title>MyASN</title>
 
-        <link rel="stylesheet" href="/styles/vuetify.min.css">
+        <link rel="stylesheet" href="/scripts/vendor.css">
 		<link rel="stylesheet" href="/styles/monoland.css">
 
         <style>

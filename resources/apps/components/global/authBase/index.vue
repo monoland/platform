@@ -45,10 +45,10 @@ export default {
     components: {
         'auth-base': () => {
             if (window.breakpoint === 'desktop') {
-                return import(/* webpackChunkName: "monolandComponents" */ '@components/web/authBase');
+                return import(/* webpackChunkName: "desktop-components" */ '@components/web/authBase');
             }
 
-            return import(/* webpackChunkName: "monolandComponents" */ '@components/mobile/authBase');
+            return import(/* webpackChunkName: "mobile-components" */ '@components/mobile/authBase');
         }
     },
 

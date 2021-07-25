@@ -13,10 +13,10 @@ export default {
     components: {
         'page-table': () => {
             if (window.breakpoint === 'desktop') {
-                return import(/* webpackChunkName: "monolandComponents" */ '@components/web/pageTable');
+                return import(/* webpackChunkName: "desktop-components" */ '@components/web/pageTable');
             }
 
-            return import(/* webpackChunkName: "monolandComponents" */ '@components/mobile/pageTable');
+            return import(/* webpackChunkName: "mobile-components" */ '@components/mobile/pageTable');
         }
     },
 }

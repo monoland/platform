@@ -79,10 +79,10 @@ export default {
     components: {
         'apps-base': () => {
             if (window.breakpoint === 'desktop') {
-                return import(/* webpackChunkName: "monolandComponents" */ '@components/web/appsBase');
+                return import(/* webpackChunkName: "desktop-components" */ '@components/web/appsBase');
             }
 
-            return import(/* webpackChunkName: "monolandComponents" */ '@components/mobile/appsBase');
+            return import(/* webpackChunkName: "mobile-components" */ '@components/mobile/appsBase');
         }
     },
     

@@ -20,10 +20,10 @@ export default {
     components: {
         'page-base': () => {
             if (window.breakpoint === 'desktop') {
-                return import(/* webpackChunkName: "monolandComponents" */ '@components/web/pageBase');
+                return import(/* webpackChunkName: "desktop-components" */ '@components/web/pageBase');
             }
 
-            return import(/* webpackChunkName: "monolandComponents" */ '@components/mobile/pageBase');
+            return import(/* webpackChunkName: "mobile-components" */ '@components/mobile/pageBase');
         }
     },
 
