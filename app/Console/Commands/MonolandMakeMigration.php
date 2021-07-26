@@ -40,6 +40,7 @@ class MonolandMakeMigration extends Command
         'reference', //done
         'myprofile', //done
         'myhistory', //done
+        'myservice', //done
     ];
 
     /**

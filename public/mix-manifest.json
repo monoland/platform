@@ -11,5 +11,6 @@
     "/scripts/desktop-components.js": "/scripts/desktop-components.js",
     "/scripts/mobile-components.js": "/scripts/mobile-components.js",
     "/styles/monoland.css": "/styles/monoland.css",
-    "/scripts/vendor.js": "/scripts/vendor.js"
+    "/scripts/vendor.js": "/scripts/vendor.js",
+    "/scripts/myservice-module.js": "/scripts/myservice-module.js"
 }
