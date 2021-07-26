@@ -163,6 +163,186 @@ const route = {
 				}
 			]
 		},
+
+		{
+			path: 'course',
+			component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/course'),
+			children: [
+				{
+					path: '',
+					name: 'myhistory-course',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/course/crud/index'),
+				},
+
+				{
+					path: 'create',
+					name: 'myhistory-course-create',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/course/crud/create')
+				},
+
+				{
+					path: ':course',
+					name: 'myhistory-course-show',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/course/crud/show')
+				},
+				
+				{
+					path: ':course/edit',
+					name: 'myhistory-course-edit',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/course/crud/create')
+				}
+			]
+		},
+
+		{
+			path: 'family',
+			component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/family'),
+			children: [
+				{
+					path: '',
+					name: 'myhistory-family',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/family/crud/index'),
+				},
+
+				{
+					path: 'create',
+					name: 'myhistory-family-create',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/family/crud/create')
+				},
+
+				{
+					path: ':family',
+					name: 'myhistory-family-show',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/family/crud/show')
+				},
+				
+				{
+					path: ':family/edit',
+					name: 'myhistory-family-edit',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/family/crud/create')
+				}
+			]
+		},
+
+		{
+			path: 'goals',
+			component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/goals'),
+			children: [
+				{
+					path: '',
+					name: 'myhistory-goals',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/goals/crud/index'),
+				},
+
+				{
+					path: 'create',
+					name: 'myhistory-goals-create',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/goals/crud/create')
+				},
+
+				{
+					path: ':goals',
+					name: 'myhistory-goals-show',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/goals/crud/show')
+				},
+				
+				{
+					path: ':goals/edit',
+					name: 'myhistory-goals-edit',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/goals/crud/create')
+				}
+			]
+		},
+
+		{
+			path: 'award',
+			component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/award'),
+			children: [
+				{
+					path: '',
+					name: 'myhistory-award',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/award/crud/index'),
+				},
+
+				{
+					path: 'create',
+					name: 'myhistory-award-create',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/award/crud/create')
+				},
+
+				{
+					path: ':award',
+					name: 'myhistory-award-show',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/award/crud/show')
+				},
+				
+				{
+					path: ':award/edit',
+					name: 'myhistory-award-edit',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/award/crud/create')
+				}
+			]
+		},
+
+		{
+			path: 'organization',
+			component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/organization'),
+			children: [
+				{
+					path: '',
+					name: 'myhistory-organization',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/organization/crud/index'),
+				},
+
+				{
+					path: 'create',
+					name: 'myhistory-organization-create',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/organization/crud/create')
+				},
+
+				{
+					path: ':organization',
+					name: 'myhistory-organization-show',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/organization/crud/show')
+				},
+				
+				{
+					path: ':organization/edit',
+					name: 'myhistory-organization-edit',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/organization/crud/create')
+				}
+			]
+		},
+
+		{
+			path: 'cltn',
+			component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/cltn'),
+			children: [
+				{
+					path: '',
+					name: 'myhistory-cltn',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/cltn/crud/index'),
+				},
+
+				{
+					path: 'create',
+					name: 'myhistory-cltn-create',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/cltn/crud/create')
+				},
+
+				{
+					path: ':cltn',
+					name: 'myhistory-cltn-show',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/cltn/crud/show')
+				},
+				
+				{
+					path: ':cltn/edit',
+					name: 'myhistory-cltn-edit',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/cltn/crud/create')
+				}
+			]
+		},
 	]
 };
 

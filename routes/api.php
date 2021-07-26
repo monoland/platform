@@ -136,4 +136,28 @@ Route::prefix('myhistory/api')->group(function () {
     Route::delete('review/{review}/destroy', [MyHistorySectionController::class, 'forceDelete']);
     Route::post('review/{review}/restore', [MyHistorySectionController::class, 'restore']);
     Route::resource('review', MyHistorySectionController::class);
+
+    Route::delete('course/{course}/destroy', [MyHistorySectionController::class, 'forceDelete']);
+    Route::post('course/{course}/restore', [MyHistorySectionController::class, 'restore']);
+    Route::resource('course', MyHistorySectionController::class);
+
+    Route::delete('family/{family}/destroy', [MyHistorySectionController::class, 'forceDelete']);
+    Route::post('family/{family}/restore', [MyHistorySectionController::class, 'restore']);
+    Route::resource('family', MyHistorySectionController::class);
+
+    Route::delete('goals/{goals}/destroy', [MyHistorySectionController::class, 'forceDelete']);
+    Route::post('goals/{goals}/restore', [MyHistorySectionController::class, 'restore']);
+    Route::resource('goals', MyHistorySectionController::class);
+
+    Route::delete('award/{award}/destroy', [MyHistorySectionController::class, 'forceDelete']);
+    Route::post('award/{award}/restore', [MyHistorySectionController::class, 'restore']);
+    Route::resource('award', MyHistorySectionController::class);
+
+    Route::delete('organization/{organization}/destroy', [MyHistorySectionController::class, 'forceDelete']);
+    Route::post('organization/{organization}/restore', [MyHistorySectionController::class, 'restore']);
+    Route::resource('organization', MyHistorySectionController::class);
+
+    Route::delete('cltn/{cltn}/destroy', [MyHistorySectionController::class, 'forceDelete']);
+    Route::post('cltn/{cltn}/restore', [MyHistorySectionController::class, 'restore']);
+    Route::resource('cltn', MyHistorySectionController::class);
 });
