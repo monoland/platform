@@ -3,7 +3,7 @@
         desktop-width="800"
     >
         <v-sheet class="overflow-hidden" rounded="lg">
-            <div class="px-4 pt-4 pb-3 text-h6">Tambah riwayat keluarga</div>
+            <div class="px-6 pt-4 pb-3 text-h6">Tambah riwayat orangtua</div>
 
             <v-stepper v-model="step">
                 <v-stepper-header>
@@ -31,129 +31,172 @@
                 
                 <v-stepper-items>
                     <v-stepper-content step="1">
-                        <v-sheet :color="`grey lighten-4`" class="ma-1 px-4 py-1" rounded="lg">
-                            <!-- pasangan -->
-                            <v-select
-                                label="Pilih Suami/Istri ke"
-                            ></v-select>
+                        <v-sheet :color="`grey lighten-4`" class="ma-1" rounded="lg">
+                            <v-card-text>
+                                <v-row>
+                                    <v-col md="12">
+                                        <v-text-field
+                                            label="Nama"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <v-radio-group column>
-                                <template v-slot:label>
-                                    <div class="font-weight-bold">Sebagai PNS</div>
-                                </template>
+                                    <v-col md="6">
+                                        <v-text-field
+                                            label="Tempat Lahir"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                                <v-radio
-                                    label="Bukan PNS"
-                                    value="radio-1"
-                                ></v-radio>
+                                    <v-col md="6">
+                                        <v-text-field
+                                            label="Tanggal Lahir"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                                <v-radio
-                                    label="PNS"
-                                    value="radio-2"
-                                ></v-radio>
-                            </v-radio-group>
+                                    <v-col md="6">
+                                        <v-select
+                                            label="Pilih Pasangan"
+                                            hide-details
+                                        ></v-select>
+                                    </v-col>
 
-                            <!-- anak -->
-                            <v-select
-                                label="Pilih Pasangan"
-                            ></v-select>
+                                    <v-col md="6">
+                                        <v-select
+                                            label="Pilih Status Anak"
+                                            hide-details
+                                        ></v-select>
+                                    </v-col>
+                                    
+                                    <v-col md="6">
+                                        <v-select
+                                            label="Pilih Jenis Identitas"
+                                            hide-details
+                                        ></v-select>
+                                    </v-col>
 
-                            <v-text-field
-                                label="Nama"
-                            ></v-text-field>
+                                    <v-col md="6">
+                                        <v-text-field
+                                            label="Nomor Identitas"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <v-text-field
-                                label="Tempat Lahir"
-                            ></v-text-field>
+                                    <v-col md="12">
+                                        <v-text-field
+                                            label="Alamat"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <v-text-field
-                                label="Tanggal Lahir"
-                            ></v-text-field>
-                            
-                            <!-- anak -->
-                            <v-select
-                                label="Pilih Status Anak"
-                            ></v-select>
+                                    <v-col md="6">
+                                        <v-text-field
+                                            label="Nomor HP"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <v-select
-                                label="Pilih Jenis Identitas"
-                            ></v-select>
+                                    <v-col md="6">
+                                        <v-text-field
+                                            label="Nomor Telpon"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <v-text-field
-                                label="Nomor Identitas"
-                            ></v-text-field>
+                                    <v-col md="12">
+                                        <v-text-field
+                                            label="Email"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <!-- pasangan -->
-                            <v-text-field
-                                label="Nomor Karis/Karsu"
-                            ></v-text-field>
+                                    <v-col md="12">
+                                        <v-text-field
+                                            label="Nomor Akta Kelahiran"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <v-text-field
-                                label="Alamat"
-                            ></v-text-field>
+                                    <v-col md="6">
+                                        <v-select
+                                            label="Pilih Agama"
+                                        ></v-select>
+                                    </v-col>
 
-                            <v-text-field
-                                label="Nomor HP"
-                            ></v-text-field>
+                                    <v-col md="6">
+                                        <v-select
+                                            label="Status Pernikahan"
+                                        ></v-select>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
 
-                            <v-text-field
-                                label="Nomor Telpon"
-                            ></v-text-field>
+                            <v-divider></v-divider>
 
-                            <v-text-field
-                                label="Email"
-                            ></v-text-field>
+                            <v-card-text>
+                                <v-row>
+                                    <v-col md="4">
+                                        <v-radio-group class="mt-0" column hide-details>
+                                            <template v-slot:label>
+                                                <div class="font-weight-bold">Sebagai PNS</div>
+                                            </template>
 
-                            <v-radio-group column>
-                                <template v-slot:label>
-                                    <div class="font-weight-bold">Jenis Kelamin</div>
-                                </template>
+                                            <v-radio
+                                                label="Bukan PNS"
+                                                value="radio-1"
+                                            ></v-radio>
 
-                                <v-radio
-                                    label="Perempuan"
-                                    value="radio-1"
-                                ></v-radio>
+                                            <v-radio
+                                                label="PNS"
+                                                value="radio-2"
+                                            ></v-radio>
+                                        </v-radio-group>
+                                    </v-col>
 
-                                <v-radio
-                                    label="Laki-laki"
-                                    value="radio-2"
-                                ></v-radio>
-                            </v-radio-group>
+                                    <v-col md="4">
+                                        <v-radio-group class="mt-0" column hide-details>
+                                            <template v-slot:label>
+                                                <div class="font-weight-bold">Jenis Kelamin</div>
+                                            </template>
 
-                            <v-select
-                                label="Pilih Agama"
-                            ></v-select>
+                                            <v-radio
+                                                label="Perempuan"
+                                                value="radio-1"
+                                            ></v-radio>
 
-                            <v-radio-group column>
-                                <template v-slot:label>
-                                    <div class="font-weight-bold">Status Hidup</div>
-                                </template>
+                                            <v-radio
+                                                label="Laki-laki"
+                                                value="radio-2"
+                                            ></v-radio>
+                                        </v-radio-group>
+                                    </v-col>
 
-                                <v-radio
-                                    label="Hidup"
-                                    value="radio-1"
-                                ></v-radio>
+                                    <v-col md="4">
+                                        <v-radio-group class="mt-0" column hide-details>
+                                            <template v-slot:label>
+                                                <div class="font-weight-bold">Status Hidup</div>
+                                            </template>
 
-                                <v-radio
-                                    label="Meninggal"
-                                    value="radio-2"
-                                ></v-radio>
-                            </v-radio-group>
+                                            <v-radio
+                                                label="Hidup"
+                                                value="radio-1"
+                                            ></v-radio>
 
-                            <v-text-field
-                                label="Nomor Akta Kelahiran"
-                            ></v-text-field>
-
-                            <v-select
-                                label="Status Pernikahan"
-                            ></v-select>
+                                            <v-radio
+                                                label="Meninggal"
+                                                value="radio-2"
+                                            ></v-radio>
+                                        </v-radio-group>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
                         </v-sheet>
                         
                         <v-divider class="my-3"></v-divider>
                         
                         <v-sheet class="ma-1 d-flex">
                             <v-spacer></v-spacer>
-                            <v-btn text color="grey" class="mr-1">batal</v-btn>
                             <v-btn text color="primary" @click="step = parseInt(step) + 1">lanjutkan</v-btn>
                         </v-sheet>
                     </v-stepper-content>
@@ -162,19 +205,7 @@
                         <v-sheet :color="`grey lighten-4`" class="ma-1 px-4 py-1" rounded="lg">
                             <mono-file-upload
                                 class="mb-3"
-                                label="Dokumen Kartu Keluarga (KK)"
-                                hint="Tap disini pilih file dari perangkat Anda."
-                            ></mono-file-upload>
-
-                            <mono-file-upload
-                                class="mb-3"
                                 label="Dokumen Akta Kelahiran - Anak"
-                                hint="Tap disini pilih file dari perangkat Anda."
-                            ></mono-file-upload>
-
-                            <mono-file-upload
-                                class="mb-3"
-                                label="Dokumen Akta Nikah/Surat Nikah/Buku Nikah"
                                 hint="Tap disini pilih file dari perangkat Anda."
                             ></mono-file-upload>
                         </v-sheet>
@@ -183,7 +214,6 @@
                         
                         <v-sheet class="ma-1 d-flex">
                             <v-spacer></v-spacer>
-                            <v-btn text color="grey" class="mr-1">batal</v-btn>
                             <v-btn text color="primary" @click="step = parseInt(step) + 1">lanjutkan</v-btn>
                         </v-sheet>
                     </v-stepper-content>
@@ -274,11 +304,6 @@
                                 <template v-slot:default>
                                     <tbody>
                                         <tr>
-                                            <td class="overline grey--text text--darken-1">Dokumen Kartu Keluarga (KK)</td>
-                                            <td class="text-right">{{ record.name }}</td>
-                                        </tr>
-
-                                        <tr>
                                             <td class="overline grey--text text--darken-1">Dokumen Akta Kelahiran - Anak</td>
                                             <td class="text-right">{{ record.name }}</td>
                                         </tr>
@@ -298,8 +323,7 @@
                         
                         <v-sheet class="ma-1 d-flex">
                             <v-spacer></v-spacer>
-                            <v-btn text color="grey" class="mr-1">batal</v-btn>
-                            <v-btn text color="primary" @click="step = parseInt(step) + 1">lanjutkan</v-btn>
+                            <v-btn text color="primary" @click="step = parseInt(step) + 1">simpan</v-btn>
                         </v-sheet>
                     </v-stepper-content>
                 </v-stepper-items>

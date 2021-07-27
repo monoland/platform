@@ -6,11 +6,16 @@
     "/scripts/myaccount-module.js": "/scripts/myaccount-module.js",
     "/scripts/myhistory-module.js": "/scripts/myhistory-module.js",
     "/scripts/myprofile-module.js": "/scripts/myprofile-module.js",
+    "/scripts/myservice-module.js": "/scripts/myservice-module.js",
     "/scripts/reference-module.js": "/scripts/reference-module.js",
     "/scripts/system-module.js": "/scripts/system-module.js",
     "/scripts/desktop-components.js": "/scripts/desktop-components.js",
     "/scripts/mobile-components.js": "/scripts/mobile-components.js",
+    "/styles/vuetify.min.css": "/styles/vuetify.min.css",
     "/styles/monoland.css": "/styles/monoland.css",
     "/scripts/vendor.js": "/scripts/vendor.js",
-    "/scripts/myservice-module.js": "/scripts/myservice-module.js"
+    "/scripts/staffing-module.js": "/scripts/staffing-module.js",
+    "/scripts/superior-module.js": "/scripts/superior-module.js",
+    "/scripts/leader-module.js": "/scripts/leader-module.js",
+    "/scripts/organization-module.js": "/scripts/organization-module.js"
 }

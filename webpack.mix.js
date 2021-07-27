@@ -1,7 +1,5 @@
 const mix = require('laravel-mix');
 
-require('vuetifyjs-mix-extension');
-
 mix.webpackConfig({
     resolve: {
         alias: {
@@ -15,11 +13,9 @@ mix.webpackConfig({
 });
 
 mix.js('resources/apps/monoland.js', 'public/scripts')
-    .vuetify({
-        extract: '[name].css'
-    })
     .vue()
     .sourceMaps()
+    .css('node_modules/vuetify/dist/vuetify.min.css', 'public/styles')
     .sass('resources/styles/monoland.scss', 'public/styles')
     .extract([
         'axios', 'debounce', 'pdfjs-dist', 'vue', 'vue-router', 'vuetify', 'vuex'

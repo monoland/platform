@@ -29,6 +29,10 @@ class DatabaseSeeder extends Seeder
             'myprofile-superadmin',
             'myhistory-superadmin',
             'myservice-superadmin',
+            'staffing-superadmin',
+            'superior-superadmin',
+            'leader-superadmin',
+            'organization-superadmin',
         );
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <mono-page-base
-        name="myhistory-family"
-        title="family"
+        name="myhistory-couple"
+        title="couple"
     >
         <mono-page-data>
             <mono-page-table>

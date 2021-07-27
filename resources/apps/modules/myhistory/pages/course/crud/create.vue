@@ -31,45 +31,70 @@
                 
                 <v-stepper-items>
                     <v-stepper-content step="1">
-                        <v-sheet :color="`grey lighten-4`" class="ma-1 px-4 py-1" rounded="lg">
-                            <v-select
-                                label="Jenis Diklat/Kursus"
-                            ></v-select>
+                        <v-sheet :color="`grey lighten-4`" class="ma-1" rounded="lg">
+                            <v-card-text class="px-6">
+                                <v-row>
+                                    <v-col md="12">
+                                        <v-select
+                                            label="Jenis Diklat/Kursus"
+                                            hide-details
+                                        ></v-select>
+                                    </v-col>
 
-                            <v-text-field
-                                label="Nama Diklat"
-                            ></v-text-field>
+                                    <v-col md="12">
+                                        <v-text-field
+                                            label="Nama Diklat"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <v-text-field
-                                label="Institusi Penyelenggara"
-                            ></v-text-field>
+                                    <v-col md="12">
+                                        <v-text-field
+                                            label="Institusi Penyelenggara"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <v-select
-                                label="Nomor Sertifikat"
-                            ></v-select>
+                                    <v-col md="12">
+                                        <v-text-field
+                                            label="Nomor Sertifikat"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <v-select
-                                label="Tahun Diklat"
-                            ></v-select>
+                                    <v-col md="6">
+                                        <v-text-field
+                                            label="Tahun Diklat"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <v-text-field
-                                label="Tanggal Mulai"
-                            ></v-text-field>
+                                    <v-col md="6">
+                                        <v-text-field
+                                            label="Durasi (JAM)"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <v-text-field
-                                label="Tanggal Selesai"
-                            ></v-text-field>
+                                    <v-col md="6">
+                                        <v-text-field
+                                            label="Tanggal Mulai"
+                                        ></v-text-field>
+                                    </v-col>
 
-                            <v-text-field
-                                label="Durasi (JAM)"
-                            ></v-text-field>
+                                    <v-col md="6">
+                                        <v-text-field
+                                            label="Tanggal Selesai"
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
                         </v-sheet>
                         
                         <v-divider class="my-3"></v-divider>
                         
                         <v-sheet class="ma-1 d-flex">
                             <v-spacer></v-spacer>
-                            <v-btn text color="grey" class="mr-1">batal</v-btn>
                             <v-btn text color="primary" @click="step = parseInt(step) + 1">lanjutkan</v-btn>
                         </v-sheet>
                     </v-stepper-content>
@@ -87,7 +112,6 @@
                         
                         <v-sheet class="ma-1 d-flex">
                             <v-spacer></v-spacer>
-                            <v-btn text color="grey" class="mr-1">batal</v-btn>
                             <v-btn text color="primary" @click="step = parseInt(step) + 1">lanjutkan</v-btn>
                         </v-sheet>
                     </v-stepper-content>
@@ -167,8 +191,7 @@
                         
                         <v-sheet class="ma-1 d-flex">
                             <v-spacer></v-spacer>
-                            <v-btn text color="grey" class="mr-1">batal</v-btn>
-                            <v-btn text color="primary" @click="step = parseInt(step) + 1">lanjutkan</v-btn>
+                            <v-btn text color="primary" @click="step = parseInt(step) + 1">simpan</v-btn>
                         </v-sheet>
                     </v-stepper-content>
                 </v-stepper-items>

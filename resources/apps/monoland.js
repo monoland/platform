@@ -2,9 +2,23 @@ import Vue from 'vue'
 import Apps from './Apps.vue'
 
 if (! ('breakpoint' in window)) {
+    let isMobileDevice = [
+        /Android/i,
+        /AndroidOS/i,
+        /webOS/i,
+        /iPhone/i,
+        /iPad/i,
+        /iPod/i,
+        /BlackBerry/i,
+        /Windows Phone/i
+    ].some((device) => {
+        return navigator.userAgent.match(device);
+    });
+
     let breakpoint = Auth.getItem('breakpoint');
 
-    window.breakpoint = breakpoint ? breakpoint : (navigator.userAgentData.mobile ? 'mobile' : 'desktop');
+    window.breakpoint = breakpoint ? breakpoint : isMobileDevice ? 'mobile' : 'desktop';
+    // window.breakpoint = breakpoint ? breakpoint : (navigator.userAgentData.mobile ? 'mobile' : 'desktop');
 }
 
 import Auth from '@plugins/auth';

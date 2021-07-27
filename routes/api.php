@@ -7,13 +7,9 @@ use App\Http\Controllers\System\UserController;
 use App\Http\Controllers\System\ModuleController;
 use App\Http\Controllers\System\AbilityController;
 use App\Http\Controllers\System\SettingController;
-use App\Http\Controllers\Reference\FaithController;
 use App\Http\Controllers\MyAccount\ProfileController;
-use App\Http\Controllers\Reference\EchelonController;
 use App\Http\Controllers\System\PermissionController;
-use App\Http\Controllers\MyProfile\DocumentController;
 use App\Http\Controllers\Account\AccountBaseController;
-use App\Http\Controllers\Reference\EchelonmapController;
 use Laravel\Fortify\Http\Controllers\PasswordController;
 use App\Http\Controllers\MyAccount\AnnouncementController;
 use App\Http\Controllers\MyAccount\NotificationController;
@@ -25,7 +21,6 @@ use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController;
 use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController;
-use App\Http\Controllers\MyHistory\SectionController as MyHistorySectionController;
 
 Route::prefix('account')->group(function () {
     // Authentication
@@ -98,66 +93,4 @@ Route::prefix('system/api')->group(function () {
     Route::resource('user', UserController::class);
 
     Route::get('setting', [SettingController::class, 'index']);
-});
-
-Route::prefix('reference/api')->group(function () {
-    Route::delete('faith/{faith}/destroy', [FaithController::class, 'forceDelete']);
-    Route::post('faith/{faith}/restore', [FaithController::class, 'restore']);
-    Route::resource('faith', FaithController::class);
-
-    Route::delete('echelonmap/{echelonmap}/destroy', [EchelonmapController::class, 'forceDelete']);
-    Route::post('echelonmap/{echelonmap}/restore', [EchelonmapController::class, 'restore']);
-    Route::resource('echelonmap', EchelonmapController::class);
-
-    Route::delete('echelonmap/{echelonmap}/echelon/{echelon}/destroy', [EchelonController::class, 'forceDelete']);
-    Route::post('echelonmap/{echelonmap}/echelon/{echelon}/restore', [EchelonController::class, 'restore']);
-    Route::resource('echelonmap.echelon', EchelonController::class);
-});
-
-Route::prefix('myprofile/api')->group(function () {
-    Route::delete('document/{document}/destroy', [DocumentController::class, 'forceDelete']);
-    Route::post('document/{document}/restore', [DocumentController::class, 'restore']);
-    Route::resource('document', DocumentController::class);
-});
-
-Route::prefix('myhistory/api')->group(function () {
-    Route::delete('section/{section}/destroy', [MyHistorySectionController::class, 'forceDelete']);
-    Route::post('section/{section}/restore', [MyHistorySectionController::class, 'restore']);
-    Route::resource('section', MyHistorySectionController::class);
-
-    Route::delete('education/{education}/destroy', [MyHistorySectionController::class, 'forceDelete']);
-    Route::post('education/{education}/restore', [MyHistorySectionController::class, 'restore']);
-    Route::resource('education', MyHistorySectionController::class);
-
-    Route::delete('position/{position}/destroy', [MyHistorySectionController::class, 'forceDelete']);
-    Route::post('position/{position}/restore', [MyHistorySectionController::class, 'restore']);
-    Route::resource('position', MyHistorySectionController::class);
-
-    Route::delete('review/{review}/destroy', [MyHistorySectionController::class, 'forceDelete']);
-    Route::post('review/{review}/restore', [MyHistorySectionController::class, 'restore']);
-    Route::resource('review', MyHistorySectionController::class);
-
-    Route::delete('course/{course}/destroy', [MyHistorySectionController::class, 'forceDelete']);
-    Route::post('course/{course}/restore', [MyHistorySectionController::class, 'restore']);
-    Route::resource('course', MyHistorySectionController::class);
-
-    Route::delete('family/{family}/destroy', [MyHistorySectionController::class, 'forceDelete']);
-    Route::post('family/{family}/restore', [MyHistorySectionController::class, 'restore']);
-    Route::resource('family', MyHistorySectionController::class);
-
-    Route::delete('goals/{goals}/destroy', [MyHistorySectionController::class, 'forceDelete']);
-    Route::post('goals/{goals}/restore', [MyHistorySectionController::class, 'restore']);
-    Route::resource('goals', MyHistorySectionController::class);
-
-    Route::delete('award/{award}/destroy', [MyHistorySectionController::class, 'forceDelete']);
-    Route::post('award/{award}/restore', [MyHistorySectionController::class, 'restore']);
-    Route::resource('award', MyHistorySectionController::class);
-
-    Route::delete('organization/{organization}/destroy', [MyHistorySectionController::class, 'forceDelete']);
-    Route::post('organization/{organization}/restore', [MyHistorySectionController::class, 'restore']);
-    Route::resource('organization', MyHistorySectionController::class);
-
-    Route::delete('cltn/{cltn}/destroy', [MyHistorySectionController::class, 'forceDelete']);
-    Route::post('cltn/{cltn}/restore', [MyHistorySectionController::class, 'restore']);
-    Route::resource('cltn', MyHistorySectionController::class);
 });

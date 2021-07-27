@@ -13,17 +13,18 @@
                 <v-sheet class="clip-corner px-8 py-2" :color="`${theme} lighten-4`">
                     <div class="row justify-center no-gutters align-start">
                         <template v-for="(page, index) in docks">
-                            <v-col cols="1" :key="`page-${index}`" v-if="index < 11">
+                            <v-col cols="1" :key="`page-${index}`" v-if="index < 11" style="height: 100%;">
                                 <v-sheet 
                                     :color="`${theme} lighten-5`" 
                                     class="d-flex flex-column ma-2 overflow-hidden" 
                                     elevation="1"
                                     min-height="100"
+                                    height="100%"
                                     rounded="lg"
                                     style="cursor: pointer;"
                                     @click="page.module ? openModule(page) : openPage(page)"
                                 >
-                                    <v-responsive class="white" height="65">
+                                    <v-responsive class="white" min-height="65">
                                         <div class="d-flex align-center justify-center height-100">
                                             <v-icon :color="`${page.color ? page.color : theme} lighten-1`" x-large>{{ page.icon }}</v-icon>
                                         </div>

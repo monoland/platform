@@ -26,6 +26,7 @@ class PageImport implements ToModel, WithHeadingRow
         return new Page([
             'name' => $row['name'],
             'slug' => $row['slug'],
+            'title' => $row['title'],
             'icon' => $row['icon'],
             'prefix' => $row['prefix'],
             'path' => $row['path'],

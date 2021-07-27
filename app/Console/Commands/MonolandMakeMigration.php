@@ -38,9 +38,13 @@ class MonolandMakeMigration extends Command
         'system', //done
         'account', //done
         'reference', //done
+        'organization', //done
         'myprofile', //done
         'myhistory', //done
         'myservice', //done
+        'staffing', //done
+        'superior', //done
+        'leader', //done
     ];
 
     /**

@@ -195,31 +195,91 @@ const route = {
 		},
 
 		{
-			path: 'family',
-			component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/family'),
+			path: 'parents',
+			component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/parents'),
 			children: [
 				{
 					path: '',
-					name: 'myhistory-family',
-					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/family/crud/index'),
+					name: 'myhistory-parents',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/parents/crud/index'),
 				},
 
 				{
 					path: 'create',
-					name: 'myhistory-family-create',
-					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/family/crud/create')
+					name: 'myhistory-parents-create',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/parents/crud/create')
 				},
 
 				{
-					path: ':family',
-					name: 'myhistory-family-show',
-					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/family/crud/show')
+					path: ':parents',
+					name: 'myhistory-parents-show',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/parents/crud/show')
 				},
 				
 				{
-					path: ':family/edit',
-					name: 'myhistory-family-edit',
-					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/family/crud/create')
+					path: ':parents/edit',
+					name: 'myhistory-parents-edit',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/parents/crud/create')
+				}
+			]
+		},
+
+		{
+			path: 'couple',
+			component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/couple'),
+			children: [
+				{
+					path: '',
+					name: 'myhistory-couple',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/couple/crud/index'),
+				},
+
+				{
+					path: 'create',
+					name: 'myhistory-couple-create',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/couple/crud/create')
+				},
+
+				{
+					path: ':couple',
+					name: 'myhistory-couple-show',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/couple/crud/show')
+				},
+				
+				{
+					path: ':couple/edit',
+					name: 'myhistory-couple-edit',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/couple/crud/create')
+				}
+			]
+		},
+
+		{
+			path: 'child',
+			component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/child'),
+			children: [
+				{
+					path: '',
+					name: 'myhistory-child',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/child/crud/index'),
+				},
+
+				{
+					path: 'create',
+					name: 'myhistory-child-create',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/child/crud/create')
+				},
+
+				{
+					path: ':child',
+					name: 'myhistory-child-show',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/child/crud/show')
+				},
+				
+				{
+					path: ':child/edit',
+					name: 'myhistory-child-edit',
+					component: () => import(/* webpackChunkName: "myhistory-module" */ '@modules/myhistory/pages/child/crud/create')
 				}
 			]
 		},

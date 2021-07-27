@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-        "clean": "del-cli public/styles/*.css --force && del-cli public/scripts/*.js --force && del-cli public/mix-manifest.json",
+        "clean": "del-cli public/styles/*.css && del-cli public/scripts/*.css  && del-cli public/scripts/*.js && del-cli public/mix-manifest.json",
         "dev": "npm run development",
         "development": "mix",
         "watch": "yarn clean && mix watch",

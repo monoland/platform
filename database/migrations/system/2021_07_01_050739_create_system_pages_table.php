@@ -17,6 +17,7 @@ class CreateSystemPagesTable extends Migration
             $table->id();
             $table->string('name')->index();
             $table->string('slug')->unique();
+            $table->string('title')->nullable();
             $table->string('icon')->default('home');
             $table->string('prefix')->index();
             $table->string('path')->index();
