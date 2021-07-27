@@ -56,29 +56,22 @@ class CreateMyprofileBiodatasTable extends Migration
             // jabatan akhir
             // ====================================================
             $table->foreignId('formation_id')->nullable();
-            $table->foreignId('echelonmap_id')->nullable();
-            $table->foreignId('echelon_id')->nullable();
-            $table->foreignId('grademap_id')->nullable();
-            $table->foreignId('grade_id')->nullable();
-            $table->foreignId('postmap_id')->nullable();
-            // jabatan => pelaksana
-            $table->foreignId('executor_id')->nullable();
-            // jabatan => fungsional
-            $table->foreignId('sector_id')->nullable();
-            $table->foreignId('expertise_id')->nullable();
-            $table->foreignId('functional_id')->nullable();
+            
+            $table->foreignId('positiontype_id')->nullable();
+            $table->foreignId('positionkind_id')->nullable();
+            
             $table->morphs('positionable');
-            // jabatan => struktural
+            $table->foreignId('executor_id')->nullable();
+            $table->foreignId('functional_id')->nullable();
             $table->foreignId('structural_id')->nullable();
-            $table->date('tmt_echelon');
             $table->date('tmt_position');
-            // unit_kerja
-            $table->foreignId('type_id')->nullable();
-            $table->foreignId('workunit_id')->nullable();
-            // postype
-            $table->foreignId('postypemap_id')->nullable();
-            $table->foreignId('postype_id')->nullable();
 
+            $table->foreignId('echelon_id')->nullable();
+            $table->date('tmt_echelon');
+            
+            // unit_kerja
+            $table->foreignId('workunit_id')->nullable();
+            
             // ====================================================
             // pendidikan akhir
             // ====================================================

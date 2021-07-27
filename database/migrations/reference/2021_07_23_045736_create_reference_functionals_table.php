@@ -18,9 +18,9 @@ class CreateReferenceFunctionalsTable extends Migration
             $table->string('name')->index();
             $table->string('slug')->unique();
             $table->string('nickname');
+            $table->foreignId('positiontype_id')->nullable();
+            $table->foreignId('functionalmap_id');
             $table->foreignId('sector_id');
-            $table->foreignId('postype_id')->nullable();
-            $table->foreignId('grade_id');
             $table->foreignId('expertise_id')->nullable();
             $table->unsignedSmallInteger('job_class')->nullable();
             $table->unsignedSmallInteger('age_limit')->nullable();

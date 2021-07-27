@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReferenceStructuralsTable extends Migration
+class CreateReferenceFunctionalmapsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,13 @@ class CreateReferenceStructuralsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reference_structurals', function (Blueprint $table) {
+        Schema::create('reference_functionalmaps', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->unsignedSmallInteger('job_class')->nullable();
-            $table->unsignedSmallInteger('age_limit')->nullable();
-            $table->foreignId('echelon_id');
+            $table->string('name')->index();
+            $table->string('slug')->unique();
+            $table->string('alias')->nullable();
+            $table->foreignId('functionaltype_id');
             $table->foreignId('positiontype_id')->nullable();
-            $table->foreignId('workunit_id');
-            $table->boolean('is_chief')->default(false);
-            $table->boolean('active')->default(true);
             $table->nestedSet();
             $table->softDeletes();
             $table->timestamps();
@@ -36,6 +33,6 @@ class CreateReferenceStructuralsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reference_structurals');
+        Schema::dropIfExists('reference_functionalmaps');
     }
 }
