@@ -35,9 +35,32 @@
                                     </div>
                                 </v-sheet>
                             </v-col>
+
+                            <v-col cols="1" :key="`page-${index}`" v-if="index === 11 && docks.length === 12" style="height: 100%;">
+                                <v-sheet 
+                                    :color="`${theme} lighten-5`" 
+                                    class="d-flex flex-column ma-2 overflow-hidden" 
+                                    elevation="1"
+                                    min-height="100"
+                                    height="100%"
+                                    rounded="lg"
+                                    style="cursor: pointer;"
+                                    @click="page.module ? openModule(page) : openPage(page)"
+                                >
+                                    <v-responsive class="white" min-height="65">
+                                        <div class="d-flex align-center justify-center height-100">
+                                            <v-icon :color="`${page.color ? page.color : theme} lighten-1`" x-large>{{ page.icon }}</v-icon>
+                                        </div>
+                                    </v-responsive>
+                                    
+                                    <div class="d-flex align-center justify-center height-100 px-2 py-2">
+                                        <div class="text-caption font-weight-medium text-center line-height-1-point-2 width-100" :class="`${theme}--text`">{{ page.name }}</div>
+                                    </div>
+                                </v-sheet>
+                            </v-col>
                         </template>
 
-                        <v-col cols="1" v-if="docks.length > 11">
+                        <v-col cols="1" v-if="docks.length > 12">
                             <v-sheet 
                                 class="d-flex flex-column clip-corner ma-2 elevation-0 overflow-hidden" 
                                 min-height="100"

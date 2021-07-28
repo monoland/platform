@@ -39,6 +39,14 @@ class MonolandMakeMigration extends Command
         'account', //done
         'reference', //done
         'organization', //done
+        'paidleave', //done
+        'allowance', //done
+        
+        'development', //done
+        'pension', //done
+        'payincrease', //done
+        'promotion', //done
+        
         'myprofile', //done
         'myhistory', //done
         'myservice', //done

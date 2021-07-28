@@ -22,17 +22,37 @@ class DatabaseSeeder extends Seeder
             'theme' => 'blue-grey'
         ]);
 
+        $pegawai = User::create([
+            'name' =>  'pegawai',
+            'email' => 'pegawai@dev',
+            'password' => Hash::make('12345'),
+            'theme' => 'blue-grey'
+        ]);
+
         $superadmin->attachAbilities(
             'myaccount-superadmin',
             'system-superadmin',
             'reference-superadmin',
+            'organization-superadmin',
+            'paidleave-superadmin',
+            'allowance-superadmin',
+            'development-superadmin',
+            'pension-superadmin',
+            'payincrease-superadmin',
+            'promotion-superadmin',
             'myprofile-superadmin',
             'myhistory-superadmin',
             'myservice-superadmin',
             'staffing-superadmin',
             'superior-superadmin',
             'leader-superadmin',
-            'organization-superadmin',
+        );
+
+        $pegawai->attachAbilities(
+            'myaccount-pegawai',
+            'myprofile-superadmin',
+            'myhistory-superadmin',
+            'myservice-superadmin',
         );
     }
 }
