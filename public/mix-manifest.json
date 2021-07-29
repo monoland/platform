@@ -3,6 +3,8 @@
     "/scripts/manifest.js": "/scripts/manifest.js",
     "/scripts/basic-components.js": "/scripts/basic-components.js",
     "/scripts/account-module.js": "/scripts/account-module.js",
+    "/scripts/allowance-module.js": "/scripts/allowance-module.js",
+    "/scripts/development-module.js": "/scripts/development-module.js",
     "/scripts/leader-module.js": "/scripts/leader-module.js",
     "/scripts/myaccount-module.js": "/scripts/myaccount-module.js",
     "/scripts/myhistory-module.js": "/scripts/myhistory-module.js",
@@ -10,6 +12,9 @@
     "/scripts/myservice-module.js": "/scripts/myservice-module.js",
     "/scripts/organization-module.js": "/scripts/organization-module.js",
     "/scripts/paidleave-module.js": "/scripts/paidleave-module.js",
+    "/scripts/payincrease-module.js": "/scripts/payincrease-module.js",
+    "/scripts/pension-module.js": "/scripts/pension-module.js",
+    "/scripts/promotion-module.js": "/scripts/promotion-module.js",
     "/scripts/reference-module.js": "/scripts/reference-module.js",
     "/scripts/staffing-module.js": "/scripts/staffing-module.js",
     "/scripts/superior-module.js": "/scripts/superior-module.js",
@@ -18,11 +23,5 @@
     "/scripts/mobile-components.js": "/scripts/mobile-components.js",
     "/styles/vuetify.min.css": "/styles/vuetify.min.css",
     "/styles/monoland.css": "/styles/monoland.css",
-    "/scripts/vendor.js": "/scripts/vendor.js",
-    "/scripts/allowance-module.js": "/scripts/allowance-module.js",
-    "/scripts/education-module.js": "/scripts/education-module.js",
-    "/scripts/pension-module.js": "/scripts/pension-module.js",
-    "/scripts/payincrease-module.js": "/scripts/payincrease-module.js",
-    "/scripts/promotion-module.js": "/scripts/promotion-module.js",
-    "/scripts/development-module.js": "/scripts/development-module.js"
+    "/scripts/vendor.js": "/scripts/vendor.js"
 }

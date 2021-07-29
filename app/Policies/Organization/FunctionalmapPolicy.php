@@ -1,0 +1,95 @@
+<?php
+
+namespace App\Policies\Organization;
+
+use App\Models\Organization\Functionalmap;
+use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
+
+class FunctionalmapPolicy
+{
+    use HandlesAuthorization;
+
+    /**
+     * Determine whether the user can view the functionalmap.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Organization\Functionalmap  $functionalmap
+     * @return mixed
+     */
+    public function show(User $user, Functionalmap $functionalmap)
+    {
+        return $user->hasPermission('show-organization-functionalmap');
+    }
+
+    /**
+     * Determine whether the user can view the functionalmap.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Organization\Functionalmap  $functionalmap
+     * @return mixed
+     */
+    public function view(User $user)
+    {
+        return $user->hasPermission('view-organization-functionalmap');
+    }
+
+    /**
+     * Determine whether the user can create functionalmaps.
+     *
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    public function create(User $user)
+    {
+        return $user->hasPermission('create-organization-functionalmap');
+    }
+
+    /**
+     * Determine whether the user can update the functionalmap.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Organization\Functionalmap  $functionalmap
+     * @return mixed
+     */
+    public function update(User $user, Functionalmap $functionalmap)
+    {
+        return $user->hasPermission('update-organization-functionalmap');
+    }
+
+    /**
+     * Determine whether the user can delete the functionalmap.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Organization\Functionalmap  $functionalmap
+     * @return mixed
+     */
+    public function delete(User $user, Functionalmap $functionalmap)
+    {
+        return $user->hasPermission('delete-organization-functionalmap');
+    }
+
+    /**
+     * Determine whether the user can restore the functionalmap.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Organization\Functionalmap  $functionalmap
+     * @return mixed
+     */
+    public function restore(User $user, Functionalmap $functionalmap)
+    {
+        return $user->hasPermission('restore-organization-functionalmap');
+    }
+
+    /**
+     * Determine whether the user can permanently delete the functionalmap.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Organization\Functionalmap  $functionalmap
+     * @return mixed
+     */
+    public function destroy(User $user, Functionalmap $functionalmap)
+    {
+        return $user->hasPermission('destroy-organization-functionalmap');
+    }
+}

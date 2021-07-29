@@ -214,7 +214,7 @@ class User extends Authenticatable
      * @param [type] $slug
      * @return string
      */
-    public function getPageIcon($slug): string
+    public function getPageIcon($slug): string | null
     {
         $page = Cache::rememberForever('page-' . $slug, function () use ($slug) {
             return Page::firstWhere('slug', $slug);
@@ -275,7 +275,7 @@ class User extends Authenticatable
             return Page::firstWhere('slug', $slug);
         });
 
-        $parent = optional($page->parent)->slug;
+        $parent = $page ? optional($page->parent)->slug : null;
 
         return $parent;
     }
@@ -286,13 +286,13 @@ class User extends Authenticatable
      * @param [type] $slug
      * @return string
      */
-    public function getPageTitle($slug): string
+    public function getPageTitle($slug): string | null
     {
         $page = Cache::rememberForever('page-' . $slug, function () use ($slug) {
             return Page::firstWhere('slug', $slug);
         });
 
-        $parent = optional($page->parent)->name;
+        $parent = $page ? optional($page->parent)->name : null;
 
         return $parent ? $parent . '-' . optional($page)->name : optional($page)->name;
     }

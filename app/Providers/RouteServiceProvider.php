@@ -41,6 +41,10 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware(['api', 'auth:sanctum'])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
+            
+            Route::middleware(['api', 'auth:sanctum'])
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api.organization.php'));
 
             Route::middleware(['api', 'auth:sanctum'])
                 ->namespace($this->namespace)

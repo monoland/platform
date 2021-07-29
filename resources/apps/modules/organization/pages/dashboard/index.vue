@@ -1,6 +1,6 @@
 <template>
     <mono-page-home
-        name="reference-dashboard"
+        name="organization-dashboard"
         title="beranda informasi"
     >
         dashboard
