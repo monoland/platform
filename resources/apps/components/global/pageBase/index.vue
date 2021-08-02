@@ -43,6 +43,11 @@ export default {
             default: null
         },
 
+        nested: {
+            type: Boolean,
+            default: false
+        },
+
         title: {
             type: String,
             default: null
@@ -61,6 +66,7 @@ export default {
             layoutDouble: this.layoutDouble,
             layoutSingle: this.layoutSingle,
             route: this.$route,
+            nested: this.nested,
             
             completed:() => {
                 this.$store.dispatch('fetch_records', {

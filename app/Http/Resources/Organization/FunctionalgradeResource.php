@@ -17,6 +17,9 @@ class FunctionalgradeResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'alias' => $this->alias,
+            'positiontype_id' => $this->positiontype_id,
+            'functionalstage_name' => $this->functionalstage->name,
 
             // activate this when use nested table
             // visit https://github.com/lazychaser/laravel-nestedset for detail

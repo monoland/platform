@@ -1,0 +1,439 @@
+.v-application a#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#loader {
+  display: block;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  width: 100px;
+  height: 100px;
+  margin: -50px 0 0 -50px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #0277BD;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+#loader:before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #0288D1;
+  -webkit-animation: spin 3s linear infinite;
+  animation: spin 3s linear infinite;
+}
+
+#loader:after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #039BE5;
+  -webkit-animation: spin 1.5s linear infinite;
+  animation: spin 1.5s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+#pageContainer .page {
+  margin: 8px auto;
+}
+
+.absolute {
+  position: absolute !important;
+}
+.absolute--bottom {
+  bottom: 0 !important;
+}
+.absolute--top {
+  top: 0 !important;
+}
+.absolute--left {
+  left: 0 !important;
+}
+.absolute--right {
+  right: 0 !important;
+}
+
+.backdrop-section.expand-transition-enter-active, .backdrop-section.expand-transition-leave-active {
+  min-height: 64px;
+}
+
+.backdrop-section.v-card {
+  padding-top: 64px;
+}
+
+.backdrop-section--dense.v-card {
+  padding-top: 48px;
+}
+
+.clip-corner {
+  -webkit-clip-path: polygon(0px 16px, 16px 0px, 100% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0 100%) !important;
+          clip-path: polygon(0px 16px, 16px 0px, 100% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0 100%) !important;
+}
+.clip-corner--small {
+  -webkit-clip-path: polygon(0px 12px, 12px 0px, 100% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0 100%) !important;
+          clip-path: polygon(0px 12px, 12px 0px, 100% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0 100%) !important;
+}
+
+.copyright {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1666666667em !important;
+  line-height: 1rem;
+  text-transform: uppercase;
+  font-family: Roboto, sans-serif !important;
+}
+
+.dynamic-100vh {
+  height: calc(100vh - 64px);
+}
+
+.font-fredoka-one {
+  font-family: "Fredoka One";
+}
+
+.font-size-9 {
+  font-size: 9px;
+}
+
+.font-size-10 {
+  font-size: 10px;
+}
+
+.font-size-11 {
+  font-size: 11px;
+}
+
+.height-0 {
+  height: 0 !important;
+}
+
+.height-36px {
+  height: 36px;
+}
+
+.height-96px {
+  height: 96px;
+}
+
+.height-148px {
+  height: 148px;
+}
+
+.height-192px {
+  height: 192px;
+}
+
+.height-100 {
+  height: 100%;
+}
+
+.height-100vh {
+  height: 100vh;
+}
+
+.letter-spacing-half {
+  letter-spacing: 0.5px;
+}
+
+.line-height-0 {
+  line-height: 0 !important;
+}
+
+.line-height-1 {
+  line-height: 1 !important;
+}
+
+.line-height-1-point-2 {
+  line-height: 1.2 !important;
+}
+
+.margin-top-3px {
+  margin-top: 3px;
+}
+
+.max-width-56 {
+  max-width: 56px;
+}
+
+.max-width-64 {
+  max-width: 64px;
+}
+
+.min-height-28 {
+  min-height: 28px;
+}
+
+.min-height-48 {
+  min-height: 48px;
+}
+
+.min-height-56 {
+  min-height: 56px;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-y-hidden {
+  overflow-y: hidden;
+}
+
+.paper-base .v-text-field.v-text-field--solo:not(.v-text-field--solo-flat) > .v-input__control > .v-input__slot {
+  box-shadow: none;
+}
+.paper-base .v-icon.v-icon.v-icon--link {
+  color: #fff;
+}
+
+.paper-wrap--collapse .v-toolbar--collapse .v-toolbar__content > .v-btn.v-btn--icon:first-child .v-icon.v-icon {
+  transform: rotate(180deg);
+}
+
+.spacing-1 {
+  letter-spacing: 1px;
+}
+
+.relative {
+  position: relative !important;
+}
+
+.text-spacing-1 {
+  letter-spacing: 0.1666666667em;
+}
+
+.text-editor {
+  position: relative;
+}
+.text-editor > .content::before {
+  border-color: rgba(0, 0, 0, 0.42);
+  border-style: solid;
+  border-width: thin 0 0;
+  bottom: -1px;
+  content: "";
+  left: 0;
+  position: absolute;
+  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+  width: 100%;
+}
+.text-editor [contenteditable] {
+  outline: 0px solid transparent;
+}
+.text-editor .toolbar .v-btn:not(.v-btn--round).v-size--default {
+  padding: 0;
+  min-width: 48px;
+}
+
+.v-treeview-node__level {
+  min-width: 24px;
+}
+
+.truncate-overflow {
+  --lh: 1.375rem;
+  --max-lines: 2;
+  max-height: calc(var(--lh) * var(--max-lines));
+  overflow: hidden;
+}
+.truncate-overflow::before {
+  content: "...";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.v-data-table {
+  border-radius: 0;
+}
+.v-data-table-header .field-datetime {
+  width: 165px;
+}
+.v-data-table--nohover tr:hover:not(.v-table__expanded__content) {
+  background: transparent !important;
+}
+
+.v-application .paper-base .primary--text {
+  color: #fff !important;
+  caret-color: #fff !important;
+}
+.v-application--is-ltr .v-data-footer {
+  justify-content: flex-start !important;
+  padding: 0 0 0 16px !important;
+}
+.v-application--is-ltr .v-data-footer__select {
+  margin-left: 0;
+}
+.v-application--is-ltr .v-data-table--fixed-header .v-data-footer {
+  margin-right: 0 !important;
+}
+.v-application--is-ltr .v-text-field .v-input__prepend-inner {
+  padding-right: 12px !important;
+}
+.v-application--is-ltr .v-list-item__icon:first-child {
+  margin-right: 16px !important;
+}
+.v-application .overline--dense {
+  font-size: 0.625rem !important;
+}
+
+.v-btn--fixed.v-btn--bottom {
+  bottom: 32px !important;
+}
+
+.v-dialog {
+  box-shadow: none !important;
+}
+.v-dialog--noshadow {
+  box-shadow: none !important;
+}
+
+.v-input.white--text .theme--light.v-label {
+  color: #fff !important;
+}
+
+.v-list-item__icon {
+  margin: 12px 0 !important;
+}
+
+.v-sheet .overflow-hidden {
+  overflow: hidden !important;
+}
+.v-sheet .v-icon.v-icon {
+  transform: rotate(0deg) !important;
+}
+.v-sheet--spin .v-icon.v-icon {
+  transform: rotate(180deg) !important;
+}
+.v-sheet--offset {
+  border: 1px solid transparent !important;
+}
+.v-sheet--shadow {
+  box-shadow: inset 7px 0 9px -7px rgba(0, 0, 0, 0.09);
+  width: 9px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+.v-sheet--shadow-top {
+  box-shadow: inset 0 7px 9px -7px rgba(0, 0, 0, 0.3);
+  height: 9px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+.v-sheet--shadow-content {
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+  height: 4px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.v-speed-dial--bottom {
+  bottom: 32px !important;
+}
+
+.v-stepper__step {
+  padding: 0 24px;
+}
+
+.v-toolbar--collapse .v-toolbar__content > .v-btn.v-btn--icon:first-child .v-icon.v-icon {
+  transform: rotate(0deg) !important;
+}
+.v-toolbar--wrapper > .v-toolbar__content {
+  padding: 0;
+}
+
+.v-text-field.v-input--dense.v-text-field--enclosed:not(.v-text-field--rounded) > .v-input__control > .v-input__slot {
+  padding: 0 8px 0 12px !important;
+}
+
+.v-text-field.v-input--dense:not(.v-text-field--outlined) .v-text-field__prefix,
+.v-text-field.v-input--dense:not(.v-text-field--outlined) .v-text-field__suffix,
+.v-text-field.v-input--dense:not(.v-text-field--outlined) input {
+  padding: 0 2px;
+}
+
+.width-0 {
+  width: 0 !important;
+}
+
+.width-100 {
+  width: 100% !important;
+}
+
+.width-100vw {
+  width: 100vw !important;
+}
+
+.z-index-0 {
+  z-index: 0 !important;
+}
+
+.z-index-1 {
+  z-index: 1 !important;
+}
+
+@media (max-width: 599px) {
+  #preloader {
+    height: calc(100% - 56px);
+  }
+
+  .clip-corner {
+    -webkit-clip-path: polygon(0px 16px, 16px 0px, 100% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0 100%) !important;
+            clip-path: polygon(0px 16px, 16px 0px, 100% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 100%, 0 100%) !important;
+  }
+
+  .dynamic-100vh {
+    height: calc(100vh - 56px);
+  }
+
+  .page-home {
+    min-height: calc(100vh - 316px);
+  }
+
+  .backdrop-section.expand-transition-enter-active, .backdrop-section.expand-transition-leave-active {
+    min-height: 56px;
+  }
+
+  .backdrop-section.v-card {
+    padding-top: 56px;
+  }
+
+  .v-application--is-ltr .v-toolbar__content > .v-btn.v-btn--icon:first-child + .v-toolbar__title {
+    padding-left: 8px !important;
+  }
+}

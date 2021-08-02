@@ -82,6 +82,7 @@ class PositiontypeCollection extends ResourceCollection
                 /** the table header */
                 'headers' => [
                     ['text' => 'Name', 'value' => 'name'],
+                    ['text' => 'Peta Jabatan', 'value' => 'positionmap_name'],
                     ['text' => 'Updated', 'value' => 'updated_at', 'class' => 'field-datetime'],
                 ],
 

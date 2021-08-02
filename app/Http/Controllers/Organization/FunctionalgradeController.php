@@ -22,7 +22,7 @@ class FunctionalgradeController extends Controller
         $this->authorize('view', Functionalgrade::class);
 
         return new FunctionalgradeCollection(
-            $functionalstage->functionalgrades()->filterOn($request)->paginate($request->itemsPerPage)
+            $functionalstage->functionalgrades()->with(['functionalstage'])->filterOn($request)->paginate($request->itemsPerPage)
         );
     }
 
@@ -124,7 +124,7 @@ class FunctionalgradeController extends Controller
     {
         $this->authorize('import', Functionalgrade::class);
 
-        // 
+        //
     }
 
     /**
@@ -138,7 +138,7 @@ class FunctionalgradeController extends Controller
     {
         $this->authorize('export', Functionalgrade::class);
 
-        // 
+        //
     }
 
     /**
@@ -152,6 +152,6 @@ class FunctionalgradeController extends Controller
     {
         $this->authorize('report', Functionalgrade::class);
 
-        // 
+        //
     }
 }

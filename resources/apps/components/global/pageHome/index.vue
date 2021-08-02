@@ -39,7 +39,7 @@ export default {
             layoutSingle: true, 
             validatePermission: false,
 
-            callback:() => {
+            completed:() => {
                 this.$store.dispatch('fetch_records', {
                     reset: true,
                     completed: ({ commit, state, response }) => {

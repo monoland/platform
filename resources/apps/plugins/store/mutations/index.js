@@ -303,10 +303,27 @@ const mutations = {
                     Authorization: 'Bearer ' + state.auth.getItem('token')
                 }
             });
+
+            state.uploader = axios.create({
+                baseURL: state.baseURL,
+                withCredentials: false,
+                headers: {
+                    Authorization: 'Bearer ' + state.auth.getItem('token'),
+                    'Content-Type': 'application/octet-stream'
+                }
+            });
         } else {
             state.http = axios.create({
                 baseURL: state.baseURL,
                 withCredentials: true 
+            });
+
+            state.uploader = axios.create({
+                baseURL: state.baseURL,
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/octet-stream'
+                }
             });
         }
 
@@ -379,7 +396,7 @@ const mutations = {
     },
 
     PAGE_INITIALIZE: function(state, { 
-        name, layoutDouble, layoutSingle, 
+        name, nested, layoutDouble, layoutSingle, 
         route, completed 
     }) {
         let page = state.module.pages.find(p => p.slug === name);
@@ -394,6 +411,7 @@ const mutations = {
         
         state.module.page.prefix = page.prefix;
         state.module.page.path = page.path;
+        state.module.page.nested = nested;
 
         if (!layoutDouble && !layoutSingle) {
             state.module.page.layoutDefault = true;
@@ -410,7 +428,7 @@ const mutations = {
         state.route.name = _currentRoute.name;
         state.route.path = 'index';
         state.route.params = _currentRoute.params;
-        
+
         state.module.page.title = page.name;
         state.module.page.features = [];
         state.module.page.permissions = [];
@@ -434,12 +452,13 @@ const mutations = {
         if (name === 'index') {
             state.route.name = state.route.base;
 
+            state.module.parentId = null;
             state.module.page.selected = [];
             state.module.page.selected_index = -1;
         } else {
             state.route.name = state.route.base + '-' + name;
         }
-        
+
         state.router.push({ name: state.route.name, params: state.route.params });
     },
 
@@ -453,6 +472,10 @@ const mutations = {
     PAGE_SELECTED: function(state, selected)
     {
         if (! selected || (Array.isArray(selected) && selected.length === 0)) {
+            if (state.route.path === 'index') {
+                state.module.parentId = null;
+            }
+
             state.module.page.selected = [];
             state.module.page.selected_index = -1;
 
@@ -481,8 +504,16 @@ const mutations = {
         state.module.page.selected = [_currentRecord];
         state.module.page.selected_index = _currentIndex;
 
-        // goto show page
+        
         state.route.params[state.route.param] = _currentRecord.id;
+
+        if (state.module.page.nested) {
+            state.module.parentId = _currentRecord.id;
+
+            return;
+        }
+
+        // goto show page
         state.router.push({ name: state.route.base + '-show', params: state.route.params });
     },
 

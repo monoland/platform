@@ -19,6 +19,7 @@ const basePage = {
     layoutSingle: false,
     links: [],
     mode: 'default',
+    nested: false,
     parent: true,
     parent_path: null,
     prefix: null,
@@ -89,6 +90,7 @@ const baseModule = {
     icon: null,
     page: JSON.parse(JSON.stringify(basePage)),
     pages: [],
+    parentId: null,
     record: {},
     records: [],
     slug: null,
@@ -157,10 +159,7 @@ const state = {
 
     theme: process.env.MIX_PAGE_THEME,
 
-    upload: {
-        mime: 'application/pdf',
-        max: 1024
-    }
+    uploader: null
 }
 
 export default state;

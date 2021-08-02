@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Organization;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Organization\FunctionalstageCollection;
-use App\Http\Resources\Organization\FunctionalstageResource;
-use App\Models\Organization\Functionalstage;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Organization\Functionalstage;
+use App\Http\Resources\Organization\FunctionalstageCollection;
+use App\Http\Resources\Organization\FunctionalstageShowResource;
 
 class FunctionalstageController extends Controller
 {
@@ -50,7 +50,7 @@ class FunctionalstageController extends Controller
     {
         $this->authorize('show', $functionalstage);
 
-        return new FunctionalstageResource($functionalstage);
+        return new FunctionalstageShowResource($functionalstage);
     }
 
     /**
@@ -118,7 +118,7 @@ class FunctionalstageController extends Controller
     {
         $this->authorize('import', Functionalstage::class);
 
-        // 
+        //
     }
 
     /**
@@ -131,7 +131,7 @@ class FunctionalstageController extends Controller
     {
         $this->authorize('export', Functionalstage::class);
 
-        // 
+        //
     }
 
     /**
@@ -144,6 +144,6 @@ class FunctionalstageController extends Controller
     {
         $this->authorize('report', Functionalstage::class);
 
-        // 
+        //
     }
 }

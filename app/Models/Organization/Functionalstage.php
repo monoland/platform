@@ -2,11 +2,13 @@
 
 namespace App\Models\Organization;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Resources\Organization\FunctionalstageResource;
 
 class Functionalstage extends Model
 {
@@ -37,7 +39,10 @@ class Functionalstage extends Model
     /**
      * The model relationsship
      */
-
+    public function functionalgrades()
+    {
+        return $this->hasMany(Functionalgrade::class);
+    }
 
     /**
      * scope for model-combo
@@ -114,12 +119,13 @@ class Functionalstage extends Model
 
         try {
             $model = new static;
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->name);
             $model->save();
 
             DB::commit();
 
-            // return new FunctionalstageResource($model);
+            return new FunctionalstageResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -142,12 +148,13 @@ class Functionalstage extends Model
         DB::beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->name);
             $model->save();
 
             DB::commit();
 
-            // return new FunctionalstageResource($model);
+            return new FunctionalstageResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 

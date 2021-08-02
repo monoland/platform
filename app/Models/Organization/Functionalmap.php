@@ -2,11 +2,13 @@
 
 namespace App\Models\Organization;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Resources\Organization\FunctionalmapResource;
 
 class Functionalmap extends Model
 {
@@ -114,12 +116,13 @@ class Functionalmap extends Model
 
         try {
             $model = new static;
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->name);
             $model->save();
 
             DB::commit();
 
-            // return new FunctionalmapResource($model);
+            return new FunctionalmapResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -142,12 +145,13 @@ class Functionalmap extends Model
         DB::beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->name);
             $model->save();
 
             DB::commit();
 
-            // return new FunctionalmapResource($model);
+            return new FunctionalmapResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 

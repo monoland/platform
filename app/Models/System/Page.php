@@ -78,7 +78,7 @@ class Page extends Model
         if ($page) {
             return [
                 'icon' => $page->icon,
-                'text' => $page->parent ? $page->parent->name . '/' . $page->name : $page->name,
+                'text' => Str::of($page->name)->replace(' ', '<span class="transparent--text">_</span>'), //$page->parent ? $page->parent->name . '/' . $page->name : $page->name
                 'slug' => $page->slug,
                 'path' => $page->path
             ];

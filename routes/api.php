@@ -46,6 +46,10 @@ Route::prefix('account')->group(function () {
     // Password Confirmation
     Route::get('confirmed-password-status', [ConfirmedPasswordStatusController::class, 'show'])->name('password.confirmation');
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
+
+    // Document
+    Route::get('document/preview/{filename}', [DocumentController::class, 'preview']);
+    Route::resource('document', DocumentController::class);
 });
 
 // account

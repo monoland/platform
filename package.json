@@ -22,9 +22,7 @@
         "sass": "^1.35.2",
         "sass-loader": "^12.1.0",
         "vue-loader": "^15.9.6",
-        "vue-template-compiler": "^2.6.12",
-        "vuetify-loader": "^1.7.2",
-        "vuetifyjs-mix-extension": "^0.0.20"
+        "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
         "@tiptap/core": "^2.0.0-beta.86",
@@ -32,8 +30,7 @@
         "@tiptap/vue-2": "^2.0.0-beta.39",
         "axios": "^0.21.1",
         "debounce": "^1.2.1",
-        "pdfjs-dist": "^2.7.570",
-        "pusher-js": "^7.0.3",
+        "pdfjs-dist": "2.8.335",
         "vue": "^2.6.12",
         "vue-router": "^3.5.1",
         "vuetify": "^2.4.10",

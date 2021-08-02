@@ -17,6 +17,7 @@ class PositiontypeResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'positionmap_name' => $this->positionmap->name,
 
             // activate this when use nested table
             // visit https://github.com/lazychaser/laravel-nestedset for detail

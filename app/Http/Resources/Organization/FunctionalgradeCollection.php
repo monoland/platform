@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources\Organization;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Cache;
+use App\Models\Organization\Positionmap;
+use App\Models\Organization\Positiontype;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class FunctionalgradeCollection extends ResourceCollection
 {
@@ -32,11 +34,19 @@ class FunctionalgradeCollection extends ResourceCollection
         }
 
         $currentUser = $request->user();
+        
+        $positionmapId = Cache::rememberForever('positionmap-functional', function () {
+            return Positionmap::firstWhere('slug', 'jabatan-fungsional')->id;
+        });
 
         return [
             'setups' => [
                 /** the page combo */
-                'combos' => [],
+                'combos' => [
+                    'positiontypes' => Cache::rememberForever('positiontype-functional', function () use ($positionmapId) {
+                        return Positiontype::where('positionmap_id', $positionmapId)->fetchCombo();
+                    })
+                ],
 
                 /** the page data mode */
                 /** default | nested | single | trashed */
@@ -82,6 +92,7 @@ class FunctionalgradeCollection extends ResourceCollection
                 /** the table header */
                 'headers' => [
                     ['text' => 'Name', 'value' => 'name'],
+                    ['text' => 'Rumpun', 'value' => 'functionalstage_name'],
                     ['text' => 'Updated', 'value' => 'updated_at', 'class' => 'field-datetime'],
                 ],
 
@@ -102,7 +113,9 @@ class FunctionalgradeCollection extends ResourceCollection
                 /** the page default */
                 'record_base' => [
                     'id' => null,
-                    'name' => null
+                    'name' => null,
+                    'alias' => null,
+                    'positiontype_id' => null,
                 ],
 
                 /** the page title */

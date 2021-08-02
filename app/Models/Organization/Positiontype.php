@@ -2,11 +2,13 @@
 
 namespace App\Models\Organization;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Resources\Organization\PositiontypeResource;
 
 class Positiontype extends Model
 {
@@ -37,7 +39,10 @@ class Positiontype extends Model
     /**
      * The model relationsship
      */
-
+    public function positionmap()
+    {
+        return $this->belongsTo(Positionmap::class);
+    }
 
     /**
      * scope for model-combo
@@ -108,18 +113,19 @@ class Positiontype extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, Positionmap $parent)
     {
         DB::beginTransaction();
 
         try {
             $model = new static;
-            // ...
-            $model->save();
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->name);
+            $parent->positiontypes()->save($model);
 
             DB::commit();
 
-            // return new PositiontypeResource($model);
+            return new PositiontypeResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -142,12 +148,13 @@ class Positiontype extends Model
         DB::beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->name);
             $model->save();
 
             DB::commit();
 
-            // return new PositiontypeResource($model);
+            return new PositiontypeResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 

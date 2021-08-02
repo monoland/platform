@@ -31,7 +31,7 @@
                                     </v-responsive>
                                     
                                     <div class="d-flex align-center justify-center height-100 px-2 py-2">
-                                        <div class="text-caption font-weight-medium text-center line-height-1-point-2 width-100" :class="`${theme}--text`">{{ page.name }}</div>
+                                        <div class="d-flex align-center text-caption font-weight-medium justify-center text-center line-height-1-point-2 min-height-28 width-100" :class="`${theme}--text`">{{ page.name }}</div>
                                     </div>
                                 </v-sheet>
                             </v-col>
@@ -54,7 +54,7 @@
                                     </v-responsive>
                                     
                                     <div class="d-flex align-center justify-center height-100 px-2 py-2">
-                                        <div class="text-caption font-weight-medium text-center line-height-1-point-2 width-100" :class="`${theme}--text`">{{ page.name }}</div>
+                                        <div class="d-flex align-center text-caption font-weight-medium justify-center text-center line-height-1-point-2 min-height-28 width-100" :class="`${theme}--text`">{{ page.name }}</div>
                                     </div>
                                 </v-sheet>
                             </v-col>
@@ -100,7 +100,7 @@
                                             </v-responsive>
                                             
                                             <div class="d-flex align-center justify-center height-100 px-2 py-2">
-                                                <div class="text-caption font-weight-medium text-center line-height-1-point-2 width-100" :class="`${theme}--text`">{{ page.name }}</div>
+                                                <div class="d-flex align-center text-caption font-weight-medium justify-center text-center line-height-1-point-2 min-height-28 width-100" :class="`${theme}--text`">{{ page.name }}</div>
                                             </div>
                                         </v-sheet>
                                     </v-col>

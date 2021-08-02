@@ -35,6 +35,12 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'document' => [
+            'driver' => 'local',
+            'root' => storage_path('document'),
+            'url' => env('APP_ENV') === 'local' ? env('MIX_DEV_PROTOCOL') . '://' . env('MIX_DEV_DOMAIN') . '/account/api/document/preview' : env('MIX_PRD_PROTOCOL') . '://' . env('MIX_PRD_DOMAIN') . '/account/api/document/preview'
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

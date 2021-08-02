@@ -25,21 +25,9 @@ const route = {
 				},
 
 				{
-					path: 'create',
-					name: 'organization-emptiness-create',
-					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/emptiness/crud/create')
-				},
-
-				{
 					path: ':emptiness',
 					name: 'organization-emptiness-show',
 					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/emptiness/crud/show')
-				},
-				
-				{
-					path: ':emptiness/edit',
-					name: 'organization-emptiness-edit',
-					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/emptiness/crud/create')
 				}
 			]
 		},
@@ -55,21 +43,9 @@ const route = {
 				},
 
 				{
-					path: 'create',
-					name: 'organization-anomaly-create',
-					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/anomaly/crud/create')
-				},
-
-				{
 					path: ':anomaly',
 					name: 'organization-anomaly-show',
 					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/anomaly/crud/show')
-				},
-				
-				{
-					path: ':anomaly/edit',
-					name: 'organization-anomaly-edit',
-					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/anomaly/crud/create')
 				}
 			]
 		},
@@ -83,23 +59,11 @@ const route = {
 					name: 'organization-excess',
 					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/excess/crud/index'),
 				},
-
-				{
-					path: 'create',
-					name: 'organization-excess-create',
-					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/excess/crud/create')
-				},
-
+				
 				{
 					path: ':excess',
 					name: 'organization-excess-show',
 					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/excess/crud/show')
-				},
-				
-				{
-					path: ':excess/edit',
-					name: 'organization-excess-edit',
-					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/excess/crud/create')
 				}
 			]
 		},
@@ -565,21 +529,9 @@ const route = {
 				},
 
 				{
-					path: 'create',
-					name: 'organization-workunitread-create',
-					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/workunitread/crud/create')
-				},
-
-				{
 					path: ':workunitread',
 					name: 'organization-workunitread-show',
 					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/workunitread/crud/show')
-				},
-				
-				{
-					path: ':workunitread/edit',
-					name: 'organization-workunitread-edit',
-					component: () => import(/* webpackChunkName: "organization-module" */ '@modules/organization/pages/workunitread/crud/create')
 				}
 			]
 		},

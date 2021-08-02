@@ -59,7 +59,7 @@
         </template>
 
         <v-fab-transition>
-            <v-btn v-if="route.path === 'index' && !page.filter.status && !searchStatus && hasPermission('create')"
+            <v-btn v-if="route.path === 'index' && !parentId && !page.filter.status && !searchStatus && hasPermission('create')"
                 :color="theme"
                 key="index"
                 absolute
@@ -69,6 +69,49 @@
             >
                 <v-icon>add</v-icon>
             </v-btn>
+
+            <v-speed-dial v-if="route.path === 'index' && parentId"
+                v-model="fab"
+                absolute
+                style="bottom: 27px; right: 27px;"
+                transition="slide-y-reverse-transition"
+            >
+                <template v-slot:activator>
+                    <v-btn
+                        v-model="fab"
+                        :key="route.path"
+                        :color="theme"
+                        fab dark
+                    >
+                        <v-icon v-if="fab">close</v-icon>
+                        <v-icon v-else>fact_check</v-icon>
+                    </v-btn>
+                </template>
+
+                <div class="d-flex relative align-center" v-if="hasPermission('create') && page.mode === 'default'">
+                    <div 
+                        :class="theme"
+                        class="caption text-capitalize absolute line-height-1 white--text px-2 py-1 rounded" 
+                        style="right: 52px;"
+                    >tambah</div>
+                    
+                    <v-btn small :color="theme" fab dark @click="openPageCreate">
+                        <v-icon>add</v-icon>
+                    </v-btn>
+                </div>
+
+                <div class="d-flex relative align-center" v-if="hasPermission('create') && page.mode === 'default'">
+                    <div 
+                        :class="theme"
+                        class="caption text-capitalize absolute line-height-1 white--text px-2 py-1 rounded" 
+                        style="right: 52px;"
+                    >detail</div>
+                    
+                    <v-btn small :color="theme" fab dark @click="openPageShow">
+                        <v-icon>folder_open</v-icon>
+                    </v-btn>
+                </div>
+            </v-speed-dial>
 
             <v-speed-dial v-if="route.path === 'show' && hasPermission('show')"
                 v-model="fab"
@@ -201,6 +244,7 @@ export default {
     computed: {
         ...mapState({
             page: state => state.module.page,
+            parentId: state => state.module.parentId,
             route: state => state.route,
             searchStatus: state => state.module.page.search.status,
             theme: state => state.theme,
@@ -253,7 +297,11 @@ export default {
 
         openPagePrint: function() {
             this.$store.commit('PAGE_ACTION', { name: 'print' });
-        },        
+        },     
+        
+        openPageShow: function() {
+            this.$store.commit('PAGE_ACTION', { name: 'show' });
+        },
 
         postDelete: function() {
             this.$store.dispatch('delete_record').then(({ commit }) => {

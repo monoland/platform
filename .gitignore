@@ -1,9 +1,10 @@
 /node_modules
 /public/hot
 /public/storage
-/public/scripts
-/public/styles
+/public/scripts/*.js
 /storage/*.key
+/storage/framework/laravel-excel
+/storage/document/*.*
 /vendor
 .DS_Store
 .env

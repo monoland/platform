@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Organization;
 
+use App\Models\System\Page;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FunctionalstageShowResource extends JsonResource
@@ -27,7 +28,9 @@ class FunctionalstageShowResource extends JsonResource
                 'update' => $currentUser->hasAnyPermission('update-organization-functionalstage'),
             ],
 
-            'links' => [],
+            'links' => [
+                Page::createLink('organization-functionalgrade')
+            ],
         ];
     }
 }

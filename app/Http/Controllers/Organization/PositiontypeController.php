@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Organization;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Organization\PositiontypeCollection;
 use App\Models\Organization\Positionmap;
 use App\Models\Organization\Positiontype;
-use Illuminate\Http\Request;
+use App\Http\Resources\Organization\PositiontypeCollection;
+use App\Http\Resources\Organization\PositiontypeShowResource;
 
 class PositiontypeController extends Controller
 {
@@ -22,7 +23,7 @@ class PositiontypeController extends Controller
         $this->authorize('view', Positiontype::class);
 
         return new PositiontypeCollection(
-            $positionmap->positiontypes()->filterOn($request)->paginate($request->itemsPerPage)
+            $positionmap->positiontypes()->with(['positionmap'])->filterOn($request)->paginate($request->itemsPerPage)
         );
     }
 
@@ -53,7 +54,7 @@ class PositiontypeController extends Controller
     {
         $this->authorize('show', $positiontype);
 
-        //
+        return new PositiontypeShowResource($positiontype);
     }
 
     /**
@@ -124,7 +125,7 @@ class PositiontypeController extends Controller
     {
         $this->authorize('import', Positiontype::class);
 
-        // 
+        //
     }
 
     /**
@@ -138,7 +139,7 @@ class PositiontypeController extends Controller
     {
         $this->authorize('export', Positiontype::class);
 
-        // 
+        //
     }
 
     /**
@@ -152,6 +153,6 @@ class PositiontypeController extends Controller
     {
         $this->authorize('report', Positiontype::class);
 
-        // 
+        //
     }
 }

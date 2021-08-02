@@ -1956,11 +1956,6 @@ call-bind@^1.0.0, call-bind@^1.0.2:
     function-bind "^1.1.1"
     get-intrinsic "^1.0.2"
 
-callsite@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/callsite/-/callsite-1.0.0.tgz#280398e5d664bd74038b6f0905153e6e8af1bc20"
-  integrity sha1-KAOY5dZkvXQDi28JBRU+borxvCA=
-
 callsites@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
@@ -2492,13 +2487,6 @@ debug@^4.1.0, debug@^4.1.1:
   integrity sha512-doEwdvm4PCeK4K3RQN2ZC2BYUBaxwLARCqZmMjtF8a51J2Rb0xpVloFRnCODwqjpwnAoao4pelN8l3RJdv3gRQ==
   dependencies:
     ms "2.1.2"
-
-decache@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/decache/-/decache-4.6.0.tgz#87026bc6e696759e82d57a3841c4e251a30356e8"
-  integrity sha512-PppOuLiz+DFeaUvFXEYZjLxAkKiMYH/do/b/MxpDe/8AgKBi5GhZxridoVIbBq72GDbL36e4p0Ce2jTGUwwU+w==
-  dependencies:
-    callsite "^1.0.0"
 
 decamelize-keys@^1.1.0:
   version "1.1.0"
@@ -4464,7 +4452,7 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-pdfjs-dist@^2.7.570:
+pdfjs-dist@2.8.335:
   version "2.8.335"
   resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.8.335.tgz#06f602174b746def57edc8681a0f93c4029c89a1"
   integrity sha512-2IKw7wP1RnzzWJcpkeZwF+cKROFiQext+/WburB6cgKwt9zc8rOyDH7a3FepdcciSGs8SDs/AuWe8qVx+iI6pw==
@@ -5920,24 +5908,10 @@ vue@^2.6.12:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
   integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
 
-vuetify-loader@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/vuetify-loader/-/vuetify-loader-1.7.2.tgz#5cdc45309496cf3a5fe431fd7611706ffa4aa8c8"
-  integrity sha512-2GSo4KvRAOThBsj8mvtIEeIoyBAZx38GDfh8D90e/or7Hzx4813krJKvcQAllyLO/Ln0eQWrq2IuvBXnZ55cSA==
-  dependencies:
-    decache "^4.6.0"
-    file-loader "^6.2.0"
-    loader-utils "^2.0.0"
-
 vuetify@^2.4.10:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.5.7.tgz#0c7cfa143bffa6a14ef3ca5cfd8f2135713f4360"
   integrity sha512-3Hn7X6FFtQetc6qy8GcMDKbZRKbiBMDBsYuUjDS4EdpDvHBDTMySpzBWqBNuPjPHRaT3XSrQfoYN84vGDg87Ug==
-
-vuetifyjs-mix-extension@^0.0.20:
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/vuetifyjs-mix-extension/-/vuetifyjs-mix-extension-0.0.20.tgz#bdff0a128c16196d9533cbd6e1834f66a6ef699b"
-  integrity sha512-mGThNSQHSyyvMEvtJ7eae9Iq7sjt5lAwIMGBnypINU5fOdhdN+MiKbnEl0fpMNfrc7RxVr7M5gKe2yBP2RVhnQ==
 
 vuex@^3.6.2:
   version "3.6.2"

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Organization;
 
+use App\Models\System\Page;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PositionmapShowResource extends JsonResource
@@ -27,7 +28,9 @@ class PositionmapShowResource extends JsonResource
                 'update' => $currentUser->hasAnyPermission('update-organization-positionmap'),
             ],
 
-            'links' => [],
+            'links' => [
+                Page::createLink('organization-positiontype'),
+            ],
         ];
     }
 }

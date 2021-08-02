@@ -2,6 +2,8 @@
     <file-upload
         :label="label"
         :hint="hint"
+        :value="fileUrl"
+        @input="updateModel"
     ></file-upload>
 </template>
 
@@ -28,6 +30,27 @@ export default {
         hint: {
             type: String,
             default: ''
+        },
+
+        value: {
+            type: String,
+            default: null
+        }
+    },
+
+    data:() => ({
+        fileUrl: null
+    }),
+
+    methods: {
+        updateModel: function(value) {
+            this.$emit('input', value);
+        }
+    },
+
+    watch: {
+        value: function(value) {
+            this.fileUrl = value;
         }
     }
 }

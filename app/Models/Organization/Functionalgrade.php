@@ -2,11 +2,13 @@
 
 namespace App\Models\Organization;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Resources\Organization\FunctionalgradeResource;
 
 class Functionalgrade extends Model
 {
@@ -38,6 +40,15 @@ class Functionalgrade extends Model
      * The model relationsship
      */
 
+    public function functionalstage()
+    {
+        return $this->belongsTo(Functionalstage::class);
+    }
+
+    public function positiontype()
+    {
+        return $this->belongsTo(Positiontype::class);
+    }
 
     /**
      * scope for model-combo
@@ -108,18 +119,21 @@ class Functionalgrade extends Model
      * @param Request $request
      * @return void
      */
-    public static function storeRecord(Request $request)
+    public static function storeRecord(Request $request, Functionalstage $parent)
     {
         DB::beginTransaction();
 
         try {
             $model = new static;
-            // ...
-            $model->save();
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->name);
+            $model->alias = $request->alias;
+            $model->positiontype_id = $request->positiontype_id;
+            $parent->functionalgrades()->save($model);
 
             DB::commit();
 
-            // return new FunctionalgradeResource($model);
+            return new FunctionalgradeResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -142,12 +156,15 @@ class Functionalgrade extends Model
         DB::beginTransaction();
 
         try {
-            // ...
+            $model->name = $request->name;
+            $model->slug = Str::slug($request->name);
+            $model->alias = $request->alias;
+            $model->positiontype_id = $request->positiontype_id;
             $model->save();
 
             DB::commit();
 
-            // return new FunctionalgradeResource($model);
+            return new FunctionalgradeResource($model);
         } catch (\Exception $e) {
             DB::rollBack();
 

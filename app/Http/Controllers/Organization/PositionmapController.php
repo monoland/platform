@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Organization;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Organization\PositionmapCollection;
-use App\Http\Resources\Organization\PositionmapResource;
-use App\Models\Organization\Positionmap;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Organization\Positionmap;
+use App\Http\Resources\Organization\PositionmapCollection;
+use App\Http\Resources\Organization\PositionmapShowResource;
 
 class PositionmapController extends Controller
 {
@@ -50,7 +50,7 @@ class PositionmapController extends Controller
     {
         $this->authorize('show', $positionmap);
 
-        return new PositionmapResource($positionmap);
+        return new PositionmapShowResource($positionmap);
     }
 
     /**
@@ -118,7 +118,7 @@ class PositionmapController extends Controller
     {
         $this->authorize('import', Positionmap::class);
 
-        // 
+        //
     }
 
     /**
@@ -131,7 +131,7 @@ class PositionmapController extends Controller
     {
         $this->authorize('export', Positionmap::class);
 
-        // 
+        //
     }
 
     /**
@@ -144,6 +144,6 @@ class PositionmapController extends Controller
     {
         $this->authorize('report', Positionmap::class);
 
-        // 
+        //
     }
 }

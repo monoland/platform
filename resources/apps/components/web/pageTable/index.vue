@@ -3,17 +3,18 @@
         fixed-header
         :headers="page.headers"
         :height="`calc(100vh - 211px)`"
-        :disable-pagination="disable_control"
+        :disable-pagination="disabled"
         :items="records"
         :item-key="page.key"
         :server-items-length="table.total"
         :options.sync="table.options"
         :footer-props="{ 
-            'disable-items-per-page': disable_control, 
+            'disable-items-per-page': disabled, 
             'items-per-page-options': [10, 25, 50, 100, 250] 
         }"
-        :disable-sort="disable_control"
+        :disable-sort="disabled"
         :single-select="table.single"
+        :show-select="page.nested"
         v-model="selected"
         @click:row="rowClick"
     >
@@ -29,27 +30,6 @@
                 v-ripple
             ></v-simple-checkbox>
         </template>
-
-        <!-- <template v-slot:[`item.name`]="{ item }">
-            <div class="d-flex align-center" :class="item.nest_deep > 0 ? 'fill-height' : ''">
-                <template v-if="item.nest_deep !== -1">
-                    <div class="v-treeview-node__level d-flex align-center fill-height" v-for="(itm, idx) in item.nest_deep" :key="idx">
-                        <template v-if="itm < item.nest_deep">
-                            <v-divider vertical></v-divider>
-                        </template>
-                        
-                        <template v-if="itm === item.nest_deep">
-                            <v-divider vertical></v-divider>
-                            <v-divider class="mr-1"></v-divider>
-                        </template>
-                    </div>
-                </template>
-                <v-avatar size="24" :color="theme" v-if="Object.prototype.hasOwnProperty.call(item, 'avatar')">
-                    <span class="white--text">{{ item.avatar }}</span>
-                </v-avatar>
-                <span>{{ item.name }}</span>
-            </div>
-        </template> -->
 
         <template v-for="(column, columnIndex) in page.headers" #[`item.${column.value}`]="{ item, index }">
             <!-- icon -->
@@ -92,6 +72,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
     props: {
         nested: {
@@ -101,21 +83,13 @@ export default {
     },
 
     computed: {
-        disable_control: function() {
-            if (this.$store.state.module.records && this.$store.state.module.records.length > 0) {
-                return false;
-            }
-
-            return true;
-        },
-
-        page: function () {
-            return this.$store.state.module.page;
-        },
-
-        records: function () {
-            return this.$store.state.module.records;
-        },
+        ...mapState({
+            disabled: state => state.module.records.length > 0 ? false : true,
+            page: state => state.module.page,
+            records: state => state.module.records,
+            table: state => state.module.table,
+            theme: state => state.theme,
+        }),
 
         selected: {
             get: function() {
@@ -125,14 +99,6 @@ export default {
             set: function(selected) {
                 this.$store.commit('PAGE_SELECTED', selected);
             }
-        },
-
-        table: function () {
-            return this.$store.state.module.table;
-        },
-
-        theme: function () {
-            return this.$store.state.module.theme;
         }
     },
 
