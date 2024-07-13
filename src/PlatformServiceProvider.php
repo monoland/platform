@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Monoland\Platform\Console\Commands\PlatformInstall;
 use Monoland\Platform\Console\Commands\PlatformMakeJob;
 use Monoland\Platform\Console\Commands\PlatformMakeSeed;
 use Monoland\Platform\Console\Commands\PlatformMakeEvent;
@@ -20,6 +21,7 @@ use Monoland\Platform\Console\Commands\PlatformModuleList;
 use Monoland\Platform\Console\Commands\PlatformModuleSeed;
 use Monoland\Platform\Console\Commands\PlatformMakeCommand;
 use Monoland\Platform\Console\Commands\PlatformMakeReplica;
+use Monoland\Platform\Console\Commands\PlatformModuleClone;
 use Monoland\Platform\Console\Commands\PlatformMakeListener;
 use Monoland\Platform\Console\Commands\PlatformMakeResource;
 use Monoland\Platform\Console\Commands\PlatformMakeMigration;
@@ -122,6 +124,7 @@ class PlatformServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
+                PlatformInstall::class,
                 PlatformMakeCommand::class,
                 PlatformMakeController::class,
                 PlatformMakeEvent::class,
@@ -137,6 +140,7 @@ class PlatformServiceProvider extends ServiceProvider
                 PlatformMakeReplica::class,
                 PlatformMakeResource::class,
                 PlatformMakeSeed::class,
+                PlatformModuleClone::class,
                 PlatformModuleInstall::class,
                 PlatformModuleList::class,
                 PlatformModuleMigrate::class,
