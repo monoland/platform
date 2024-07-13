@@ -1,0 +1,17 @@
+export default {
+    path: "/$MODULE_LOWER$",
+	meta: { requiredAuth: true },
+	component: () => import(/* webpackChunkName: "$MODULE_LOWER$" */ "@modules/$MODULE_LOWER$/frontend/pages/Base.vue"),
+	children: [
+		{
+			path: "",
+			redirect: { name: "$MODULE_LOWER$-dashboard" },
+		},
+
+		{
+			path: "dashboard",
+			name: "$MODULE_LOWER$-dashboard",
+			component: () => import(/* webpackChunkName: "$MODULE_LOWER$" */ "@modules/$MODULE_LOWER$/frontend/pages/dashboard/index.vue"),
+		},
+	],
+};

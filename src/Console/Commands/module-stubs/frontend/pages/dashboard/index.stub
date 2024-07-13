@@ -1,0 +1,19 @@
+<template>
+    <page-home
+        page-name="$MODULE_LOWER$-dashboard"
+        page-title="Untitled"
+        :record="record"
+    >
+        <template v-slot:default></template>
+    </page-home>
+</template>
+
+<script>
+export default {
+    name: "$MODULE_LOWER$-dashboard",
+
+    data: () => ({
+        record: {},
+    }),
+};
+</script>

@@ -1,0 +1,9 @@
+<template>
+    <page-base slug="$MODULE_LOWER$"></page-base>
+</template>
+
+<script>
+export default {
+    name: "$MODULE_LOWER$-base",
+};
+</script>
