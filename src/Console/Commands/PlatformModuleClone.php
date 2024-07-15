@@ -3,7 +3,7 @@
 namespace Monoland\Platform\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Process;
+use Symfony\Component\Process\Process;
 
 class PlatformModuleClone extends Command
 {
@@ -30,6 +30,11 @@ class PlatformModuleClone extends Command
      */
     public function handle()
     {
-        Process::path(base_path())->quietly()->run('cd modules; git clone ' . $this->argument('repository'));
+        $process = new Process([
+            'git', 'clone', $this->argument('repository')
+        ]);
+
+        $process->setWorkingDirectory(base_path() . DIRECTORY_SEPARATOR . 'modules');
+        $process->run();
     }
 }
