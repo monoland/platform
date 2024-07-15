@@ -51,7 +51,7 @@ class PlatformServiceProvider extends ServiceProvider
         if (Cache::has('modules')) {
             $modules = Cache::get('modules');
         } else {
-            $modules = $this->scanModulesFolder();
+            $modules = $this->scanModulesFolder() ?: [];
         }
 
         foreach ($modules as $module) {
