@@ -27,6 +27,8 @@ class PlatformInstall extends Command
      */
     public function handle()
     {
+        $this->addExtraForMerge();
+        
         $this->call('vendor:publish', [
             '--tag' => 'platform-frontend',
             '--force' => true
@@ -35,5 +37,30 @@ class PlatformInstall extends Command
         $this->call('module:clone', [
             'repository' => 'https://github.com/monoland/system'
         ]);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    protected function addExtraForMerge(): void
+    {
+        $composerFile = base_path('composer.json');
+
+        $content = json_decode(file_get_contents($composerFile), true);
+
+        if(!array_key_exists('merge-plugin', $content['extra'])) {
+            $content['extra']['merge-plugin'] = [
+                'include' => [
+                    "modules/*/composer.json"
+                ]
+            ];
+
+            $content = json_encode($content, JSON_PRETTY_PRINT);
+            $content = str_replace('\/', '/', $content);
+
+            file_put_contents($composerFile, $content);
+        }
     }
 }

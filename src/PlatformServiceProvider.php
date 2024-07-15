@@ -2,6 +2,7 @@
 
 namespace Monoland\Platform;
 
+use Laravel\Fortify\Fortify;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
@@ -89,6 +90,8 @@ class PlatformServiceProvider extends ServiceProvider
     public function register(): void
     {
         URL::forceScheme('https');
+
+        Fortify::ignoreRoutes();
     }
 
     /**
@@ -96,7 +99,7 @@ class PlatformServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    protected function scanModulesFolder(): array
+    protected function scanModulesFolder(): array | null
     {
         return Cache::rememberForever('modules', function () {
             $modules = [];
@@ -111,7 +114,7 @@ class PlatformServiceProvider extends ServiceProvider
                 $modules[$arr['name']] = json_decode(json_encode($arr), false);
             }
 
-            return $modules;
+            return count($modules) > 0 ? $modules : null;
         });
     }
 
