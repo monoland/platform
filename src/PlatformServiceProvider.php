@@ -23,6 +23,8 @@ use Monoland\Platform\Console\Commands\PlatformModuleSeed;
 use Monoland\Platform\Console\Commands\PlatformMakeCommand;
 use Monoland\Platform\Console\Commands\PlatformMakeReplica;
 use Monoland\Platform\Console\Commands\PlatformModuleClone;
+use Monoland\Platform\Console\Commands\PlatformModuleFetch;
+use Monoland\Platform\Console\Commands\PlatformModuleUpdate;
 use Monoland\Platform\Console\Commands\PlatformMakeListener;
 use Monoland\Platform\Console\Commands\PlatformMakeResource;
 use Monoland\Platform\Console\Commands\PlatformMakeMigration;
@@ -43,7 +45,7 @@ class PlatformServiceProvider extends ServiceProvider
 
         /** Prevent model relationships from being lazy loaded. */
         Model::preventLazyLoading();
-        
+
         /** Register Platform Command */
         $this->registerArtisanCommands();
 
@@ -76,11 +78,11 @@ class PlatformServiceProvider extends ServiceProvider
 
         /** Publish File and Folder */
         $this->publishes([
-            __DIR__.'/../resources' => resource_path(),
-            __DIR__.'/../modules' => base_path('modules'),
-            __DIR__.'/../.eslintrc.js' => base_path('.eslintrc.js'),
-            __DIR__.'/../package.json' => base_path('package.json'),
-            __DIR__.'/../vite.config.mjs' => base_path('vite.config.js'),
+            __DIR__ . '/../resources' => resource_path(),
+            __DIR__ . '/../modules' => base_path('modules'),
+            __DIR__ . '/../.eslintrc.js' => base_path('.eslintrc.js'),
+            __DIR__ . '/../package.json' => base_path('package.json'),
+            __DIR__ . '/../vite.config.mjs' => base_path('vite.config.js'),
         ], 'platform-frontend');
     }
 
@@ -99,21 +101,69 @@ class PlatformServiceProvider extends ServiceProvider
      *
      * @return array
      */
+    // protected function scanModulesFolder(): array | null
+    // {
+    //     return Cache::rememberForever('modules', function () {
+    //         $modules = [];
+
+    //         $files = glob(
+    //             base_path('modules' . DIRECTORY_SEPARATOR . "*" . DIRECTORY_SEPARATOR . 'module.json')
+    //         );
+
+    //         foreach ($files as $file) {
+    //             $arr = json_decode(file_get_contents($file), true);
+
+    //             $modules[$arr['name']] = json_decode(json_encode($arr), false);
+    //         }
+
+    //         return count($modules) > 0 ? $modules : null;
+    //     });
+    // }
+
+    /**
+     * scanModulesFolder function
+     *
+     * @return array
+     */
     protected function scanModulesFolder(): array | null
     {
         return Cache::rememberForever('modules', function () {
+            // scan modules folders
+            $folders = glob(base_path('modules') . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
             $modules = [];
 
-            $files = glob(
-                base_path('modules' . DIRECTORY_SEPARATOR . "*" . DIRECTORY_SEPARATOR . 'module.json')
-            );
+            foreach ($folders as $folder) {
+                // check if folder is a module, by checking if its has a file named module.json
+                $modules_json_path = $folder . DIRECTORY_SEPARATOR . 'module.json';
+                $dot_git_path = $folder . DIRECTORY_SEPARATOR . '.git' . DIRECTORY_SEPARATOR . 'config';
 
-            foreach ($files as $file) {
-                $arr = json_decode(file_get_contents($file), true);
+                if (file_exists($modules_json_path)) {
+                    // get the module.json content, and convert it into assosiative
+                    // array
+                    $content = file_get_contents($modules_json_path);
+                    $arr = json_decode($content, true);
+                    $modules[$arr['name']] = json_decode(json_encode($arr), false);
+                    $modules[$arr['name']]->repo_path = $folder;
 
-                $modules[$arr['name']] = json_decode(json_encode($arr), false);
+                    // appending the git property to the assosiative array
+                    // of each modules
+                    if (file_exists($dot_git_path)) {
+                        $git_file = fopen($dot_git_path, 'r');
+                        while (($line = fgets($git_file)) !== false) {
+                            $split = explode('=', $line);
+                            if (count($split) > 1) {
+                                $tags  = trim($split[0]);
+                                $value = trim($split[1]);
+                                if ($tags == 'url') {
+                                    $modules[$arr['name']]->repo_url = $value;
+                                    break;
+                                }
+                            }
+                        }
+                        fclose($git_file);
+                    }
+                }
             }
-
             return count($modules) > 0 ? $modules : null;
         });
     }
@@ -144,6 +194,8 @@ class PlatformServiceProvider extends ServiceProvider
                 PlatformMakeResource::class,
                 PlatformMakeSeed::class,
                 PlatformModuleClone::class,
+                PlatformModuleFetch::class,
+                PlatformModuleUpdate::class,
                 PlatformModuleInstall::class,
                 PlatformModuleList::class,
                 PlatformModuleMigrate::class,
