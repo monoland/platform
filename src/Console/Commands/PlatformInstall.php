@@ -37,6 +37,10 @@ class PlatformInstall extends Command
             File::deleteDirectory(resource_path('css'));
         }
 
+        $this->addExtraForMerge();
+
+        $this->addStatefulApi();
+
         if (File::isDirectory(app_path('Models'))) {
             File::deleteDirectory(app_path('Models'));
         }
@@ -46,10 +50,6 @@ class PlatformInstall extends Command
 
             File::makeDirectory(database_path('migrations'));
         }
-
-        $this->addExtraForMerge();
-
-        $this->addStatefulApi();
 
         $this->call('vendor:publish', [
             '--tag' => 'platform-frontend',
