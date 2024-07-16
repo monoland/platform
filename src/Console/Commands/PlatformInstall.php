@@ -164,6 +164,14 @@ class PlatformInstall extends Command
             );
         }
 
+        if (str_contains($content, 'SESSION_DOMAIN=null')) {
+            (new Filesystem)->replaceInFile(
+                'SESSION_DOMAIN=null',
+                'SESSION_DOMAIN=.platform.test',
+                $envFile,
+            );
+        }
+
         if (str_contains($content, 'BCRYPT_ROUNDS=12')) {
             (new Filesystem)->replaceInFile(
                 'BCRYPT_ROUNDS=12',
@@ -175,8 +183,7 @@ class PlatformInstall extends Command
                 'DB_QUEUE_BATCH_TABLE=system_job_batches' . PHP_EOL .
                 'DB_QUEUE_FAILED_TABLE=system_failded_jobs' . PHP_EOL .
                 'SESSION_TABLE=system_sessions' . PHP_EOL .
-                'SANCTUM_STATEFUL_DOMAINS=hmr.platform.test:3000' . PHP_EOL .
-                'SESSION_DOMAIN=.platform.test',
+                'SANCTUM_STATEFUL_DOMAINS=hmr.platform.test:3000',
                 $envFile,
             );
         }
