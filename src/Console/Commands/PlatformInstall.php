@@ -5,6 +5,7 @@ namespace Monoland\Platform\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Process\Process;
 
 class PlatformInstall extends Command
 {
@@ -61,6 +62,8 @@ class PlatformInstall extends Command
         $this->call('module:clone', [
             'repository' => 'https://github.com/monoland/system'
         ]);
+
+        $this->runComposerUpdate();
     }
 
     /**
@@ -175,5 +178,20 @@ class PlatformInstall extends Command
                 $envFile,
             );
         }
+    }
+
+    /**
+     * runComposerUpdate function
+     *
+     * @return void
+     */
+    protected function runComposerUpdate(): void
+    {
+        $process = new Process([
+            'composer', 'update'
+        ]);
+
+        $process->setWorkingDirectory(base_path());
+        $process->run();
     }
 }
