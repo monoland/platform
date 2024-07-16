@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('https://' . env('SANCTUM_STATEFUL_DOMAINS'));
 });
 
 // Route::get('/{vue_capture?}', function () {
