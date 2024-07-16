@@ -55,7 +55,17 @@ class PlatformInstall extends Command
         }
 
         $this->call('vendor:publish', [
+            '--tag' => 'platform-config',
+            '--force' => true
+        ]);
+
+        $this->call('vendor:publish', [
             '--tag' => 'platform-frontend',
+            '--force' => true
+        ]);
+
+        $this->call('vendor:publish', [
+            '--tag' => 'platform-assets',
             '--force' => true
         ]);
 
@@ -89,7 +99,7 @@ class PlatformInstall extends Command
         }
 
         if (str_contains($content, '->withMiddleware(function (Middleware $middleware) {')) {
-            (new Filesystem)->replaceInFile(
+            (new Filesystem())->replaceInFile(
                 '->withMiddleware(function (Middleware $middleware) {',
                 '->withMiddleware(function (Middleware $middleware) {' . PHP_EOL . "\t\t" . '$middleware->statefulApi();',
                 $appFile,
@@ -133,7 +143,7 @@ class PlatformInstall extends Command
         $content = file_get_contents($envFile);
 
         if (str_contains($content, 'APP_TIMEZONE=UTC')) {
-            (new Filesystem)->replaceInFile(
+            (new Filesystem())->replaceInFile(
                 'APP_TIMEZONE=UTC',
                 'APP_TIMEZONE="Asia/Jakarta"',
                 $envFile,
@@ -141,7 +151,7 @@ class PlatformInstall extends Command
         }
 
         if (str_contains($content, 'APP_LOCALE=en')) {
-            (new Filesystem)->replaceInFile(
+            (new Filesystem())->replaceInFile(
                 'APP_LOCALE=en',
                 'APP_LOCALE=id',
                 $envFile,
@@ -149,7 +159,7 @@ class PlatformInstall extends Command
         }
 
         if (str_contains($content, 'APP_FAKER_LOCALE=en_US')) {
-            (new Filesystem)->replaceInFile(
+            (new Filesystem())->replaceInFile(
                 'APP_FAKER_LOCALE=en_US',
                 'APP_FAKER_LOCALE=id_ID',
                 $envFile,
@@ -157,7 +167,7 @@ class PlatformInstall extends Command
         }
 
         if (str_contains($content, 'DB_CONNECTION=sqlite')) {
-            (new Filesystem)->replaceInFile(
+            (new Filesystem())->replaceInFile(
                 'DB_CONNECTION=sqlite',
                 'DB_CONNECTION=platform',
                 $envFile,
@@ -165,18 +175,18 @@ class PlatformInstall extends Command
         }
 
         if (str_contains($content, 'SESSION_DOMAIN=null')) {
-            (new Filesystem)->replaceInFile(
+            (new Filesystem())->replaceInFile(
                 'SESSION_DOMAIN=null',
                 'SESSION_DOMAIN=.platform.test',
                 $envFile,
             );
         }
 
-        if (str_contains($content, 'BCRYPT_ROUNDS=12')) {
-            (new Filesystem)->replaceInFile(
+        if (str_contains($content, 'BCRYPT_ROUNDS=12') && !str_contains($content, 'AUTH_MODEL=Module\System\Models\SystemUser')) {
+            (new Filesystem())->replaceInFile(
                 'BCRYPT_ROUNDS=12',
-                'BCRYPT_ROUNDS=12' . PHP_EOL . 
-                'AUTH_MODEL=Module\System\Models\SystemUser' . PHP_EOL . 
+                'BCRYPT_ROUNDS=12' . PHP_EOL .
+                'AUTH_MODEL=Module\System\Models\SystemUser' . PHP_EOL .
                 'AUTH_PASSWORD_RESET_TOKEN_TABLE=system_password_reset_tokens' . PHP_EOL .
                 'DB_CACHE_TABLE=system_cache' . PHP_EOL .
                 'DB_QUEUE_TABLE=system_jobs' . PHP_EOL .
