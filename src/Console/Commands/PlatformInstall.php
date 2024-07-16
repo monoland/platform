@@ -39,6 +39,8 @@ class PlatformInstall extends Command
 
         $this->addExtraForMerge();
 
+        $this->addExtraEnvirontment();
+
         $this->addStatefulApi();
 
         if (File::isDirectory(app_path('Models'))) {
@@ -66,7 +68,7 @@ class PlatformInstall extends Command
      *
      * @return void
      */
-    protected function addStatefulApi()
+    protected function addStatefulApi(): void
     {
         $appFile = base_path('bootstrap' . DIRECTORY_SEPARATOR . 'app.php');
         $content = file_get_contents($appFile);
@@ -114,6 +116,64 @@ class PlatformInstall extends Command
             $content = str_replace('\/', '/', $content);
 
             file_put_contents($composerFile, $content);
+        }
+    }
+
+    /**
+     * addExtraEnvirontment function
+     *
+     * @return void
+     */
+    protected function addExtraEnvirontment(): void
+    {
+        $envFile = base_path('.env');
+        $content = file_get_contents($envFile);
+
+        if (str_contains($content, 'APP_TIMEZONE=UTC')) {
+            (new Filesystem)->replaceInFile(
+                'APP_TIMEZONE=UTC',
+                'APP_TIMEZONE="Asia/Jakarta"',
+                $envFile,
+            );
+        }
+
+        if (str_contains($content, 'APP_LOCALE=en')) {
+            (new Filesystem)->replaceInFile(
+                'APP_LOCALE=en',
+                'APP_LOCALE=id',
+                $envFile,
+            );
+        }
+
+        if (str_contains($content, 'APP_FAKER_LOCALE=en_US')) {
+            (new Filesystem)->replaceInFile(
+                'APP_FAKER_LOCALE=en_US',
+                'APP_FAKER_LOCALE=id_ID',
+                $envFile,
+            );
+        }
+
+        if (str_contains($content, 'DB_CONNECTION=sqlite')) {
+            (new Filesystem)->replaceInFile(
+                'DB_CONNECTION=sqlite',
+                'DB_CONNECTION=platform',
+                $envFile,
+            );
+        }
+
+        if (str_contains($content, 'BCRYPT_ROUNDS=12')) {
+            (new Filesystem)->replaceInFile(
+                'BCRYPT_ROUNDS=12',
+                'BCRYPT_ROUNDS=12' . PHP_EOL . 
+                'AUTH_MODEL=Module\System\Models\SystemUser' . PHP_EOL . 
+                'AUTH_PASSWORD_RESET_TOKEN_TABLE=system_password_reset_tokens' . PHP_EOL .
+                'DB_CACHE_TABLE=system_cache' . PHP_EOL .
+                'DB_QUEUE_TABLE=system_jobs' . PHP_EOL .
+                'DB_QUEUE_BATCH_TABLE=system_job_batches' . PHP_EOL .
+                'DB_QUEUE_FAILED_TABLE=system_failded_jobs' . PHP_EOL .
+                'SESSION_TABLE=system_sessions',
+                $envFile,
+            );
         }
     }
 }
