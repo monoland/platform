@@ -43,7 +43,7 @@ class PlatformServiceProvider extends ServiceProvider
 
         /** Prevent model relationships from being lazy loaded. */
         Model::preventLazyLoading();
-        
+
         /** Register Platform Command */
         $this->registerArtisanCommands();
 
@@ -76,7 +76,7 @@ class PlatformServiceProvider extends ServiceProvider
 
         /** Publish File and Folder */
         $this->publishes([
-            __DIR__.'/../resources' => resource_path(),
+            __DIR__.'/../frontend' => resource_path(),
             __DIR__.'/../modules' => base_path('modules'),
             __DIR__.'/../.eslintrc.js' => base_path('.eslintrc.js'),
             __DIR__.'/../package.json' => base_path('package.json'),
