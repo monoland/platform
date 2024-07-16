@@ -4,6 +4,7 @@ import basicSsl from "@vitejs/plugin-basic-ssl";
 import { defineConfig } from "vite";
 import { fileURLToPath, URL } from "node:url";
 import { transformAssetUrls } from "vite-plugin-vuetify";
+// import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
 	root: "resources",
@@ -28,6 +29,85 @@ export default defineConfig({
 		Vuetify({
 			autoImport: true,
 		}),
+		// VitePWA({
+		//     includeAssets: [
+		//         "assets/favicon.ico",
+		//         "assets/apple-touch-icon.png",
+		//     ],
+
+		//     devOptions: {
+		//         enabled: true,
+		//         type: "module",
+		//     },
+
+		//     strategies: "injectManifest",
+		//     srcDir: "./src/workers",
+		//     filename: "service-worker.js",
+
+		//     registerType: "autoUpdate",
+
+		//     manifest: {
+		//         name: "SiMASTEN",
+		//         short_name: "SiMASTEN",
+		//         description: "Sistem Terintegrasi Manajemen ASN",
+		//         icons: [
+		//             {
+		//                 src: "assets/pwa-maskable-512x512.png",
+		//                 sizes: "512x512",
+		//                 type: "image/png",
+		//                 purpose: "maskable",
+		//             },
+
+		//             {
+		//                 src: "assets/pwa-512x512.png",
+		//                 sizes: "512x512",
+		//                 type: "image/png",
+		//                 purpose: "any",
+		//             },
+
+		//             {
+		//                 src: "assets/pwa-maskable-192x192.png",
+		//                 sizes: "192x192",
+		//                 type: "image/png",
+		//                 purpose: "maskable",
+		//             },
+
+		//             {
+		//                 src: "assets/pwa-192x192.png",
+		//                 sizes: "192x192",
+		//                 type: "image/png",
+		//                 purpose: "any",
+		//             },
+		//         ],
+		//         screenshots: [
+		//             {
+		//                 src: "assets/screenshot-vertical.png",
+		//                 sizes: "320x640",
+		//                 type: "image/png",
+		//                 form_factor: "narrow",
+		//                 label: "Wonder Widgets",
+		//             },
+
+		//             {
+		//                 src: "assets/screenshot-horizontal.png",
+		//                 sizes: "640x320",
+		//                 type: "image/png",
+		//                 form_factor: "wide",
+		//                 label: "Wonder Widgets",
+		//             },
+		//         ],
+		//         start_url: "/",
+		//         display: "fullscreen",
+		//         display_override: ["fullscreen", "minimal-ui"],
+		//         background_color: "#5A6062",
+		//         theme_color: "#5A6062",
+		//     },
+
+		//     workbox: {
+		//         exclude: [/\.(?:png|php|jpg|jpeg|svg|txt|ico|html|htaccess)$/],
+		//         maximumFileSizeToCacheInBytes: 10485760,
+		//     },
+		// }),
 	],
 	define: { "process.env": {} },
 	resolve: {

@@ -1,5 +1,7 @@
 // Plugins
 import { registerDesktopPlugins } from "@plugins";
+
+// Style
 import "@styles/settings.css";
 
 // Components

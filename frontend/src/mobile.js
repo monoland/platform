@@ -1,5 +1,7 @@
 // Plugins
 import { registerMobilePlugins } from "@plugins";
+
+// Style
 import "@styles/settings.css";
 
 // Components
