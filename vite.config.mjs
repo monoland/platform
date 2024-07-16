@@ -79,23 +79,6 @@ export default defineConfig({
 		//                 purpose: "any",
 		//             },
 		//         ],
-		//         screenshots: [
-		//             {
-		//                 src: "assets/screenshot-vertical.png",
-		//                 sizes: "320x640",
-		//                 type: "image/png",
-		//                 form_factor: "narrow",
-		//                 label: "Wonder Widgets",
-		//             },
-
-		//             {
-		//                 src: "assets/screenshot-horizontal.png",
-		//                 sizes: "640x320",
-		//                 type: "image/png",
-		//                 form_factor: "wide",
-		//                 label: "Wonder Widgets",
-		//             },
-		//         ],
 		//         start_url: "/",
 		//         display: "fullscreen",
 		//         display_override: ["fullscreen", "minimal-ui"],
