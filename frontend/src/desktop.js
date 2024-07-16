@@ -1,5 +1,6 @@
 // Plugins
 import { registerDesktopPlugins } from "@plugins";
+import "@styles/settings.css";
 
 // Components
 import App from "./App.vue";

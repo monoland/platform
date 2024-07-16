@@ -174,7 +174,9 @@ class PlatformInstall extends Command
                 'DB_QUEUE_TABLE=system_jobs' . PHP_EOL .
                 'DB_QUEUE_BATCH_TABLE=system_job_batches' . PHP_EOL .
                 'DB_QUEUE_FAILED_TABLE=system_failded_jobs' . PHP_EOL .
-                'SESSION_TABLE=system_sessions',
+                'SESSION_TABLE=system_sessions' . PHP_EOL .
+                'SANCTUM_STATEFUL_DOMAINS=hmr.platform.test:3000' . PHP_EOL .
+                'SESSION_DOMAIN=.platform.test',
                 $envFile,
             );
         }

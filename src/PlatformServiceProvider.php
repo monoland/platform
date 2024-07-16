@@ -77,6 +77,7 @@ class PlatformServiceProvider extends ServiceProvider
         /** Publish File and Folder */
         $this->publishes([
             __DIR__.'/../config/database.php' => config_path('database.php'),
+            __DIR__.'/../config/cors.php' => config_path('cors.php'),
             __DIR__.'/../frontend' => resource_path(),
             __DIR__.'/../modules' => base_path('modules'),
             __DIR__.'/../routes' => base_path('routes'),
