@@ -2,25 +2,25 @@
 
 namespace Monoland\Platform\Console\Commands;
 
-use Illuminate\Console\Command;
-use Symfony\Component\Process\Process;
-use Illuminate\Support\Facades\Cache;
+use ErrorException;
+use Illuminate\Process\Exceptions\ProcessFailedException;
+use Monoland\Platform\Console\Commands\PlatformModuleHelper;
 
-class PlatformModuleFetch extends Command
+class PlatformModuleFetch extends PlatformModuleHelper
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'module:fetch';
+    protected $signature = 'module:fetch {module?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = "Check if there's a new commit or new tags for each modules repositroy";
+    protected $description = 'Fetch git repository to targeted module';
 
     /**
      * handle function
@@ -29,25 +29,17 @@ class PlatformModuleFetch extends Command
      */
     public function handle()
     {
-        $modules = [];
+        try {
+            // try to getting the correct modules if not found..
+            $module = $this->handleModuleNotFound($this->argument('module'));
+            if (!$this->isModuleExist($module)) return $module;
 
-        // git ls-remote --heads | repo_url
-        // git ls-remote --tags  | repo_url
-
-        foreach (Cache::get('modules') as $module) {
-            array_push($modules, [
-                $module->namespace,
-                $module->name,
-                $module->repo_url,
-                $module->repo_path,
-            ]);
+            // try to fetch            
+            $this->info('Trying to fetch.. ' . $module);
+            $output = $this->fetchModule($module);
+            if ($output instanceof ProcessFailedException) throw $output;
+        } catch (ErrorException $error) {
+            return $this->error($error->getMessage());
         }
-
-        array_multisort(array_column($modules, 3), SORT_ASC, $modules);
-
-        $this->table(
-            ['Namespace', 'Name', 'Repo Url', 'Repo Path'],
-            $modules
-        );
     }
 }
