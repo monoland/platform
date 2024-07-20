@@ -1,0 +1,84 @@
+html {
+    overflow-y: hidden;
+}
+
+.v-icon.with-shadow {
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.font-brand {
+    font-family: "Madimi One", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.scrollbar-none {
+    scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    width: 0px;
+}
+
+.v-data-table-footer {
+    justify-content: flex-start;
+    padding-left: 16px;
+}
+
+.v-navigation-drawer {
+    transition-property: box-shadow, transform, visibility, width, left, right, top, bottom;
+}
+
+.v-timeline-item__body {
+    width: 100%;
+}
+
+.v-timeline--vertical.v-timeline {
+    row-gap: 16px;
+}
+
+.v-timeline--vertical.v-timeline .v-timeline-item:first-child .v-timeline-divider,
+.v-timeline--vertical.v-timeline .v-timeline-item:first-child .v-timeline-item__body {
+    padding-block-start: 16px;
+}
+
+.v-timeline--vertical.v-timeline .v-timeline-item:last-child .v-timeline-divider,
+.v-timeline--vertical.v-timeline .v-timeline-item:last-child .v-timeline-item__body {
+    padding-block-end: 8px;
+}
+
+.v-timeline--vertical.v-timeline.v-timeline--side-end .v-timeline-item .v-timeline-item__body {
+    padding-inline-start: 16px;
+}
+
+.rounded-b-xl {
+    border-bottom-left-radius: 16px !important;
+    border-bottom-right-radius: 16px !important;
+}
+
+.v-list > .v-list-wrap > .v-list-item {
+    transform: translateX(0px);
+    transition-duration: 0.2s;
+    transition-property: transform, left;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.v-list > .v-list-wrap > .v-list-item--variant-text > .v-list-item__overlay {
+    background-color: transparent;
+}
+
+.v-list > .v-list-wrap > .v-list-item.v-list-item--active {
+    transform: translateX(-72px);
+}
+
+.v-list > .v-list-wrap > .v-list-item.v-list-item--active.with-delete {
+    transform: translateX(-128px);
+}
+
+.v-toolbar.content-visible .v-toolbar__content {
+    overflow: visible;
+}
+
+table.v-plain-table.with-border-bottom > tbody > tr:not(:last-child) > td {
+    border-bottom: thin solid rgba(0, 0, 0, 0.12);
+}
