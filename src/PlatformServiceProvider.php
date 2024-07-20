@@ -23,6 +23,8 @@ use Monoland\Platform\Console\Commands\PlatformModuleSeed;
 use Monoland\Platform\Console\Commands\PlatformMakeCommand;
 use Monoland\Platform\Console\Commands\PlatformMakeReplica;
 use Monoland\Platform\Console\Commands\PlatformModuleClone;
+use Monoland\Platform\Console\Commands\PlatformModuleDelete;
+use Monoland\Platform\Console\Commands\PlatformModuleCheckout;
 use Monoland\Platform\Console\Commands\PlatformMakeListener;
 use Monoland\Platform\Console\Commands\PlatformMakeResource;
 use Monoland\Platform\Console\Commands\PlatformMakeMigration;
@@ -30,6 +32,7 @@ use Monoland\Platform\Console\Commands\PlatformModuleInstall;
 use Monoland\Platform\Console\Commands\PlatformModuleMigrate;
 use Monoland\Platform\Console\Commands\PlatformMakeController;
 use Monoland\Platform\Console\Commands\PlatformMakeNotification;
+use Monoland\Platform\Console\Commands\PlatformModuleFetch;
 
 class PlatformServiceProvider extends ServiceProvider
 {
@@ -76,13 +79,6 @@ class PlatformServiceProvider extends ServiceProvider
 
         /** Publish File and Folder */
         $this->publishes([
-            __DIR__.'/../config/database.php' => config_path('database.php'),
-            __DIR__.'/../config/cors.php' => config_path('cors.php'),
-            __DIR__.'/../package.json' => base_path('package.json'),
-            __DIR__.'/../vite.config.mjs' => base_path('vite.config.mjs'),
-        ], 'platform-config');
-
-        $this->publishes([
             __DIR__.'/../frontend' => resource_path(),
         ], 'platform-frontend');
 
@@ -112,20 +108,98 @@ class PlatformServiceProvider extends ServiceProvider
     protected function scanModulesFolder(): array | null
     {
         return Cache::rememberForever('modules', function () {
+            // scan modules folders
+            $folders = glob(base_path('modules') . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
             $modules = [];
 
-            $files = glob(
-                base_path('modules' . DIRECTORY_SEPARATOR . "*" . DIRECTORY_SEPARATOR . 'module.json')
-            );
+            foreach ($folders as $folder) {
+                // check if folder is a module, by checking if its has a file named module.json
+                $modules_json_path = $folder . DIRECTORY_SEPARATOR . 'module.json';
+                $git_config_path   = $folder . DIRECTORY_SEPARATOR . '.git' . DIRECTORY_SEPARATOR . 'config';
 
-            foreach ($files as $file) {
-                $arr = json_decode(file_get_contents($file), true);
+                // get the module.json content, and convert it into assosiative
+                // array
+                if (!file_exists($modules_json_path)) {
+                    continue;
+                }
 
+                // appending the modules property to the assosiative array
+                // of each modules..
+                $content = file_get_contents($modules_json_path);
+                $arr     = json_decode($content, true);
                 $modules[$arr['name']] = json_decode(json_encode($arr), false);
-            }
+                $modules[$arr['name']]->dir_path = $folder;
 
+                // appending the git property to the assosiative array
+                // of each modules..
+                if (file_exists($git_config_path)) {
+                    $modules[$arr['name']]->repo_url    = $this->scanModulesRepo($git_config_path);
+                    $modules[$arr['name']]->repo_config = $this->readGitConfig($git_config_path);
+                }
+            }
             return count($modules) > 0 ? $modules : null;
         });
+    }
+
+    /**
+     * scanModulesRepo function
+     *
+     * @return string
+     */
+    protected function scanModulesRepo($git_config_path): string | null
+    {
+        $git_file = fopen($git_config_path, 'r');
+        while (($line = fgets($git_file)) !== false) {
+            $split = explode('=', $line);
+            if (count($split) > 1) {
+                $tags  = trim($split[0]);
+                $value = trim($split[1]);
+                if ($tags == 'url') {
+                    fclose($git_file);
+                    return $value;
+                    break;
+                }
+            }
+        }
+        fclose($git_file);
+        return null;
+    }
+
+    /**
+     * readGitConfig function
+     *
+     * @return array
+     */
+    protected function readGitConfig($git_config_path): array
+    {
+        $git_file = fopen($git_config_path, 'r');
+        $configs = [];
+
+        // proceed to read git config line_by_line.
+        while (($line = fgets($git_file)) !== false) {
+            $line = trim($line);
+
+            // check if its parent config
+            preg_match('/(?<=\[).+(?=])/', $line, $is_parent_config);
+
+            if (count($is_parent_config) > 0) {
+                $parent_config = explode(' ', $is_parent_config[0]);
+                array_push($configs, [
+                    'name'  => count($parent_config) > 1 ? $parent_config[0] : $parent_config[0],
+                    'value' => count($parent_config) > 1 ? $parent_config[1] : null,
+                    'properties' => [],
+                ]);
+            } else {
+                $properties = explode('=', $line);
+                array_push($configs[count($configs) - 1]['properties'], [
+                    'name'  => count($properties) > 1 ? $properties[0] : $properties[0],
+                    'value' => count($properties) > 1 ? $properties[1] : null,
+                ]);
+            }
+        }
+
+        fclose($git_file);
+        return $configs;
     }
 
     /**
@@ -149,11 +223,14 @@ class PlatformServiceProvider extends ServiceProvider
                 PlatformMakeModel::class,
                 PlatformMakeModule::class,
                 PlatformMakeNotification::class,
+                PlatformModuleDelete::class,
+                PlatformModuleFetch::class,
                 PlatformMakePolicy::class,
                 PlatformMakeReplica::class,
                 PlatformMakeResource::class,
                 PlatformMakeSeed::class,
                 PlatformModuleClone::class,
+                PlatformModuleCheckout::class,
                 PlatformModuleInstall::class,
                 PlatformModuleList::class,
                 PlatformModuleMigrate::class,
