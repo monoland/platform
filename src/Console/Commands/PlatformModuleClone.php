@@ -3,12 +3,8 @@
 namespace Monoland\Platform\Console\Commands;
 
 use ErrorException;
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
-use InvalidArgumentException;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Monoland\Platform\Console\Commands\PlatformModuleHelper;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class PlatformModuleClone extends PlatformModuleHelper
 {
@@ -18,7 +14,9 @@ class PlatformModuleClone extends PlatformModuleHelper
      * @var string
      */
     protected $signature = 'module:clone
-        {repository} {--by=}
+        {repository} 
+        {--by-commit}
+        {--by-tag}
     ';
 
     /**
@@ -35,10 +33,10 @@ class PlatformModuleClone extends PlatformModuleHelper
      */
     public function handle()
     {
-        $mode    = env('PLATFORM_MODE', 'prod');
-        $is_prod = $mode == 'prod';
+        $mode    = env('APP_ENV', 'local');
         $module_name = $this->buildModuleName($this->argument('repository'));
-        $by          = $this->option('by');
+        $byCommit = $this->option('by-commit');
+        $byTag = $this->option('by-tag');
 
         try {
             // -> check if module already exist
@@ -54,13 +52,13 @@ class PlatformModuleClone extends PlatformModuleHelper
             $this->call('module:fetch', ['module' => $module_name]);
 
             // -> proceed to do the operation for production mode
-            if (is_null($by) && $is_prod || $by == 'tag')
-                $this->call('module:checkout', ['module' => $module_name, '--by' => 'tag', '--nofetch' => 'true']);
+            if ($byTag && !$byCommit)
+                $this->call('module:checkout', ['module' => $module_name, '--by-tag' => true, '--nofetch' => 'true']);
             // -> proceed to do the operation for dev mode        
-            if (is_null($by) && !$is_prod || $by == 'commit')
-                $this->call('module:checkout', ['module' => $module_name, '--by' => 'commit', '--nofetch' => 'true']);
+            if ($byCommit && !$byTag)
+                $this->call('module:checkout', ['module' => $module_name, '--by-commit' => true, '--nofetch' => 'true']);
             // -> proceed to mode invalid, have option to delete the module     
-            if ($mode != 'dev' && $mode != 'prod' && $this->confirm('Do you want to delete the cloned module ?'))
+            if ($mode !== 'local' && $mode !== 'production' && $this->confirm('Do you want to delete the cloned module ?'))
                 $this->call('module:delete', ['module' => $module_name]);
 
             // -> Get into conclusions, if exist then cloned succesfully
