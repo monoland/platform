@@ -4,13 +4,11 @@ namespace Monoland\Platform\Console\Commands;
 
 use ErrorException;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 use InvalidArgumentException;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Monoland\Platform\Console\Commands\PlatformModuleHelper;
+use Monoland\Platform\Services\PlatformModulesGit;
 
-class PlatformModuleDelete extends PlatformModuleHelper
+class PlatformModuleDelete extends Command
 {
     /**
      * The name and signature of the console command.
@@ -33,18 +31,26 @@ class PlatformModuleDelete extends PlatformModuleHelper
      *
      * @return void
      */
-    public function handle()
+    public function handle(PlatformModulesGit $ModulesGit)
     {
         try {
             // try to getting needed argument
             $module = $this->argument('module');
 
             // try to getting the correct modules if not found..
-            $module = $this->handleModuleNotFound($module);
-            if (!$this->isModuleExist($module)) return $module;
+            if (!$ModulesGit->isModuleExist($module)) return $this->info('Module not found');
 
             // delete           
-            $success = $this->deleteModule($module);
+            if (!$this->confirm(
+                "Confirm to delete the targeted module.. \n" .
+                    "Module Name        : $module \n" .
+                    "Targeted Directory : " . $ModulesGit->buildModuleDir($module) . "\n"
+            )) {
+                return $this->info('Delete Cancelled');
+            }
+
+            // action
+            $success = $ModulesGit->deleteModule($module);
             if ($success)               return $this->info('Delete Success');
             else if (is_null($success)) return $this->info('Delete Canceled');
             else if (!$success)         return $this->info('Delete Failed');

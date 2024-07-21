@@ -3,10 +3,11 @@
 namespace Monoland\Platform\Console\Commands;
 
 use ErrorException;
+use Illuminate\Console\Command;
 use Illuminate\Process\Exceptions\ProcessFailedException;
-use Monoland\Platform\Console\Commands\PlatformModuleHelper;
+use Monoland\Platform\Services\PlatformModulesGit;
 
-class PlatformModuleFetch extends PlatformModuleHelper
+class PlatformModuleFetch extends Command
 {
     /**
      * The name and signature of the console command.
@@ -27,16 +28,16 @@ class PlatformModuleFetch extends PlatformModuleHelper
      *
      * @return void
      */
-    public function handle()
+    public function handle(PlatformModulesGit $ModulesGit)
     {
         try {
             // try to getting the correct modules if not found..
-            $module = $this->handleModuleNotFound($this->argument('module'));
-            if (!$this->isModuleExist($module)) return $module;
+            $module = $this->argument('module');
+            if (!$ModulesGit->isModuleExist($module)) return $this->info("Modules not found");
 
             // try to fetch            
             $this->info('Trying to fetch.. ' . $module);
-            $output = $this->fetchModule($module);
+            $output = $ModulesGit->fetchModule($module);
             if ($output instanceof ProcessFailedException) throw $output;
         } catch (ErrorException $error) {
             return $this->error($error->getMessage());
