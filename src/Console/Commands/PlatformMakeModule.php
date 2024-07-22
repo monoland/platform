@@ -237,7 +237,7 @@ class PlatformMakeModule extends Command
     protected function getStubContents($stub): string
     {
         $stub = $this->fileSystem->get(
-            app_path('Console' . DIRECTORY_SEPARATOR . 'Commands' . DIRECTORY_SEPARATOR . 'module-stubs' . DIRECTORY_SEPARATOR . $stub)
+            __DIR__ . DIRECTORY_SEPARATOR . 'module-stubs' . DIRECTORY_SEPARATOR . $stub
         );
 
         $searches = [
