@@ -15,6 +15,8 @@ class PlatformMakeMigration extends Command
     protected $signature = 'module:make-migration
         {name}
         {--module=}
+        {--create=}
+        {--table=}
     ';
 
     /**
@@ -49,6 +51,8 @@ class PlatformMakeMigration extends Command
 
         return $this->call('make:migration', [
             'name' => $this->argument('name'),
+            '--create' => $this->option('create'),
+            '--table' => $this->option('table'),
             '--path' => $folderpath,
         ]);
     }

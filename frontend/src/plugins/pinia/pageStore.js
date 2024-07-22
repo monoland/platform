@@ -800,6 +800,7 @@ export const usePageStore = defineStore("pageStore", {
 
         openFormRoute(routeName) {
             if (!this.$router.hasRoute(routeName)) {
+                this.snackbar.color = 'deep-orange';
                 this.snackbar.text = "route: " + routeName + " does`nt exists.";
                 this.snackbar.state = true;
                 return;
@@ -852,6 +853,7 @@ export const usePageStore = defineStore("pageStore", {
 
                 this.openFormData();
 
+                this.snackbar.color = 'green';
                 this.snackbar.text = `tambah data ${this.pageKey} berhasil`;
                 this.snackbar.state = true;
             });
@@ -882,6 +884,7 @@ export const usePageStore = defineStore("pageStore", {
 
                 this.openFormData();
 
+                this.snackbar.color = 'green';
                 this.snackbar.text = `hapus data ${this.pageKey} berhasil`;
                 this.snackbar.state = true;
             });
@@ -908,6 +911,7 @@ export const usePageStore = defineStore("pageStore", {
 
                 this.openFormData();
 
+                this.snackbar.color = 'green';
                 this.snackbar.text = `update data ${this.pageKey} berhasil`;
                 this.snackbar.state = true;
             });
@@ -938,6 +942,7 @@ export const usePageStore = defineStore("pageStore", {
 
                 this.openFormData();
 
+                this.snackbar.color = 'green';
                 this.snackbar.text = `permanent hapus data ${this.pageKey} berhasil`;
                 this.snackbar.state = true;
             });
@@ -968,6 +973,7 @@ export const usePageStore = defineStore("pageStore", {
 
                 this.openFormData();
 
+                this.snackbar.color = 'green';
                 this.snackbar.text = `permanent hapus data ${this.pageKey} berhasil`;
                 this.snackbar.state = true;
             });

@@ -15,7 +15,10 @@ class PlatformModuleMigrate extends Command
      *
      * @var string
      */
-    protected $signature = 'module:migrate {module}';
+    protected $signature = 'module:migrate 
+        {module}
+        {--fresh}
+    ';
 
     /**
      * The console command description.
@@ -41,22 +44,24 @@ class PlatformModuleMigrate extends Command
 
         $modulePath = DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . str($module->name)->lower() . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'migrations';
 
-        $files = glob(base_path($modulePath) . DIRECTORY_SEPARATOR . '*.php');
+        if ($this->option('fresh')) {
+            $files = glob(base_path($modulePath) . DIRECTORY_SEPARATOR . '*.php');
 
-        foreach ($files as $file) {
-            $migrationName = str($file)->after("database/migrations/")->before(".php")->toString();
+            foreach ($files as $file) {
+                $migrationName = str($file)->after("database/migrations/")->before(".php")->toString();
 
-            // remove migration record
-            DB::connection($module->connection)
-                ->table('migrations')
-                ->where('migration', $migrationName)
-                ->delete();
+                // remove migration record
+                DB::connection($module->connection)
+                    ->table('migrations')
+                    ->where('migration', $migrationName)
+                    ->delete();
 
-            // drop table
-            $tableName = str($migrationName)->after("_create_")->before("_table")->toString();
+                // drop table
+                $tableName = str($migrationName)->after("_create_")->before("_table")->toString();
 
-            DB::connection($module->connection)
-                ->statement('DROP TABLE IF EXISTS ' . $tableName);
+                DB::connection($module->connection)
+                    ->statement('DROP TABLE IF EXISTS ' . $tableName);
+            }
         }
 
         $this->call('migrate', [

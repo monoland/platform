@@ -84,7 +84,7 @@ class PlatformServiceProvider extends ServiceProvider
             __DIR__.'/../package.json' => base_path('package.json'),
             __DIR__.'/../vite.config.mjs' => base_path('vite.config.mjs'),
         ], 'platform-config');
-        
+
         $this->publishes([
             __DIR__.'/../frontend' => resource_path(),
         ], 'platform-frontend');
