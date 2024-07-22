@@ -3,10 +3,11 @@
 namespace Monoland\Platform\Console\Commands;
 
 use ErrorException;
-use Monoland\Platform\Console\Commands\PlatformModuleHelper;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Illuminate\Console\Command;
+use Monoland\Platform\Services\PlatformModulesGit;
 
-class PlatformModuleCheckout extends PlatformModuleHelper
+class PlatformModuleCheckout extends Command
 {
     /**
      * The name and signature of the console command.
@@ -33,12 +34,11 @@ class PlatformModuleCheckout extends PlatformModuleHelper
      *
      * @return void
      */
-    public function handle()
+    public function handle(PlatformModulesGit $ModulesGit)
     {
         try {
             // mode
             $mode    = env('APP_ENV', 'local');
-            $is_prod = $mode !== 'local';
 
             // try to getting needed argument
             $module     = $this->argument('module');
@@ -47,10 +47,9 @@ class PlatformModuleCheckout extends PlatformModuleHelper
             $ref        = $this->argument('ref');
             $nofetch    = $this->option('nofetch') == 'true';
 
-            // try to getting the correct modules if not found..
-            $module = $this->handleModuleNotFound($module);
-            if (!$this->isModuleExist($module)) {
-                return $module;
+            // try to getting the correct modules if not found..            
+            if (!$ModulesGit->isModuleExist($module)) {
+                return $this->info('Modules ' . $module . ' not found');
             }
 
             // Handling fetch
@@ -58,15 +57,14 @@ class PlatformModuleCheckout extends PlatformModuleHelper
                 $this->call('module:fetch', ['module' => $module]);
             }
 
-
             // Hadnlign Checkout
             if ($byTag && !$byCommit) {
-                $success = $this->handleByTag($module, $ref);
+                $success = $this->handleByTag($module, $ref, $ModulesGit);
             }
 
             // For refs by tags or production mode
             if ($byCommit && !$byTag) {
-                $success = $this->handleByCommit($module, $ref);
+                $success = $this->handleByCommit($module, $ref, $ModulesGit);
             }
 
             if ($success) {
@@ -86,19 +84,19 @@ class PlatformModuleCheckout extends PlatformModuleHelper
      *
      * @return bool | null
      */
-    protected function handleByTag($module, $tag): bool | null
+    protected function handleByTag($module, $tag, $ModulesGit): bool | null
     {
         // -> For refs by tags or production mode
         $this->info('Trying to checkout by tag..');
 
         // -> procced to fetch
-        $output = $this->fetchModule($module);
+        $output = $ModulesGit->fetchModule($module);
         if ($output instanceof ProcessFailedException) {
             throw $output;
         }
 
         // -> get list of tags
-        $output = $this->getModuleTags($module);
+        $output = $ModulesGit->getModuleTags($module);
         if ($output instanceof ProcessFailedException) {
             throw $output;
         }
@@ -110,7 +108,7 @@ class PlatformModuleCheckout extends PlatformModuleHelper
         }
 
         // -> current tag / head
-        $current_tag = $this->getModuleCurrentTag($module);
+        $current_tag = $ModulesGit->getModuleCurrentTag($module);
         if (!is_null($current_tag)) {
             $this->info('Current Tag : ' . $current_tag);
         }
@@ -125,8 +123,7 @@ class PlatformModuleCheckout extends PlatformModuleHelper
         }
 
         // return
-        return $this->checkoutModule($tag, $module);
-        ;
+        return $ModulesGit->checkoutModule($tag, $module);;
     }
 
     /**
@@ -134,19 +131,19 @@ class PlatformModuleCheckout extends PlatformModuleHelper
      *
      * @return bool | null
      */
-    protected function handleByCommit($module, $ref): bool | null
+    protected function handleByCommit($module, $ref, $ModulesGit): bool | null
     {
         // -> For refs by tags or production mode
         $this->info('Trying to checkout by commit..');
 
         // -> procced to fetch
-        $output = $this->fetchModule($module);
-        if ($output instanceof ProcessFailedException) {
-            throw $output;
-        }
+        // $output = $ModulesGit->fetchModule($module);
+        // if ($output instanceof ProcessFailedException) {
+        //     throw $output;
+        // }
 
         // -> get list of refs
-        $output = $this->getModuleCommits($module, 'origin', 'main');
+        $output = $ModulesGit->getModuleCommits($module, 'origin', 'main');
         if ($output instanceof ProcessFailedException) {
             throw $output;
         }
@@ -158,12 +155,12 @@ class PlatformModuleCheckout extends PlatformModuleHelper
         }
 
         // -> current tag / head
-        $current_commit = $this->getModuleCurrentCommit($module);
+        $current_commit = $ModulesGit->getModuleCurrentCommit($module);
         if (!is_null($current_commit)) {
             $this->info('Current Refs : ' . $current_commit);
         }
         // -> latest tag
-        $latest_commit = $this->getModuleCurrentCommit($module, 'origin', 'main');
+        $latest_commit = $ModulesGit->getModuleCurrentCommit($module, 'origin', 'main');
         if (!is_null($latest_commit)) {
             $this->info('Latest Refs : ' . $latest_commit);
         }
@@ -178,7 +175,6 @@ class PlatformModuleCheckout extends PlatformModuleHelper
         }
 
         // return
-        return $this->checkoutModule($ref, $module);
-        ;
+        return $ModulesGit->checkoutModule($ref, $module);;
     }
 }

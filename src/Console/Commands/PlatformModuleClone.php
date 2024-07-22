@@ -3,10 +3,11 @@
 namespace Monoland\Platform\Console\Commands;
 
 use ErrorException;
-use Monoland\Platform\Console\Commands\PlatformModuleHelper;
+use Monoland\Platform\Services\PlatformModulesGit;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Illuminate\Console\Command;
 
-class PlatformModuleClone extends PlatformModuleHelper
+class PlatformModuleClone extends Command
 {
     /**
      * The name and signature of the console command.
@@ -31,21 +32,21 @@ class PlatformModuleClone extends PlatformModuleHelper
      *
      * @return void
      */
-    public function handle()
+    public function handle(PlatformModulesGit $ModulesGit)
     {
         $mode    = env('APP_ENV', 'local');
-        $module_name = $this->buildModuleName($this->argument('repository'));
+        $module_name = $ModulesGit->buildModuleName($this->argument('repository'));
         $byCommit = $this->option('by-commit');
         $byTag = $this->option('by-tag');
 
         try {
             // -> check if module already exist
-            if ($this->isModuleExist($module_name))
+            if ($ModulesGit->isModuleExist($module_name))
                 return $this->info('Module already exist!!');
 
             // -> procced to clone
             $this->info('Trying to clone..');
-            $output = $this->cloneModule($this->argument('repository'));
+            $output = $ModulesGit->cloneModule($this->argument('repository'));
             if ($output instanceof ProcessFailedException) throw $output;
 
             // -> procced to fetch
@@ -62,7 +63,7 @@ class PlatformModuleClone extends PlatformModuleHelper
                 $this->call('module:delete', ['module' => $module_name]);
 
             // -> Get into conclusions, if exist then cloned succesfully
-            if ($this->isModuleExist($module_name)) $this->info('Module cloned succesfully!!');
+            if ($ModulesGit->isModuleExist($module_name)) $this->info('Module cloned succesfully!!');
         } catch (ErrorException $error) {
             return $this->error($error->getMessage());
         }

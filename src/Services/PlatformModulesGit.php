@@ -1,13 +1,8 @@
 <?php
 
-namespace Monoland\Platform\Console\Commands;
+namespace Monoland\Platform\Services;
 
-use DirectoryIterator;
-use ErrorException;
-use Exception;
 use FilesystemIterator;
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 use InvalidArgumentException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -15,40 +10,15 @@ use stdClass;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class PlatformModuleHelper extends Command
+class PlatformModulesGit
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'module:helper
-        {repository}
-    ';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Help other module to handling git files';
-
-    /**
-     * handle function
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        // incoming
-    }
 
     /**
      * baseModuleDir function
      *
      * @return string
      */
-    protected function baseModuleDir(): string
+    public function baseModuleDir(): string
     {
         return base_path() . DIRECTORY_SEPARATOR . 'modules';
     }
@@ -58,7 +28,7 @@ class PlatformModuleHelper extends Command
      *
      * @return bool
      */
-    protected function isDirInBaseModule($directory): bool
+    public function isDirInBaseModule($directory): bool
     {
         $base_dir   = explode(DIRECTORY_SEPARATOR, $this->baseModuleDir());
         $target_dir = explode(DIRECTORY_SEPARATOR, $directory);
@@ -84,7 +54,7 @@ class PlatformModuleHelper extends Command
      *
      * @return string
      */
-    protected function buildModuleDir($module_name): string
+    public function buildModuleDir($module_name): string
     {
         return $this->baseModuleDir() . DIRECTORY_SEPARATOR . $module_name;
     }
@@ -95,7 +65,7 @@ class PlatformModuleHelper extends Command
      *
      * @return string
      */
-    protected function buildModuleName($repo_url): string
+    public function buildModuleName($repo_url): string
     {
         // $repo_url = git@github.com:repoUser/repo.git | https://github.com/repoUser/repo.git
         // regex (?<=\/) [a-zA-Z]+ (?=.git)
@@ -112,7 +82,7 @@ class PlatformModuleHelper extends Command
      *
      * @return bool
      */
-    protected function isModuleExist($module_name): bool
+    public function isModuleExist($module_name): bool
     {
         // prevent return true because '' should be invalid
         if ($module_name == '' || $module_name == '.' || $module_name == '..') return false;
@@ -120,11 +90,11 @@ class PlatformModuleHelper extends Command
     }
 
     /**
-     * isModuleExist function
+     * isModuleExistByRepo function
      *
      * @return bool
      */
-    protected function isModuleExistByRepo($repo_url): bool
+    public function isModuleExistByRepo($repo_url): bool
     {
         return $this->isModuleExist($this->buildModuleName($repo_url));
     }
@@ -134,7 +104,7 @@ class PlatformModuleHelper extends Command
      *
      * @return string | ProcessFailedException | null
      */
-    protected function runProccess($command, $pwd = null): string | ProcessFailedException | null
+    public function runProccess($command, $pwd = null): string | ProcessFailedException | null
     {
         $process = new Process($command);
         if (!is_null($pwd)) {
@@ -153,7 +123,7 @@ class PlatformModuleHelper extends Command
      *
      * @return string | ProcessFailedException | null
      */
-    protected function cloneModule($repo_url): string | ProcessFailedException | null
+    public function cloneModule($repo_url): string | ProcessFailedException | null
     {
         $command = ['git', 'clone', $repo_url];
         $pwd     = $this->buildModuleDir('');
@@ -166,7 +136,7 @@ class PlatformModuleHelper extends Command
      *
      * @return string | ProcessFailedException | null
      */
-    protected function fetchModule($module_name): string | ProcessFailedException | null
+    public function fetchModule($module_name): string | ProcessFailedException | null
     {
         $command = ['git', 'fetch'];
         $pwd     = $this->buildModuleDir($module_name);
@@ -179,7 +149,7 @@ class PlatformModuleHelper extends Command
      *
      * @return string | ProcessFailedException | null
      */
-    protected function fetchModuleByRepo($repo_url): string | ProcessFailedException | null
+    public function fetchModuleByRepo($repo_url): string | ProcessFailedException | null
     {
         return $this->fetchModule($this->buildModuleName($repo_url));
     }
@@ -190,7 +160,7 @@ class PlatformModuleHelper extends Command
      *
      * @return array | ProcessFailedException | null
      */
-    protected function getModuleTags($module_name): array | ProcessFailedException | null
+    public function getModuleTags($module_name): array | ProcessFailedException | null
     {
         $command = ['git', 'tag'];
         $pwd     = $this->buildModuleDir($module_name);
@@ -204,7 +174,7 @@ class PlatformModuleHelper extends Command
      *
      * @return array | ProcessFailedException | null
      */
-    protected function getModuleTagsByRepo($repo_url): array | ProcessFailedException | null
+    public function getModuleTagsByRepo($repo_url): array | ProcessFailedException | null
     {
         return $this->getModuleTags($this->buildModuleName($repo_url));
     }
@@ -215,7 +185,7 @@ class PlatformModuleHelper extends Command
      *
      * @return array | null
      */
-    protected function formatModuleTags($raw_tags): array | null
+    public function formatModuleTags($raw_tags): array | null
     {
         preg_match_all('/.+/', $raw_tags, $tags);
         return count($tags) > 0 ? $tags[0] : [];
@@ -227,7 +197,7 @@ class PlatformModuleHelper extends Command
      *
      * @return bool | ProcessFailedException | null
      */
-    protected function checkoutModule($ref, $module_name): bool | ProcessFailedException | null
+    public function checkoutModule($ref, $module_name): bool | ProcessFailedException | null
     {
         $command = ['git', 'checkout', $ref];
         $pwd     = $this->buildModuleDir($module_name);
@@ -241,7 +211,7 @@ class PlatformModuleHelper extends Command
      *
      * @return bool | ProcessFailedException | null
      */
-    protected function checkoutModuleByRepo($ref, $repo_url): bool | ProcessFailedException | null
+    public function checkoutModuleByRepo($ref, $repo_url): bool | ProcessFailedException | null
     {
         return $this->checkoutModule($ref, $this->buildModuleName($repo_url));
     }
@@ -252,19 +222,22 @@ class PlatformModuleHelper extends Command
      *
      * @return string | ProcessFailedException | null
      */
-    protected function getModuleCurrentTag($module_name, $remote = null, $head = null): string | ProcessFailedException | null
+    public function getModuleCurrentTag($module_name, $remote = null, $head = null): string | ProcessFailedException | null
     {
         $log = $this->getModuleCurrentLog($module_name, $remote, $head);
-        if (!is_object($log))        return $log;
-        if (!is_array($log->refs))   return $log;
-        if (count($log->refs) <= 0)  return null;
+        if (!is_object($log) || !is_array($log->refs)) {
+            return $log;
+        }
+        if (count($log->refs) <= 0) {
+            return null;
+        }
         foreach ($log->refs as $tag) {
             // HARDCODED | NEED TO BE RECODED RELATIVE TO THE REPO REMOTE AND HEAD OR BRANCHES
             $isNotBranches = $tag != 'origin/main' && $tag != 'main';
-            $isNotHead     = $tag != 'HEAD' && $tag != 'origin/head' && $tag != 'head';
+            $isNotHead     = $tag != 'HEAD' && $tag != 'origin/head' && $tag != 'head' && !strpos($tag, 'HEAD');
             if ($isNotBranches && $isNotHead) return $tag;
         }
-        return '';
+        return 'Not Found';
     }
 
     /**
@@ -273,13 +246,17 @@ class PlatformModuleHelper extends Command
      *
      * @return array | ProcessFailedException | null
      */
-    protected function getModuleCommits($module_name, $remote = null, $head = null): array | ProcessFailedException | null
+    public function getModuleCommits($module_name, $remote = null, $head = null): array | ProcessFailedException | null
     {
         $logs = $this->getModuleGitLog($module_name, $remote, $head);
-        if (!is_array($logs)) return $logs;
+        if (!is_array($logs)) {
+            return $logs;
+        }
         // capek
         $commits = [];
-        foreach ($logs as $log) array_push($commits, $log->commit);
+        foreach ($logs as $log) {
+            array_push($commits, $log->commit);
+        }
         // pegel
         return $commits;
     }
@@ -290,36 +267,10 @@ class PlatformModuleHelper extends Command
      *
      * @return string | ProcessFailedException | null
      */
-    protected function getModuleCurrentCommit($module_name, $remote = null, $head = null): string | ProcessFailedException | null
+    public function getModuleCurrentCommit($module_name, $remote = null, $head = null): string | ProcessFailedException | null
     {
         $commits = $this->getModuleCommits($module_name, $remote, $head);
-        if (!is_array($commits)) return $commits;
-        return $commits[0];
-    }
-
-    /**
-     * handle function
-     *
-     * @return string | null
-     */
-    protected function handleModuleNotFound($module): string | null
-    {
-        while (is_null($module) || !$this->isModuleExist($module)) {
-            if (!is_null($module))
-                $this->info('Module ' . $module . ' seems not found..');
-
-            $modules = [];
-            foreach (Cache::get('modules') as $cached)
-                array_push($modules, $cached->name);
-
-            if (count($modules) <= 0)
-                return $this->info("Apparently there's no module found..");
-
-            $module = $this->choice('Select Module', $modules);
-            if (!$this->isModuleExist($module))
-                return $this->info('Module ' . $module . ' seems not found.');
-        }
-        return $module;
+        return !is_array($commits) ? $commits : $commits[0];
     }
 
     /**
@@ -327,7 +278,7 @@ class PlatformModuleHelper extends Command
      *
      * @return bool | null
      */
-    protected function deleteModule($module_name): bool | null
+    public function deleteModule($module_name): bool | null
     {
         // guard clause
         $pwd = $this->buildModuleDir($module_name);
@@ -349,16 +300,8 @@ class PlatformModuleHelper extends Command
 
         // confirm for the last time, with the provided information 
         // which folder that want to be deleted
-        if ($this->confirm(
-            "Confirm to delete the targeted module.. \n" .
-                "Module Name        : $module_name \n" .
-                "Targeted Directory : $pwd \n"
-        )) {
-            $this->removeDirectories($pwd);
-            return !file_exists($pwd);
-        } else {
-            return false;
-        }
+        $this->removeDirectories($pwd);
+        return !file_exists($pwd);
     }
 
     /**
@@ -366,7 +309,7 @@ class PlatformModuleHelper extends Command
      *
      * @return bool | null
      */
-    protected function deleteModuleByRepo($repo_url): bool | null
+    public function deleteModuleByRepo($repo_url): bool | null
     {
         return $this->deleteModule($this->buildModuleName(($repo_url)));
     }
@@ -376,7 +319,7 @@ class PlatformModuleHelper extends Command
      *
      * @return string | ProcessFailedException | null
      */
-    protected function removeDirectories(string $dir_path): void
+    public function removeDirectories(string $dir_path): void
     {
         if (file_exists($dir_path)) {
             $di = new RecursiveDirectoryIterator($dir_path, FilesystemIterator::SKIP_DOTS);
@@ -426,21 +369,24 @@ class PlatformModuleHelper extends Command
      *
      * @return array 
      */
-    protected function formatModuleLogsToJson($logs_string): array
+    public function formatModuleLogsToJson($logs_string): array
     {
         // filter logs
-        $logs = [];
-        preg_match_all('/\{(.*?)\}/', $logs_string, $logs);
+        $logs = explode('[EXPLODE]', $logs_string);
         // handling if there're no regex match
         if (count($logs) <= 0) return [];
         // getting all the { commit .. };
         $result = [];
-        $logs = $logs[0];
         foreach ($logs as $log) {
+            $log    = trim($log);
+            $log    = preg_replace('/\n+/', '\r\n', $log); // don't know why but \n cause json_decode return null don't know if it works in unix
             $json   = json_decode($log, true);
             $object = json_decode(json_encode($json), false);
-            $object->refs = explode("|", $object->refs);
-            array_push($result, $object);
+            // prevent null appended
+            if (!is_null($object)) {
+                $object->refs = explode("|", $object->refs);
+                array_push($result, $object);
+            }
         }
         return $result;
     }
@@ -451,13 +397,13 @@ class PlatformModuleHelper extends Command
      *
      * @return array | ProcessFailedException | null
      */
-    protected function getModuleGitLog($module_name, $remote = null, $head = null): array | ProcessFailedException | null
+    public function getModuleGitLog($module_name, $remote = null, $head = null): array | ProcessFailedException | null
     {
         // git log commit with pretty format
         // git log --pretty=format:'{ commit:%H, refs:%(decorate:prefix=\",suffix=\",separator=|,tag=), unix_time:%ct }'
         $remote_head_exist = !is_null($remote) && !is_null($head);
-        if ($remote_head_exist) $command = ['git', 'log', $remote, $head, "--pretty=format:'{ \"commit\":\"%H\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct },'"];
-        else                    $command = ['git', 'log', "--pretty=format:'{ \"commit\":\"%H\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct },'"];
+        if ($remote_head_exist) $command = ['git', 'log', $remote, $head, "--pretty=format:{ \"commit\":\"%H\", \"body\":\"%B\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct }[EXPLODE]"];
+        else                    $command = ['git', 'log', "--pretty=format:{ \"commit\":\"%H\", \"body\":\"%B\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct }[EXPLODE]"];
 
         // proceed to get the output
         $pwd     = $this->buildModuleDir($module_name);
@@ -473,7 +419,7 @@ class PlatformModuleHelper extends Command
      *
      * @return bool | ProcessFailedException | null
      */
-    protected function getModuleCurrentLog($module_name, $remote = null, $head = null): stdClass
+    public function getModuleCurrentLog($module_name, $remote = null, $head = null): stdClass
     {
         $logs = $this->getModuleGitLog($module_name, $remote, $head);
         return count($logs) > 0 ? $logs[0] : null;
