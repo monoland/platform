@@ -139,13 +139,11 @@ class PlatformMakeModel extends Command
             ] : []));
 
             /** MAKE POLICY */
-            $this->call('module:make-policy', array_merge([
+            $this->call('module:make-policy', [
                 'name' => $classname . 'Policy',
                 '--model' => $classname,
                 '--module' => $this->option('module')
-            ], $this->option('parent') ? [
-                '--parent' => $this->option('parent'),
-            ] : []));
+            ]);
         }
     }
 
