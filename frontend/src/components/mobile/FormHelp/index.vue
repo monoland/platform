@@ -26,7 +26,7 @@
 
             <v-responsive
                 height="calc(100vh - 64px)"
-                class="bg-transparent overflow-x-hidden overflow-y-auto px-4"
+                class="bg-transparent overflow-x-hidden overflow-y-auto px-4 scrollbar-none"
                 content-class="position-relative"
             >
                 <v-sheet

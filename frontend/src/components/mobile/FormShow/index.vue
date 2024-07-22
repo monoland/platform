@@ -202,7 +202,7 @@
         </template>
 
         <template v-slot:helpdesk>
-            <slot name="helpdesk" :theme="theme"></slot>
+            <slot name="helpdesk" :record="record" :theme="theme"></slot>
         </template>
     </form-help>
 </template>
