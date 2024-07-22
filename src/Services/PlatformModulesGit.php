@@ -225,16 +225,19 @@ class PlatformModulesGit
     public function getModuleCurrentTag($module_name, $remote = null, $head = null): string | ProcessFailedException | null
     {
         $log = $this->getModuleCurrentLog($module_name, $remote, $head);
-        if (!is_object($log))        return $log;
-        if (!is_array($log->refs))   return $log;
-        if (count($log->refs) <= 0)  return null;
+        if (!is_object($log) || !is_array($log->refs)) {
+            return $log;
+        }
+        if (count($log->refs) <= 0) {
+            return null;
+        }
         foreach ($log->refs as $tag) {
             // HARDCODED | NEED TO BE RECODED RELATIVE TO THE REPO REMOTE AND HEAD OR BRANCHES
             $isNotBranches = $tag != 'origin/main' && $tag != 'main';
-            $isNotHead     = $tag != 'HEAD' && $tag != 'origin/head' && $tag != 'head';
+            $isNotHead     = $tag != 'HEAD' && $tag != 'origin/head' && $tag != 'head' && !strpos($tag, 'HEAD');
             if ($isNotBranches && $isNotHead) return $tag;
         }
-        return '';
+        return 'Not Found';
     }
 
     /**
@@ -246,10 +249,14 @@ class PlatformModulesGit
     public function getModuleCommits($module_name, $remote = null, $head = null): array | ProcessFailedException | null
     {
         $logs = $this->getModuleGitLog($module_name, $remote, $head);
-        if (!is_array($logs)) return $logs;
+        if (!is_array($logs)) {
+            return $logs;
+        }
         // capek
         $commits = [];
-        foreach ($logs as $log) array_push($commits, $log->commit);
+        foreach ($logs as $log) {
+            array_push($commits, $log->commit);
+        }
         // pegel
         return $commits;
     }
@@ -263,8 +270,7 @@ class PlatformModulesGit
     public function getModuleCurrentCommit($module_name, $remote = null, $head = null): string | ProcessFailedException | null
     {
         $commits = $this->getModuleCommits($module_name, $remote, $head);
-        if (!is_array($commits)) return $commits;
-        return $commits[0];
+        return !is_array($commits) ? $commits : $commits[0];
     }
 
     /**
@@ -366,18 +372,21 @@ class PlatformModulesGit
     public function formatModuleLogsToJson($logs_string): array
     {
         // filter logs
-        $logs = [];
-        preg_match_all('/\{(.*?)\}/', $logs_string, $logs);
+        $logs = explode('[EXPLODE]', $logs_string);
         // handling if there're no regex match
         if (count($logs) <= 0) return [];
         // getting all the { commit .. };
         $result = [];
-        $logs = $logs[0];
         foreach ($logs as $log) {
+            $log    = trim($log);
+            $log    = preg_replace('/\n+/', '\r\n', $log); // don't know why but \n cause json_decode return null don't know if it works in unix
             $json   = json_decode($log, true);
             $object = json_decode(json_encode($json), false);
-            $object->refs = explode("|", $object->refs);
-            array_push($result, $object);
+            // prevent null appended
+            if (!is_null($object)) {
+                $object->refs = explode("|", $object->refs);
+                array_push($result, $object);
+            }
         }
         return $result;
     }
@@ -393,8 +402,8 @@ class PlatformModulesGit
         // git log commit with pretty format
         // git log --pretty=format:'{ commit:%H, refs:%(decorate:prefix=\",suffix=\",separator=|,tag=), unix_time:%ct }'
         $remote_head_exist = !is_null($remote) && !is_null($head);
-        if ($remote_head_exist) $command = ['git', 'log', $remote, $head, "--pretty=format:'{ \"commit\":\"%H\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct },'"];
-        else                    $command = ['git', 'log', "--pretty=format:'{ \"commit\":\"%H\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct },'"];
+        if ($remote_head_exist) $command = ['git', 'log', $remote, $head, "--pretty=format:{ \"commit\":\"%H\", \"body\":\"%B\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct }[EXPLODE]"];
+        else                    $command = ['git', 'log', "--pretty=format:{ \"commit\":\"%H\", \"body\":\"%B\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct }[EXPLODE]"];
 
         // proceed to get the output
         $pwd     = $this->buildModuleDir($module_name);

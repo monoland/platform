@@ -39,7 +39,6 @@ class PlatformModuleCheckout extends Command
         try {
             // mode
             $mode    = env('APP_ENV', 'local');
-            $is_prod = $mode !== 'local';
 
             // try to getting needed argument
             $module     = $this->argument('module');
@@ -57,7 +56,6 @@ class PlatformModuleCheckout extends Command
             if (!$nofetch) {
                 $this->call('module:fetch', ['module' => $module]);
             }
-
 
             // Hadnlign Checkout
             if ($byTag && !$byCommit) {
@@ -110,7 +108,7 @@ class PlatformModuleCheckout extends Command
         }
 
         // -> current tag / head
-        $current_tag = $$ModulesGit->getModuleCurrentTag($module);
+        $current_tag = $ModulesGit->getModuleCurrentTag($module);
         if (!is_null($current_tag)) {
             $this->info('Current Tag : ' . $current_tag);
         }
@@ -125,7 +123,7 @@ class PlatformModuleCheckout extends Command
         }
 
         // return
-        return $this->checkoutModule($tag, $module);;
+        return $ModulesGit->checkoutModule($tag, $module);;
     }
 
     /**
@@ -139,10 +137,10 @@ class PlatformModuleCheckout extends Command
         $this->info('Trying to checkout by commit..');
 
         // -> procced to fetch
-        $output = $ModulesGit->fetchModule($module);
-        if ($output instanceof ProcessFailedException) {
-            throw $output;
-        }
+        // $output = $ModulesGit->fetchModule($module);
+        // if ($output instanceof ProcessFailedException) {
+        //     throw $output;
+        // }
 
         // -> get list of refs
         $output = $ModulesGit->getModuleCommits($module, 'origin', 'main');
@@ -177,6 +175,6 @@ class PlatformModuleCheckout extends Command
         }
 
         // return
-        return $this->checkoutModule($ref, $module);;
+        return $ModulesGit->checkoutModule($ref, $module);;
     }
 }
