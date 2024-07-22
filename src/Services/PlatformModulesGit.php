@@ -225,6 +225,7 @@ class PlatformModulesGit
     public function getModuleCurrentTag($module_name, $remote = null, $head = null): string | ProcessFailedException | null
     {
         $log = $this->getModuleCurrentLog($module_name, $remote, $head);
+
         if (!is_object($log) || !is_array($log->refs)) {
             return $log;
         }
@@ -414,14 +415,17 @@ class PlatformModulesGit
     }
 
     /**
-     * 
-     * getModuleCurrentLog function
+     * Undocumented function
      *
-     * @return bool | ProcessFailedException | null
+     * @param [type] $module_name
+     * @param [type] $remote
+     * @param [type] $head
+     * @return object
      */
-    public function getModuleCurrentLog($module_name, $remote = null, $head = null): stdClass
+    public function getModuleCurrentLog($module_name, $remote = null, $head = null): object
     {
         $logs = $this->getModuleGitLog($module_name, $remote, $head);
+
         return count($logs) > 0 ? $logs[0] : null;
     }
 }
