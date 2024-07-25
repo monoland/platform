@@ -6,6 +6,7 @@ use FilesystemIterator;
 use InvalidArgumentException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use stdClass;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -161,10 +162,30 @@ class PlatformModulesGit
      */
     public function getModuleTags($module_name): array | ProcessFailedException | null
     {
-        $command = ['git', 'tag'];
+        $command = ['git', 'tag', '--sort=-v:refname'];
         $pwd     = $this->buildModuleDir($module_name);
         $output  = $this->runProccess($command, $pwd);
         return $this->formatModuleTags($output);
+    }
+
+    /**
+     * 
+     * getModuleGitLogByRef function
+     *
+     * @return array | ProcessFailedException | null
+     */
+    public function getModuleGitLogByRef($module_name, $ref): stdClass | ProcessFailedException | null
+    {
+        $command = ['git', 'log', $ref, "--pretty=format:{ \"commit\":\"%H\", \"body\":\"%B\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct }[EXPLODE]"];
+        $pwd     = $this->buildModuleDir($module_name);
+        $output  = $this->runProccess($command, $pwd);
+        $logs = $this->formatModuleLogsToJson($output, $module_name);
+        if (is_array($logs)) {
+            if (count($logs) > 0) return $logs[0];
+            else                  return null;
+        } else {
+            return $output;
+        }
     }
 
     /**
@@ -179,6 +200,86 @@ class PlatformModulesGit
     }
 
     /**
+     * getModuleRemote function
+     *
+     * @return array
+     */
+    public function getModuleRemotesAndBranch($module_name): array
+    {
+        $configs = $this->readGitConfig($module_name);
+        $remotes = array();
+
+        // filter remotes
+        foreach ($configs as $config) {
+            if ($config['name'] == 'remote') {
+                $remotes[$config['value']] = array();
+            }
+        }
+
+        // filter branch
+        foreach ($configs as $config) {
+            if ($config['name'] == 'branch') {
+                foreach ($config['properties'] as $property) {
+                    if ($property['name'] == 'remote') {
+                        array_push($remotes[$property['value']], $config['value']);
+                    }
+                }
+            }
+        }
+
+        return $remotes;
+    }
+
+    /**
+     * readGitConfig function
+     *
+     * @return array
+     */
+    public function readGitConfig($module_name): array
+    {
+        return $this->readGitConfigByPath($this->buildModuleDir($module_name));
+    }
+
+    /**
+     * readGitConfig function
+     *
+     * @return array
+     */
+    public function readGitConfigByPath($module_path): array
+    {
+        $git_file = fopen($module_path . DIRECTORY_SEPARATOR . '.git' . DIRECTORY_SEPARATOR . 'config', 'r');
+        $configs = [];
+
+        // proceed to read git config line_by_line.
+        while (($line = fgets($git_file)) !== false) {
+            $line = trim($line);
+
+            // check if its parent config
+            preg_match('/(?<=\[).+(?=])/', $line, $is_parent_config);
+
+            if (count($is_parent_config) > 0) {
+                $is_parent_config[0] = str_replace('"', '', $is_parent_config[0]);
+                $parent_config = explode(' ', $is_parent_config[0]);
+
+                array_push($configs, [
+                    'name'  => count($parent_config) > 1 ? trim($parent_config[0]) : trim($parent_config[0]),
+                    'value' => count($parent_config) > 1 ? trim($parent_config[1]) : null,
+                    'properties' => [],
+                ]);
+            } else {
+                $properties = explode('=', $line);
+                array_push($configs[count($configs) - 1]['properties'], [
+                    'name'  => count($properties) > 1 ? trim($properties[0]) : trim($properties[0]),
+                    'value' => count($properties) > 1 ? trim($properties[1]) : null,
+                ]);
+            }
+        }
+
+        fclose($git_file);
+        return $configs;
+    }
+
+    /**
      * 
      * formatModuleTags function
      *
@@ -189,6 +290,20 @@ class PlatformModulesGit
         preg_match_all('/.+/', $raw_tags, $tags);
         return count($tags) > 0 ? $tags[0] : [];
     }
+
+    /**
+     * 
+     * getModuleLatestTag function
+     *
+     * @return string | null
+     */
+    public function getModuleLatestTag($module_name): string | null
+    {
+        // automatically sorted by the git command
+        $tags = $this->getModuleTags($module_name);
+        return count($tags) > 0 ? $tags[0] : null;
+    }
+
 
     /**
      * 
@@ -213,31 +328,6 @@ class PlatformModulesGit
     public function checkoutModuleByRepo($ref, $repo_url): bool | ProcessFailedException | null
     {
         return $this->checkoutModule($ref, $this->buildModuleName($repo_url));
-    }
-
-    /**
-     * 
-     * getModuleCurrentTag function
-     *
-     * @return string | ProcessFailedException | null
-     */
-    public function getModuleCurrentTag($module_name, $remote = null, $head = null): string | ProcessFailedException | null
-    {
-        $log = $this->getModuleCurrentLog($module_name, $remote, $head);
-
-        if (!is_object($log) || !is_array($log->refs)) {
-            return $log;
-        }
-        if (count($log->refs) <= 0) {
-            return null;
-        }
-        foreach ($log->refs as $tag) {
-            // HARDCODED | NEED TO BE RECODED RELATIVE TO THE REPO REMOTE AND HEAD OR BRANCHES
-            $isNotBranches = $tag != 'origin/main' && $tag != 'main';
-            $isNotHead     = $tag != 'HEAD' && $tag != 'origin/head' && $tag != 'head' && !strpos($tag, 'HEAD');
-            if ($isNotBranches && $isNotHead) return $tag;
-        }
-        return 'Not Found';
     }
 
     /**
@@ -369,24 +459,56 @@ class PlatformModulesGit
      *
      * @return array 
      */
-    public function formatModuleLogsToJson($logs_string): array
+    public function formatModuleLogsToJson($logs_string, $module_slug): array
     {
-        // filter logs
+        // get all the logs
         $logs = explode('[EXPLODE]', $logs_string);
-        // handling if there're no regex match
-        if (count($logs) <= 0) return [];
-        // getting all the { commit .. };
         $result = [];
+
+        // filter remotes 
+        $remotes = $this->getModuleRemotesAndBranch($module_slug);
+        $branch  = $remotes['origin'][0];
+
+        // formatting all the log as a json object
         foreach ($logs as $log) {
-            $log    = trim($log);
-            $log    = preg_replace('/\n+/', '\r\n', $log); // don't know why but \n cause json_decode return null don't know if it works in unix
+            // don't know why but \n cause json_decode
+            // return null don't know if it works in unix
+            $log = trim($log);
+            $log = preg_replace('/\n+/', '\r\n', $log);
+
+            // convert it to json object
             $json   = json_decode($log, true);
             $object = json_decode(json_encode($json), false);
-            // prevent null appended
+
+            // if successfully converted into object then 
+            // append to the array
             if (!is_null($object)) {
                 $object->refs = explode("|", $object->refs);
+                $object->tags = $this->filterModuleRefsAsTag($object->refs, 'origin', $branch);
                 array_push($result, $object);
             }
+        }
+        return $result;
+    }
+
+    /**
+     * 
+     * filterModuleRefsAsTag function
+     *
+     * @return array 
+     */
+    public function filterModuleRefsAsTag($refs, $remote, $branch): array
+    {
+        $result = [];
+        foreach ($refs as $ref) {
+            // boolean
+            $isNotRemote = !str_contains($ref, $remote) && !str_contains($ref, $branch);
+            $isNotHead = !str_contains($ref, 'HEAD') && !str_contains($ref, 'head');
+            // determine if used remote and branch
+            $isUsedRemote = !is_null($remote) && !is_null($branch);
+            $isValidTags = $isNotHead && $isNotRemote && $isUsedRemote || $isNotHead && !$isUsedRemote;
+            // determine condition
+            if ($isValidTags) array_push($result, $ref);
         }
         return $result;
     }
@@ -410,11 +532,33 @@ class PlatformModulesGit
         $output  = $this->runProccess($command, $pwd);
 
         // return logs
-        return $this->formatModuleLogsToJson($output);
+        return $this->formatModuleLogsToJson($output, $module_name);
     }
 
     /**
-     * Undocumented function
+     * 
+     * getModuleGitLogByTag function
+     *
+     * @return array | ProcessFailedException | null
+     */
+    public function getModuleGitLogByTag($module_name, $remote = null, $head = null): array | ProcessFailedException | null
+    {
+        // git log commit with pretty format
+        // git log --pretty=format:'{ commit:%H, refs:%(decorate:prefix=\",suffix=\",separator=|,tag=), unix_time:%ct }'
+        $remote_head_exist = !is_null($remote) && !is_null($head);
+        if ($remote_head_exist) $command = ['git', 'log', '--no-walk', '--tags', $remote, $head, "--pretty=format:{ \"commit\":\"%H\", \"body\":\"%B\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct }[EXPLODE]"];
+        else                    $command = ['git', 'log', '--no-walk', '--tags', "--pretty=format:{ \"commit\":\"%H\", \"body\":\"%B\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct }[EXPLODE]"];
+
+        // proceed to get the output
+        $pwd     = $this->buildModuleDir($module_name);
+        $output  = $this->runProccess($command, $pwd);
+
+        // return logs
+        return $this->formatModuleLogsToJson($output, $module_name);
+    }
+
+    /**
+     * getModuleCurrentLog function
      *
      * @param [type] $module_name
      * @param [type] $remote
@@ -424,7 +568,20 @@ class PlatformModulesGit
     public function getModuleCurrentLog($module_name, $remote = null, $head = null): object
     {
         $logs = $this->getModuleGitLog($module_name, $remote, $head);
+        return count($logs) > 0 ? $logs[0] : null;
+    }
 
+    /**
+     * getModuleCurrentLogTag function
+     *
+     * @param [type] $module_name
+     * @param [type] $remote
+     * @param [type] $head
+     * @return object
+     */
+    public function getModuleCurrentLogByTag($module_name, $remote = null, $head = null): object
+    {
+        $logs = $this->getModuleGitLogByTag($module_name, $remote, $head);
         return count($logs) > 0 ? $logs[0] : null;
     }
 }
