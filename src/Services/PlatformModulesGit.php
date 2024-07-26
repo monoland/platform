@@ -55,27 +55,24 @@ class PlatformModulesGit
      *
      * @return string
      */
-    public function buildModuleDir($module_name): string
+    public function buildModuleDir($module_slug): string
     {
-        return $this->baseModuleDir() . DIRECTORY_SEPARATOR . $module_name;
+        return $this->baseModuleDir() . DIRECTORY_SEPARATOR . $module_slug;
     }
 
 
     /**
-     * buildModuleName function
+     * buildModuleSlug function
      *
-     * @return string
+     * @return string | null
      */
-    public function buildModuleName($repo_url): string
+    public function buildModuleSlug($repo_url): string | null
     {
         // $repo_url = git@github.com:repoUser/repo.git | https://github.com/repoUser/repo.git
-        // regex (?<=\/) [a-zA-Z]+ (?=.git)
-        // (?<=\/)   : find after /  
-        // [a-zA-Z]+ : find alphabets
-        // (?=.git)  : find before .git
-        preg_match('/(?<=\/)[a-zA-Z]+(?=.git)/', $repo_url, $module_name);
-        if (count($module_name) <= 0) return "";
-        return $module_name[0];
+        $repo_url = str_replace('.git', '', $repo_url);
+        $split    = explode('/', $repo_url);
+        if (count($split) <= 0) return null;
+        return $split[count($split) - 1];
     }
 
     /**
@@ -83,11 +80,11 @@ class PlatformModulesGit
      *
      * @return bool
      */
-    public function isModuleExist($module_name): bool
+    public function isModuleExist($module_slug): bool
     {
         // prevent return true because '' should be invalid
-        if ($module_name == '' || $module_name == '.' || $module_name == '..') return false;
-        return is_dir($this->buildModuleDir($module_name));
+        if ($module_slug == '' || $module_slug == '.' || $module_slug == '..') return false;
+        return is_dir($this->buildModuleDir($module_slug));
     }
 
     /**
@@ -97,7 +94,7 @@ class PlatformModulesGit
      */
     public function isModuleExistByRepo($repo_url): bool
     {
-        return $this->isModuleExist($this->buildModuleName($repo_url));
+        return $this->isModuleExist($this->buildModuleSlug($repo_url));
     }
 
     /**
@@ -137,11 +134,11 @@ class PlatformModulesGit
      *
      * @return string | ProcessFailedException | null
      */
-    public function fetchModule($module_name): string | ProcessFailedException | null
+    public function fetchModule($module_slug): string | ProcessFailedException | null
     {
         // git fetch --prune remove
         $command = ['git', 'fetch', '--prune'];
-        $pwd     = $this->buildModuleDir($module_name);
+        $pwd     = $this->buildModuleDir($module_slug);
         $output  = $this->runProccess($command, $pwd);
         return $output;
     }
@@ -153,7 +150,7 @@ class PlatformModulesGit
      */
     public function fetchModuleByRepo($repo_url): string | ProcessFailedException | null
     {
-        return $this->fetchModule($this->buildModuleName($repo_url));
+        return $this->fetchModule($this->buildModuleSlug($repo_url));
     }
 
     /**
@@ -162,10 +159,10 @@ class PlatformModulesGit
      *
      * @return array | ProcessFailedException | null
      */
-    public function getModuleTags($module_name): array | ProcessFailedException | null
+    public function getModuleTags($module_slug): array | ProcessFailedException | null
     {
         $command = ['git', 'tag', '--sort=-v:refname'];
-        $pwd     = $this->buildModuleDir($module_name);
+        $pwd     = $this->buildModuleDir($module_slug);
         $output  = $this->runProccess($command, $pwd);
         return $this->formatModuleTags($output);
     }
@@ -176,13 +173,13 @@ class PlatformModulesGit
      *
      * @return array | ProcessFailedException | null
      */
-    public function getModuleGitLogByRef($module_name, $ref): stdClass | ProcessFailedException | null
+    public function getModuleGitLogByRef($module_slug, $ref): stdClass | ProcessFailedException | null
     {
         // this one doesn use remotes and branch because ref automatically sync with previous fetch
         $command = ['git', 'log', $ref, "--pretty=format:{ \"commit\":\"%H\", \"body\":\"%B\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct }[EXPLODE]"];
-        $pwd     = $this->buildModuleDir($module_name);
+        $pwd     = $this->buildModuleDir($module_slug);
         $output  = $this->runProccess($command, $pwd);
-        $logs = $this->formatModuleLogsToJson($output, $module_name);
+        $logs = $this->formatModuleLogsToJson($output, $module_slug);
         if (is_array($logs)) {
             if (count($logs) > 0) return $logs[0];
             else                  return null;
@@ -199,7 +196,7 @@ class PlatformModulesGit
      */
     public function getModuleTagsByRepo($repo_url): array | ProcessFailedException | null
     {
-        return $this->getModuleTags($this->buildModuleName($repo_url));
+        return $this->getModuleTags($this->buildModuleSlug($repo_url));
     }
 
     /**
@@ -207,10 +204,10 @@ class PlatformModulesGit
      *
      * @return string
      */
-    public function getModuleSymbolicRef($module_name): string
+    public function getModuleSymbolicRef($module_slug): string
     {
         $command = ['git', 'symbolic-ref', 'refs/remotes/origin/HEAD', '--short'];
-        $pwd     = $this->buildModuleDir($module_name);
+        $pwd     = $this->buildModuleDir($module_slug);
         // expected return origin/[branch-name]
         $output  = $this->runProccess($command, $pwd);
         return $output;
@@ -221,10 +218,10 @@ class PlatformModulesGit
      *
      * @return array
      */
-    public function getModuleRemoteAndBranch($module_name): array
+    public function getModuleRemoteAndBranch($module_slug): array
     {
         // expected return origin/[branch-name]
-        $refs  = trim($this->getModuleSymbolicRef($module_name));
+        $refs  = trim($this->getModuleSymbolicRef($module_slug));
         $split = explode('/', $refs);
         if (count($split) > 0) return $split;
         else                   throw new Exception("expected return origin/[branch-name]");
@@ -236,9 +233,9 @@ class PlatformModulesGit
      *
      * @return array
      */
-    public function readGitConfig($module_name): array
+    public function readGitConfig($module_slug): array
     {
-        return $this->readGitConfigByPath($this->buildModuleDir($module_name));
+        return $this->readGitConfigByPath($this->buildModuleDir($module_slug));
     }
 
     /**
@@ -298,10 +295,10 @@ class PlatformModulesGit
      *
      * @return string | null
      */
-    public function getModuleLatestTag($module_name): string | null
+    public function getModuleLatestTag($module_slug): string | null
     {
         // automatically sorted by the git command
-        $tags = $this->getModuleTags($module_name);
+        $tags = $this->getModuleTags($module_slug);
         return count($tags) > 0 ? $tags[0] : null;
     }
 
@@ -312,10 +309,10 @@ class PlatformModulesGit
      *
      * @return bool | ProcessFailedException | null
      */
-    public function checkoutModule($ref, $module_name): bool | ProcessFailedException | null
+    public function checkoutModule($ref, $module_slug): bool | ProcessFailedException | null
     {
         $command = ['git', 'checkout', $ref];
-        $pwd     = $this->buildModuleDir($module_name);
+        $pwd     = $this->buildModuleDir($module_slug);
         $output  = $this->runProccess($command, $pwd);
         return $output == '';
     }
@@ -328,7 +325,7 @@ class PlatformModulesGit
      */
     public function checkoutModuleByRepo($ref, $repo_url): bool | ProcessFailedException | null
     {
-        return $this->checkoutModule($ref, $this->buildModuleName($repo_url));
+        return $this->checkoutModule($ref, $this->buildModuleSlug($repo_url));
     }
 
     /**
@@ -337,9 +334,9 @@ class PlatformModulesGit
      *
      * @return array | ProcessFailedException | null
      */
-    public function getModuleCommits($module_name, $remote = null, $head = null): array | ProcessFailedException | null
+    public function getModuleCommits($module_slug, $remote = null, $head = null): array | ProcessFailedException | null
     {
-        $logs = $this->getModuleGitLog($module_name, $remote, $head);
+        $logs = $this->getModuleGitLog($module_slug, $remote, $head);
         if (!is_array($logs)) {
             return $logs;
         }
@@ -358,9 +355,9 @@ class PlatformModulesGit
      *
      * @return string | ProcessFailedException | null
      */
-    public function getModuleCurrentCommit($module_name, $remote = null, $head = null): string | ProcessFailedException | null
+    public function getModuleCurrentCommit($module_slug, $remote = null, $head = null): string | ProcessFailedException | null
     {
-        $commits = $this->getModuleCommits($module_name, $remote, $head);
+        $commits = $this->getModuleCommits($module_slug, $remote, $head);
         return !is_array($commits) ? $commits : $commits[0];
     }
 
@@ -369,22 +366,22 @@ class PlatformModulesGit
      *
      * @return bool | null
      */
-    public function deleteModule($module_name): bool | null
+    public function deleteModule($module_slug): bool | null
     {
         // guard clause
-        $pwd = $this->buildModuleDir($module_name);
+        $pwd = $this->buildModuleDir($module_slug);
 
         // if already non exist
         if (!file_exists($pwd)) return true;
 
         // guard clause to prevent any input error that 
         // can remove unwanted directories
-        $isModuleNameDots            = $module_name == '' || $module_name == '*' || $module_name == '.' || $module_name == '..';
+        $isModuleNameDots            = $module_slug == '' || $module_slug == '*' || $module_slug == '.' || $module_slug == '..';
         $isModuleDirPartOfBaseModule = $this->isDirInBaseModule($pwd);
         if ($isModuleNameDots || !$isModuleDirPartOfBaseModule) {
             throw new InvalidArgumentException(
                 "There's some security issue with your targeted directory.. \n" .
-                    "Module Name        : $module_name \n" .
+                    "Module Name        : $module_slug \n" .
                     "Targeted Directory : $pwd \n"
             );
         }
@@ -402,7 +399,7 @@ class PlatformModulesGit
      */
     public function deleteModuleByRepo($repo_url): bool | null
     {
-        return $this->deleteModule($this->buildModuleName(($repo_url)));
+        return $this->deleteModule($this->buildModuleSlug(($repo_url)));
     }
 
     /**
@@ -521,7 +518,7 @@ class PlatformModulesGit
      *
      * @return array | ProcessFailedException | null
      */
-    public function getModuleGitLog($module_name, $remote = null, $head = null): array | ProcessFailedException | null
+    public function getModuleGitLog($module_slug, $remote = null, $head = null): array | ProcessFailedException | null
     {
         // git log commit with pretty format
         // git log --pretty=format:'{ commit:%H, refs:%(decorate:prefix=\",suffix=\",separator=|,tag=), unix_time:%ct }'
@@ -530,11 +527,11 @@ class PlatformModulesGit
         else                    $command = ['git', 'log', "--pretty=format:{ \"commit\":\"%H\", \"body\":\"%B\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct }[EXPLODE]"];
 
         // proceed to get the output
-        $pwd     = $this->buildModuleDir($module_name);
+        $pwd     = $this->buildModuleDir($module_slug);
         $output  = $this->runProccess($command, $pwd);
 
         // return logs
-        return $this->formatModuleLogsToJson($output, $module_name);
+        return $this->formatModuleLogsToJson($output, $module_slug);
     }
 
     /**
@@ -543,7 +540,7 @@ class PlatformModulesGit
      *
      * @return array | ProcessFailedException | null
      */
-    public function getModuleGitLogByTag($module_name, $remote = null, $head = null): array | ProcessFailedException | null
+    public function getModuleGitLogByTag($module_slug, $remote = null, $head = null): array | ProcessFailedException | null
     {
         // git log commit with pretty format
         // git log --pretty=format:'{ commit:%H, refs:%(decorate:prefix=\",suffix=\",separator=|,tag=), unix_time:%ct }'
@@ -552,38 +549,38 @@ class PlatformModulesGit
         else                    $command = ['git', 'log', '--no-walk', '--tags', "--pretty=format:{ \"commit\":\"%H\", \"body\":\"%B\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct }[EXPLODE]"];
 
         // proceed to get the output
-        $pwd     = $this->buildModuleDir($module_name);
+        $pwd     = $this->buildModuleDir($module_slug);
         $output  = $this->runProccess($command, $pwd);
 
         // return logs
-        return $this->formatModuleLogsToJson($output, $module_name);
+        return $this->formatModuleLogsToJson($output, $module_slug);
     }
 
     /**
      * getModuleCurrentLog function
      *
-     * @param [type] $module_name
+     * @param [type] $module_slug
      * @param [type] $remote
      * @param [type] $head
      * @return object
      */
-    public function getModuleCurrentLog($module_name, $remote = null, $head = null): object
+    public function getModuleCurrentLog($module_slug, $remote = null, $head = null): object
     {
-        $logs = $this->getModuleGitLog($module_name, $remote, $head);
+        $logs = $this->getModuleGitLog($module_slug, $remote, $head);
         return count($logs) > 0 ? $logs[0] : null;
     }
 
     /**
      * getModuleCurrentLogTag function
      *
-     * @param [type] $module_name
+     * @param [type] $module_slug
      * @param [type] $remote
      * @param [type] $head
      * @return object
      */
-    public function getModuleCurrentLogByTag($module_name, $remote = null, $head = null): object
+    public function getModuleCurrentLogByTag($module_slug, $remote = null, $head = null): object
     {
-        $logs = $this->getModuleGitLogByTag($module_name, $remote, $head);
+        $logs = $this->getModuleGitLogByTag($module_slug, $remote, $head);
         return count($logs) > 0 ? $logs[0] : null;
     }
 }

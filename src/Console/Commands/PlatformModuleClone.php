@@ -35,13 +35,12 @@ class PlatformModuleClone extends Command
     public function handle(PlatformModulesGit $ModulesGit)
     {
         $mode    = env('APP_ENV', 'local');
-        $module_name = $ModulesGit->buildModuleName($this->argument('repository'));
+        $module_slug = $ModulesGit->buildModuleSlug($this->argument('repository'));
         $byCommit = $this->option('by-commit');
         $byTag = $this->option('by-tag');
-
         try {
             // -> check if module already exist
-            if ($ModulesGit->isModuleExist($module_name))
+            if ($ModulesGit->isModuleExist($module_slug))
                 return $this->info('Module already exist!!');
 
             // -> procced to clone
@@ -50,20 +49,20 @@ class PlatformModuleClone extends Command
             if ($output instanceof ProcessFailedException) throw $output;
 
             // -> procced to fetch
-            $this->call('module:fetch', ['module' => $module_name]);
+            $this->call('module:fetch', ['module' => $module_slug]);
 
             // -> proceed to do the operation for production mode
             if ($byTag && !$byCommit)
-                $this->call('module:checkout', ['module' => $module_name, '--by-tag' => true, '--nofetch' => 'true']);
+                $this->call('module:checkout', ['module' => $module_slug, '--by-tag' => true, '--nofetch' => 'true']);
             // -> proceed to do the operation for dev mode        
             if ($byCommit && !$byTag)
-                $this->call('module:checkout', ['module' => $module_name, '--by-commit' => true, '--nofetch' => 'true']);
+                $this->call('module:checkout', ['module' => $module_slug, '--by-commit' => true, '--nofetch' => 'true']);
             // -> proceed to mode invalid, have option to delete the module     
             if ($mode !== 'local' && $mode !== 'production' && $this->confirm('Do you want to delete the cloned module ?'))
-                $this->call('module:delete', ['module' => $module_name]);
+                $this->call('module:delete', ['module' => $module_slug]);
 
             // -> Get into conclusions, if exist then cloned succesfully
-            if ($ModulesGit->isModuleExist($module_name)) $this->info('Module cloned succesfully!!');
+            if ($ModulesGit->isModuleExist($module_slug)) $this->info('Module cloned succesfully!!');
         } catch (ErrorException $error) {
             return $this->error($error->getMessage());
         }
