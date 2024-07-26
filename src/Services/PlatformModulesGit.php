@@ -2,6 +2,7 @@
 
 namespace Monoland\Platform\Services;
 
+use Exception;
 use FilesystemIterator;
 use InvalidArgumentException;
 use RecursiveDirectoryIterator;
@@ -138,7 +139,8 @@ class PlatformModulesGit
      */
     public function fetchModule($module_name): string | ProcessFailedException | null
     {
-        $command = ['git', 'fetch'];
+        // git fetch --prune remove
+        $command = ['git', 'fetch', '--prune'];
         $pwd     = $this->buildModuleDir($module_name);
         $output  = $this->runProccess($command, $pwd);
         return $output;
@@ -176,6 +178,7 @@ class PlatformModulesGit
      */
     public function getModuleGitLogByRef($module_name, $ref): stdClass | ProcessFailedException | null
     {
+        // this one doesn use remotes and branch because ref automatically sync with previous fetch
         $command = ['git', 'log', $ref, "--pretty=format:{ \"commit\":\"%H\", \"body\":\"%B\", \"refs\":\"%(decorate:prefix=,suffix=,separator=|,tag=)\", \"unix_time\":%ct }[EXPLODE]"];
         $pwd     = $this->buildModuleDir($module_name);
         $output  = $this->runProccess($command, $pwd);
@@ -202,32 +205,30 @@ class PlatformModulesGit
     /**
      * getModuleRemote function
      *
+     * @return string
+     */
+    public function getModuleSymbolicRef($module_name): string
+    {
+        $command = ['git', 'symbolic-ref', 'refs/remotes/origin/HEAD', '--short'];
+        $pwd     = $this->buildModuleDir($module_name);
+        // expected return origin/[branch-name]
+        $output  = $this->runProccess($command, $pwd);
+        return $output;
+    }
+
+    /**
+     * getModuleRemote function
+     *
      * @return array
      */
-    public function getModuleRemotesAndBranch($module_name): array
+    public function getModuleRemoteAndBranch($module_name): array
     {
-        $configs = $this->readGitConfig($module_name);
-        $remotes = array();
-
-        // filter remotes
-        foreach ($configs as $config) {
-            if ($config['name'] == 'remote') {
-                $remotes[$config['value']] = array();
-            }
-        }
-
-        // filter branch
-        foreach ($configs as $config) {
-            if ($config['name'] == 'branch') {
-                foreach ($config['properties'] as $property) {
-                    if ($property['name'] == 'remote') {
-                        array_push($remotes[$property['value']], $config['value']);
-                    }
-                }
-            }
-        }
-
-        return $remotes;
+        // expected return origin/[branch-name]
+        $refs  = trim($this->getModuleSymbolicRef($module_name));
+        $split = explode('/', $refs);
+        if (count($split) > 0) return $split;
+        else                   throw new Exception("expected return origin/[branch-name]");
+        // expected [origin,[branch_name]]
     }
 
     /**
@@ -465,9 +466,10 @@ class PlatformModulesGit
         $logs = explode('[EXPLODE]', $logs_string);
         $result = [];
 
-        // filter remotes 
-        $remotes = $this->getModuleRemotesAndBranch($module_slug);
-        $branch  = $remotes['origin'][0];
+        // filter remotes refs
+        $refs = $this->getModuleRemoteAndBranch($module_slug);
+        $remote = $refs[0];
+        $branch = $refs[1];
 
         // formatting all the log as a json object
         foreach ($logs as $log) {
@@ -484,7 +486,7 @@ class PlatformModulesGit
             // append to the array
             if (!is_null($object)) {
                 $object->refs = explode("|", $object->refs);
-                $object->tags = $this->filterModuleRefsAsTag($object->refs, 'origin', $branch);
+                $object->tags = $this->filterModuleRefsAsTag($object->refs, $remote, $branch);
                 array_push($result, $object);
             }
         }
