@@ -137,7 +137,7 @@ class PlatformModulesGit
     public function fetchModule($module_slug): string | ProcessFailedException | null
     {
         // git fetch --prune remove
-        $command = ['git', 'fetch', '--prune'];
+        $command = ['git', 'fetch', '--prune', '--prune-tags'];
         $pwd     = $this->buildModuleDir($module_slug);
         $output  = $this->runProccess($command, $pwd);
         return $output;
