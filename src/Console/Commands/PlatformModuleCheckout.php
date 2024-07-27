@@ -67,10 +67,10 @@ class PlatformModuleCheckout extends Command
                 $success = $this->handleByCommit($module, $ref, $ModulesGit);
             }
 
-            if ($success) {
-                return $this->info('Success checkout');
-            } elseif (is_null($success)) {
+            if (is_null($success)) {
                 return;
+            } elseif ($success) {
+                return $this->info('Success checkout');
             } elseif (!$success) {
                 return $this->info('Failed checkout');
             }
@@ -108,7 +108,11 @@ class PlatformModuleCheckout extends Command
         }
 
         // -> current tag / head
-        $current_tag = $ModulesGit->getModuleCurrentTag($module);
+        $log = $ModulesGit->getCurrentLog($module);
+        $current_tag = 'Not Found';
+        if (count($log->tags) > 0) {
+            $current_tag = $log->tags[0];
+        }
         if (!is_null($current_tag)) {
             $this->info('Current Tag : ' . $current_tag);
         }
