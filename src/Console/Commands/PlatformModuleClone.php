@@ -2,10 +2,9 @@
 
 namespace Monoland\Platform\Console\Commands;
 
-use ErrorException;
-use Monoland\Platform\Services\PlatformModulesGit;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
+use Symfony\Component\Process\Process;
 
 class PlatformModuleClone extends Command
 {
@@ -15,9 +14,8 @@ class PlatformModuleClone extends Command
      * @var string
      */
     protected $signature = 'module:clone
-        {repository} 
-        {--by-commit}
-        {--by-tag}
+        {repository}
+        {--directory=}
     ';
 
     /**
@@ -25,47 +23,28 @@ class PlatformModuleClone extends Command
      *
      * @var string
      */
-    protected $description = 'Clone git repository to modules folder';
+    protected $description = 'Clone module from git-source';
 
     /**
-     * handle function
-     *
-     * @return void
+     * Execute the console command.
      */
-    public function handle(PlatformModulesGit $ModulesGit)
+    public function handle()
     {
-        $mode    = env('APP_ENV', 'local');
-        $module_name = $ModulesGit->buildModuleName($this->argument('repository'));
-        $byCommit = $this->option('by-commit');
-        $byTag = $this->option('by-tag');
+        $directory = $this->option('directory') ?: File::basename($this->argument('repository'));
 
-        try {
-            // -> check if module already exist
-            if ($ModulesGit->isModuleExist($module_name))
-                return $this->info('Module already exist!!');
-
-            // -> procced to clone
-            $this->info('Trying to clone..');
-            $output = $ModulesGit->cloneModule($this->argument('repository'));
-            if ($output instanceof ProcessFailedException) throw $output;
-
-            // -> procced to fetch
-            $this->call('module:fetch', ['module' => $module_name]);
-
-            // -> proceed to do the operation for production mode
-            if ($byTag && !$byCommit)
-                $this->call('module:checkout', ['module' => $module_name, '--by-tag' => true, '--nofetch' => 'true']);
-            // -> proceed to do the operation for dev mode        
-            if ($byCommit && !$byTag)
-                $this->call('module:checkout', ['module' => $module_name, '--by-commit' => true, '--nofetch' => 'true']);
-            // -> proceed to mode invalid, have option to delete the module     
-            if ($mode !== 'local' && $mode !== 'production' && $this->confirm('Do you want to delete the cloned module ?'))
-                $this->call('module:delete', ['module' => $module_name]);
-
-            // -> Get into conclusions, if exist then cloned succesfully
-            if ($ModulesGit->isModuleExist($module_name)) $this->info('Module cloned succesfully!!');
-        } catch (ErrorException $error) {
-            return $this->error($error->getMessage());
+        if (File::isDirectory(base_path('modules' . DIRECTORY_SEPARATOR . $directory))) {
+            $this->info('module already exists');
+            return;
         }
+
+        $process = new Process([
+            'git',
+            'clone',
+            $this->argument('repository'),
+            $this->option('directory')
+        ]);
+
+        $process->setWorkingDirectory(base_path() . DIRECTORY_SEPARATOR . 'modules');
+        $process->run();
     }
 }

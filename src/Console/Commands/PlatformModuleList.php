@@ -26,23 +26,24 @@ class PlatformModuleList extends Command
      */
     public function handle()
     {
-        $modules = []; 
+        $modules = [];
         $cacheModules = Cache::get('modules') ?: [];
-        
-        foreach($cacheModules as $module) {
+
+        foreach ($cacheModules as $module) {
             array_push($modules, [
                 $module->namespace,
                 $module->name,
                 $module->disabled ? 'true' : 'false',
                 $module->priority,
-                $module->connection
+                $module->connection,
+                $module->directory
             ]);
         }
 
         array_multisort(array_column($modules, 3), SORT_ASC, $modules);
-        
+
         $this->table(
-            ['Namespace', 'Name', 'Disabled', 'Priority', 'Connection'],
+            ['Namespace', 'Name', 'Disabled', 'Priority', 'Connection', 'Path'],
             $modules
         );
     }

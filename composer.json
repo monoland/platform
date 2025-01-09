@@ -1,27 +1,30 @@
 {
-	"name": "monoland/platform",
-	"description": "The monoland platform",
-	"type": "library",
-	"require": {
-		"laravel/fortify": "^1.21",
-		"laravel/framework": "^11.0",
-		"laravel/sanctum": "^4.0",
-		"wikimedia/composer-merge-plugin": "^2.1",
-		"jenssegers/agent": "^2.6",
-		"kalnoy/nestedset": "^6.0"
-	},
-	"license": "MIT",
-	"autoload": {
-		"psr-4": {
-			"Monoland\\Platform\\": "src/"
-		}
-	},
-	"extra": {
+    "name": "monoland/platform",
+    "description": "Silegit Web Application Platform",
+    "type": "library",
+    "require": {
+        "laravel/framework": "^11.0",
+        "laravel/sanctum": "^4.0",
+        "laravel/fortify": "^1.21",
+        "laravel/horizon": "^5.26",
+        "jenssegers/agent": "^2.6",
+        "kalnoy/nestedset": "^6.0",
+        "maatwebsite/excel": "^3.1",
+        "wikimedia/composer-merge-plugin": "^2.1"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Monoland\\Platform\\": "src/"
+        }
+    },
+    "extra": {
 		"laravel": {
 			"providers": [
-				"Monoland\\Platform\\PlatformServiceProvider"
+				"Monoland\\Platform\\ModularServiceProvider"
 			]
 		}
 	},
-	"minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

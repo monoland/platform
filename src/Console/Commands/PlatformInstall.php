@@ -30,6 +30,31 @@ class PlatformInstall extends Command
      */
     public function handle()
     {
+        $this->patchComposerJSON();
+        $this->patchEnvirontment();
+        $this->addStatefulApi();
+        $this->removeFileAndFolder();
+
+        $this->call('vendor:publish', [
+            '--tag' => 'monoland-config',
+            '--force' => true
+        ]);
+
+        $this->call('vendor:publish', [
+            '--tag' => 'monoland-assets',
+            '--force' => true
+        ]);
+
+        $this->runComposerUpdate();
+    }
+
+    /**
+     * removeFileAndFolder function
+     *
+     * @return void
+     */
+    protected function removeFileAndFolder(): void
+    {
         if (File::isDirectory(resource_path('js'))) {
             File::deleteDirectory(resource_path('js'));
         }
@@ -38,14 +63,20 @@ class PlatformInstall extends Command
             File::deleteDirectory(resource_path('css'));
         }
 
-        $this->addExtraForMerge();
+        if (File::isDirectory(resource_path('src'))) {
+            File::deleteDirectory(resource_path('src'));
+        }
 
-        $this->addExtraEnvirontment();
-
-        $this->addStatefulApi();
+        if (File::exists(base_path('vite.config.js'))) {
+            File::delete(base_path('vite.config.js'));
+        }
 
         if (File::isDirectory(app_path('Models'))) {
             File::deleteDirectory(app_path('Models'));
+        }
+
+        if (File::isDirectory(resource_path('views' . DIRECTORY_SEPARATOR . 'welcome.blade.php'))) {
+            File::deleteDirectory(resource_path('views' . DIRECTORY_SEPARATOR . 'welcome.blade.php'));
         }
 
         if (File::isDirectory(database_path('migrations'))) {
@@ -53,27 +84,6 @@ class PlatformInstall extends Command
 
             File::makeDirectory(database_path('migrations'));
         }
-
-        $this->call('vendor:publish', [
-            '--tag' => 'platform-config',
-            '--force' => true
-        ]);
-
-        $this->call('vendor:publish', [
-            '--tag' => 'platform-frontend',
-            '--force' => true
-        ]);
-
-        $this->call('vendor:publish', [
-            '--tag' => 'platform-assets',
-            '--force' => true
-        ]);
-
-        $this->call('module:clone', [
-            'repository' => 'https://github.com/monoland/system'
-        ]);
-
-        $this->runComposerUpdate();
     }
 
     /**
@@ -108,36 +118,43 @@ class PlatformInstall extends Command
     }
 
     /**
-     * Undocumented function
+     * patchComposerJSON function
      *
      * @return void
      */
-    protected function addExtraForMerge(): void
+    protected function patchComposerJSON(): void
     {
         $composerFile = base_path('composer.json');
 
         $content = json_decode(file_get_contents($composerFile), true);
 
-        if(!array_key_exists('merge-plugin', $content['extra'])) {
+        if (array_key_exists('repositories', $content)) {
+            $content['repositories'] = [
+                ['type' => 'path', 'url' => 'packages/monoland/starterkit'],
+                ['type' => 'path', 'url' => 'modules/*']
+            ];
+        }
+
+        if (array_key_exists('extra', $content) && !array_key_exists('merge-plugin', $content['extra'])) {
             $content['extra']['merge-plugin'] = [
                 'include' => [
                     "modules/*/composer.json"
                 ]
             ];
-
-            $content = json_encode($content, JSON_PRETTY_PRINT);
-            $content = str_replace('\/', '/', $content);
-
-            file_put_contents($composerFile, $content);
         }
+
+        $content = json_encode($content, JSON_PRETTY_PRINT);
+        $content = str_replace('\/', '/', $content);
+
+        file_put_contents($composerFile, $content);
     }
 
     /**
-     * addExtraEnvirontment function
+     * patchEnvirontment function
      *
      * @return void
      */
-    protected function addExtraEnvirontment(): void
+    protected function patchEnvirontment(): void
     {
         $envFile = base_path('.env');
         $content = file_get_contents($envFile);
@@ -166,9 +183,9 @@ class PlatformInstall extends Command
             );
         }
 
-        if (str_contains($content, 'DB_CONNECTION=sqlite')) {
+        if (str_contains($content, 'DB_CONNECTION=pgsql')) {
             (new Filesystem())->replaceInFile(
-                'DB_CONNECTION=sqlite',
+                'DB_CONNECTION=pgsql',
                 'DB_CONNECTION=platform',
                 $envFile,
             );
@@ -177,23 +194,22 @@ class PlatformInstall extends Command
         if (str_contains($content, 'SESSION_DOMAIN=null')) {
             (new Filesystem())->replaceInFile(
                 'SESSION_DOMAIN=null',
-                'SESSION_DOMAIN=.platform.test',
+                'SESSION_DOMAIN=.monoland.test',
                 $envFile,
             );
         }
 
-        if (str_contains($content, 'BCRYPT_ROUNDS=12') && !str_contains($content, 'AUTH_MODEL=Module\System\Models\SystemUser')) {
+        if (str_contains($content, 'VITE_APP_NAME="${APP_NAME}"') && !str_contains($content, 'AUTH_MODEL=Module\System\Models\SystemUser')) {
             (new Filesystem())->replaceInFile(
-                'BCRYPT_ROUNDS=12',
-                'BCRYPT_ROUNDS=12' . PHP_EOL .
-                'AUTH_MODEL=Module\System\Models\SystemUser' . PHP_EOL .
-                'AUTH_PASSWORD_RESET_TOKEN_TABLE=system_password_reset_tokens' . PHP_EOL .
-                'DB_CACHE_TABLE=system_cache' . PHP_EOL .
-                'DB_QUEUE_TABLE=system_jobs' . PHP_EOL .
-                'DB_QUEUE_BATCH_TABLE=system_job_batches' . PHP_EOL .
-                'DB_QUEUE_FAILED_TABLE=system_failded_jobs' . PHP_EOL .
-                'SESSION_TABLE=system_sessions' . PHP_EOL .
-                'SANCTUM_STATEFUL_DOMAINS=hmr.platform.test:3000',
+                'VITE_APP_NAME="${APP_NAME}"',
+                'VITE_APP_NAME="${APP_NAME}"' . PHP_EOL .
+                    'AUTH_MODEL=Module\System\Models\SystemUser' . PHP_EOL .
+                    'AUTH_PASSWORD_RESET_TOKEN_TABLE=system_password_reset_tokens' . PHP_EOL .
+                    'DB_CACHE_TABLE=system_cache' . PHP_EOL .
+                    'DB_QUEUE_TABLE=system_jobs' . PHP_EOL .
+                    'DB_QUEUE_BATCH_TABLE=system_job_batches' . PHP_EOL .
+                    'DB_QUEUE_FAILED_TABLE=system_failded_jobs' . PHP_EOL .
+                    'SESSION_TABLE=system_sessions',
                 $envFile,
             );
         }
@@ -207,7 +223,8 @@ class PlatformInstall extends Command
     protected function runComposerUpdate(): void
     {
         $process = new Process([
-            'composer', 'update'
+            'composer',
+            'update'
         ]);
 
         $process->setWorkingDirectory(base_path());
